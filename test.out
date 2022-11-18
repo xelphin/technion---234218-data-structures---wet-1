@@ -1,0 +1,55 @@
+add_team: SUCCESS
+add_team: SUCCESS
+add_team: SUCCESS
+add_team: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+add_player: SUCCESS
+update_player_stats: SUCCESS
+play_match: SUCCESS
+play_match: SUCCESS
+get_num_played_games: SUCCESS, 22
+get_team_points: SUCCESS, 30003
+unite_teams: SUCCESS
+get_top_scorer: SUCCESS, 2008
+get_all_players_count: SUCCESS, 11
+get_all_players: SUCCESS
+4001
+4002
+get_closest_player: SUCCESS, 1006
+knockout_winner: SUCCESS, 2
+remove_team: FAILURE
+remove_player: SUCCESS
