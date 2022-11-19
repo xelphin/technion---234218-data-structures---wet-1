@@ -16,22 +16,29 @@
 #define SORT_BY_SCORE true
 #define SORT_BY_ID false
 
-
+//-------------------------------AVL TREE CLASS------------------------------------//
 template <class T>
 class AVL_tree {
-public:
-    explicit AVL_tree(bool sort_by_score);
-    bool sort_by_score;
-
-private:
     class Node;
 
+public:
+    explicit AVL_tree(bool sort_by_score);
+    bool add();
+    bool remove(int id);
+    Node* find(int id);
+    void merge(AVL_tree<T> &other);
+
+private:
+    bool sort_by_score;
+    Node root;
 };
 
 template<class T>
 AVL_tree<T>::AVL_tree(bool sort_by_score) {
 
 }
+
+//------------------------------------------------NODE CLASS-------------------------------//
 
 //Nodes will be used in the AVL tree, and will allocate memory for an actual item
 template <class T>
@@ -48,6 +55,31 @@ public:
 private:
     int get_comparison(const Node &other);
 };
+
+
+//-------------------------------------------FUNCTION DEFINITIONS------------------------------//
+
+
+template<class T>
+bool AVL_tree<T>::add() {
+    return false;
+}
+
+template<class T>
+bool AVL_tree<T>::remove(int id) {
+    return false;
+}
+
+template<class T>
+typename AVL_tree<T>::Node *AVL_tree<T>::find(int id) {
+    return nullptr;
+}
+
+template<class T>
+void AVL_tree<T>::merge(AVL_tree<T> &other) {
+
+}
+
 
 template <class T>
 int AVL_tree<T>::Node::get_comparison(const Node &other) {
