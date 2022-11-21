@@ -15,6 +15,7 @@ bool run_all_tests() {
     std::string success_string = "ALL (OUR) TESTS SUCCEEDED";
     bool success = true;
     run_test(playerCompare, "playerCompare", success_string, success);
+    run_test(createAVL, "createAVL", success_string, success);
 
     std::cout << success_string << std::endl;
     return success;
@@ -50,4 +51,11 @@ bool playerCompare()
         count++;
 
     return count == 2;
+}
+
+bool createAVL()
+{
+    AVL_tree<Player*> tree1(true);
+    
+    return true;
 }

@@ -37,18 +37,19 @@ public:
     AVL_tree(const AVL_tree &) = delete; //cant copy trees
     AVL_tree &operator=(AVL_tree &other) = delete;
 
-    Node* add(T* item);
-    bool remove(int id);
-    Node* find(int id);
-    void merge(AVL_tree<T> &other); //merge 2 trees together
+    //Node* add(T* item);
+    //bool remove(int id);
+    //Node* find(int id);
+    //void merge(AVL_tree<T> &other); //merge 2 trees together
 
     enum class COMPARISON {A_SMALLER_THAN_B, A_BIGGER_THAN_B, A_EQUAL_TO_B};
 
 private:
+    const bool sort_by_score;
     Node *root;
 
-    Node* find_designated_parent(Node* new_leaf);
-    void climb_up_and_rebalance_tree(Node* leaf);
+    //Node* find_designated_parent(Node* new_leaf);
+    //void climb_up_and_rebalance_tree(Node* leaf);
     void post_order_delete();
 };
 
@@ -92,25 +93,27 @@ private:
 //---------------------------PUBLIC FUNCTION DEFINITIONS------------------------------//
 
 template<class T>
-AVL_tree<T>::AVL_tree(bool sort_by_score)
-{
+AVL_tree<T>::AVL_tree(bool sort_by_score) : sort_by_score(sort_by_score){
 }
 
 template<class T>
 AVL_tree<T>::~AVL_tree() {
-    post_order_delete(); //delete the whole tree when destructor is called to free all memory.
+    post_order_delete();
 }
+
+
 
 template<class T>
 AVL_tree<T>::Node::Node(T new_item) : height(0), balance_factor(0), content(new_item){ // may be changed once we move to pointers.
 }
 
+/*
 template<class T>
 typename AVL_tree<T>::Node * AVL_tree<T>::add(T *item) {
-    /* returns a pointer to the node holding the pointer to the item. we need that
-     * in order to store the list of nodes in the object, so we can delete all the nodes when
-     * the object is deleted.
-     */
+    // returns a pointer to the node holding the pointer to the item. we need that
+    // in order to store the list of nodes in the object, so we can delete all the nodes when
+    //the object is deleted.
+    //
 
     Node *leaf = new Node(item); //in case of bad_alloc, memory is freed from the tree destructor.
     try {
@@ -130,22 +133,25 @@ typename AVL_tree<T>::Node * AVL_tree<T>::add(T *item) {
     }
     return leaf;
 }
-
+*/
+/*
 template<class T>
 bool AVL_tree<T>::remove(int id) {
     return false;
 }
-
+*/
+/*
 template<class T>
 typename AVL_tree<T>::Node *AVL_tree<T>::find(int id) {
     return nullptr;
 }
-
+*/
+/*
 template<class T>
 void AVL_tree<T>::merge(AVL_tree<T> &other) {
 
 }
-
+*/
 
 
 //-----------------------------PRIVATE TREE FUNCTIONS-----------------------------//
@@ -181,6 +187,7 @@ void AVL_tree<T>::post_order_delete() {
     root = nullptr;
 }
 
+/*
 template<class T>
 typename AVL_tree<T>::Node* AVL_tree<T>::find_designated_parent(AVL_tree::Node* new_leaf) {
     Node* current = root;
@@ -209,13 +216,14 @@ typename AVL_tree<T>::Node* AVL_tree<T>::find_designated_parent(AVL_tree::Node* 
         }
     }
 }
-
+*/
+/*
 template <class T>
 int AVL_tree<T>::Node::get_comparison(const Node &other) {
     // since its unknown if the tree is sorted by id or by score, we need this function to work on both.
     // '!' operator is for score. '~' operator is for id.
     // the comparison is done between the dereferences of the pointers the nodes holds.
-    if (tree->sort == SORT_BY_SCORE){
+    if (tree->sort_by_score == SORT_BY_SCORE){
         return SCORE(*this->content) - SCORE(*other.content);
     }
     else
@@ -223,17 +231,20 @@ int AVL_tree<T>::Node::get_comparison(const Node &other) {
         return ID(*this->content) - ID(*other.content);
     }
 }
+*/
 
+/*
 template<class T>
 bool AVL_tree<T>::Node::operator==(const AVL_tree<T>::Node &other) {
     return get_comparison(other) == 0; //their comparators are equal
 }
+*/
 
 
 
 //----------------------------TREE SORTING FUNCTIONS------------------------------//
 
-
+/*
 template<class T>
 int AVL_tree<T>::Node::set_height() {
     int left_height = get_height(left);
@@ -351,7 +362,7 @@ void AVL_tree<T>::Node::RL_roll() {
     roll_left();
 }
 
-
+*/
 
 
 #endif //TECHNION_234218_DATA_STRUCTURES_WET_1_AVL_TREE_H

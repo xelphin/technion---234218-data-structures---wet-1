@@ -29,7 +29,7 @@ int main()
     // OUR TESTS (erase this code later)
     run_all_tests();
     // ---
-
+    /*
     cin >> std::boolalpha;
 	
     int d1, d2, d3, d4, d5;
@@ -97,6 +97,7 @@ int main()
 
     // Quit 
 	delete obj;
+    */
 	return 0;
 }
 
@@ -125,6 +126,7 @@ void print(string cmd, output_t<int> res)
 
 void query_get_all_players(string cmd, world_cup_t *obj, int teamID)
 {
+    /*
 	output_t<int> count = obj->get_all_players_count(teamID);
     // Allocate if okay
     int *out_mem = nullptr;
@@ -142,4 +144,5 @@ void query_get_all_players(string cmd, world_cup_t *obj, int teamID)
 	    }
     }
     delete[] out_mem;
+    */
 }

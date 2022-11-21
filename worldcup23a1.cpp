@@ -1,5 +1,6 @@
 #include "worldcup23a1.h"
 
+/*
 world_cup_t::world_cup_t() //TODO: sort by score or id?
 {
 	std::cout << "am here" << std::endl;
@@ -99,4 +100,4 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
 	// TODO: Your code goes here
 	return 2;
 }
-
+*/

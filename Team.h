@@ -20,8 +20,8 @@ private:
     int total_points;
     int total_cards;
     Player *top_scorer; //may be changed to a different type of pointer later on.
-    AVL_tree<Player> team_players;
-    AVL_tree<Player> team_players_scores;
+    AVL_tree<Player*> team_players;
+    AVL_tree<Player*> team_players_scores;
 
     int get_points();
 };
