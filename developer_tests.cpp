@@ -45,9 +45,9 @@ bool playerCompare()
     Player player1(1, 2, 5, 6, 4, false); // goals == 6
     Player player2(2, 2, 5, 4, 4, false); // goals == 4
 
-    if (player1.compare(player2, SORT_BY_SCORE) == AVL_tree<Player>::COMPARISON::A_BIGGER_THAN_B)
+    if (!(player1) - !(player2) > 0)
         count++;
-    if (player1.compare(player2, SORT_BY_ID) == AVL_tree<Player>::COMPARISON::A_SMALLER_THAN_B)
+    if (~(player1) - ~(player2) < 0)
         count++;
 
     return count == 2;
@@ -55,8 +55,16 @@ bool playerCompare()
 
 bool createAVL()
 {
-    AVL_tree<Player*> tree1(true);
-    // tree1.remove(123);
-    // Just call more tree.func() here and make sure there aren't valgrind errors
+    //AVL_tree<std::shared_ptr<Player>> tree1(true);
+    // std::shared_ptr<Player> player1(new Player(1, 2, 5, 6, 4, false));
+
+    AVL_tree<Player*> tree1(false); // sort by ID
+    Player player1(4, 2, 5, 6, 4, false); // id: 4
+    //Player player2(5, 2, 3, 3, 4, false); // id: 5
+    tree1.add(&player1);
+    //tree1.add(&player2);
+
+    tree1.debugging_printTree();
+
     return true;
 }

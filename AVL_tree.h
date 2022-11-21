@@ -17,6 +17,7 @@
 #define TECHNION_234218_DATA_STRUCTURES_WET_1_AVL_TREE_H
 
 #include "stdexcept"
+#include "iostream"
 
 #define SORT_BY_SCORE true
 #define SORT_BY_ID false
@@ -37,12 +38,12 @@ public:
     AVL_tree(const AVL_tree &) = delete; //cant copy trees
     AVL_tree &operator=(AVL_tree &other) = delete;
 
-    Node* add(T* item);
+    Node* add(T item);
     bool remove(int id);
     Node* find(int id);
     void merge(AVL_tree<T> &other); //merge 2 trees together
 
-    enum class COMPARISON {A_SMALLER_THAN_B, A_BIGGER_THAN_B, A_EQUAL_TO_B};
+    void debugging_printTree(); // debugging -- erase later
 
 private:
     const bool sort_by_score;
@@ -51,6 +52,10 @@ private:
     Node* find_designated_parent(Node* new_leaf);
     void climb_up_and_rebalance_tree(Node* leaf);
     void post_order_delete();
+
+    void debugging_printTree(const std::string& prefix, const AVL_tree::Node* node, bool isLeft);
+    void debugging_printTree(const AVL_tree::Node* node);
+    
 };
 
 
@@ -70,9 +75,9 @@ public:
 
     explicit Node(T);
 
-    bool operator==(const Node &other); //TODO implement more operators
+    int get_comparison(const Node &other); 
 private:
-    int get_comparison(const Node &other); //to be used in the different operators. may be changed later.
+    
     
     //tree sorting functions:
     int set_balance_factor();
@@ -102,38 +107,48 @@ AVL_tree<T>::~AVL_tree() {
 }
 
 
-
 template<class T>
-AVL_tree<T>::Node::Node(T new_item) : height(0), balance_factor(0), content(new_item), parent(
-        nullptr), left(nullptr), right(nullptr){ // may be changed once we move to pointers.
+AVL_tree<T>::Node::Node(T new_item) 
+: tree(nullptr), parent(nullptr), left(nullptr), right(nullptr),content(new_item), balance_factor(0), height(0)
+{ 
+    // may be changed once we move to pointers.
 }
 
 
 template<class T>
-typename AVL_tree<T>::Node * AVL_tree<T>::add(T *item) {
+typename AVL_tree<T>::Node* AVL_tree<T>::add(T item) {
     // returns a pointer to the node holding the pointer to the item. we need that
     // in order to store the list of nodes in the object, so we can delete all the nodes when
     //the object is deleted.
     //
 
     Node *leaf = new Node(item); //in case of bad_alloc, memory is freed from the tree destructor.
+
+    //std::cout << "checking: " << ((*(*leaf).content)).get_id() << std::endl;
+    // std::cout << "checking: " << (*leaf).get_comparison(*root) << std::endl; // ??ODD
+
     try {
-        Node *parent = find_designated_parent(leaf);
-        if (parent == nullptr) {
+        // Node *parent = find_designated_parent(leaf);
+        if (root == nullptr) {
             root = leaf;
-        } else if (leaf < parent) {
+        } 
+        /*
+        else if (leaf < parent) {
             parent->left = leaf;
         } else {
             parent->right = leaf;
         }
-        climb_up_and_rebalance_tree(leaf);
+        */
+        // climb_up_and_rebalance_tree(leaf);
     }
     catch (...){
         delete leaf;
         throw;
     }
     return leaf;
+
 }
+
 
 
 template<class T>
@@ -197,7 +212,7 @@ typename AVL_tree<T>::Node* AVL_tree<T>::find_designated_parent(AVL_tree::Node* 
     }
 
     while(true){ //while true loop ok because in every case we either return or go down tree.
-        if (*new_leaf < *current) //proceed to left branch. 
+        if ((*new_leaf).get_comparison(*current)) //proceed to left branch. 
             // TODO: "<" operator. check that this comparison is done right.
         {
             if (current->left){
@@ -224,23 +239,18 @@ int AVL_tree<T>::Node::get_comparison(const Node &other) {
     // since its unknown if the tree is sorted by id or by score, we need this function to work on both.
     // '!' operator is for score. '~' operator is for id.
     // the comparison is done between the dereferences of the pointers the nodes holds.
+
+    
     if (tree->sort_by_score == SORT_BY_SCORE){
-        return SCORE(*this->content) - SCORE(*other.content);
+        return SCORE((*this)->content) - SCORE(*other.content);
     }
     else
     {
-        return ID(*this->content) - ID(*other.content);
+        return ID((*this)->content) - ID(*other.content);
     }
+    
+   return 0;
 }
-
-
-
-template<class T>
-bool AVL_tree<T>::Node::operator==(const AVL_tree<T>::Node &other) {
-    return get_comparison(other) == 0; //their comparators are equal
-}
-
-
 
 
 //----------------------------TREE SORTING FUNCTIONS------------------------------//
@@ -363,6 +373,39 @@ void AVL_tree<T>::Node::RL_roll() {
     roll_left();
 }
 
+
+
+// ONLY FOR DEBUGGING - ERASE LATER
+template<class T>
+void AVL_tree<T>::debugging_printTree(const std::string& prefix, const AVL_tree::Node* node, bool isLeft) 
+{
+    if( node != nullptr )
+    {
+        std::cout << prefix;
+
+        std::cout << (isLeft ? "├──" : "└──" );
+
+        // print the value of the node
+        std::cout << (*(node->content)).get_id() << std::endl;
+
+        // enter the next tree level - left and right branch
+        AVL_tree<T>::debugging_printTree( prefix + (isLeft ? "│   " : "    "), node->left, true);
+        AVL_tree<T>::debugging_printTree( prefix + (isLeft ? "│   " : "    "), node->right, false);
+    }
+}
+
+template<class T>
+void AVL_tree<T>::debugging_printTree(const AVL_tree::Node* node)
+{
+    debugging_printTree("", node, false);
+}
+
+template<class T>
+void AVL_tree<T>::debugging_printTree()
+{
+    debugging_printTree(root);
+}
+// ----------------------------------
 
 
 
