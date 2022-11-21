@@ -37,10 +37,10 @@ public:
     AVL_tree(const AVL_tree &) = delete; //cant copy trees
     AVL_tree &operator=(AVL_tree &other) = delete;
 
-    //Node* add(T* item);
-    //bool remove(int id);
-    //Node* find(int id);
-    //void merge(AVL_tree<T> &other); //merge 2 trees together
+    Node* add(T* item);
+    bool remove(int id);
+    Node* find(int id);
+    void merge(AVL_tree<T> &other); //merge 2 trees together
 
     enum class COMPARISON {A_SMALLER_THAN_B, A_BIGGER_THAN_B, A_EQUAL_TO_B};
 
@@ -48,8 +48,8 @@ private:
     const bool sort_by_score;
     Node *root;
 
-    //Node* find_designated_parent(Node* new_leaf);
-    //void climb_up_and_rebalance_tree(Node* leaf);
+    Node* find_designated_parent(Node* new_leaf);
+    void climb_up_and_rebalance_tree(Node* leaf);
     void post_order_delete();
 };
 
@@ -93,22 +93,22 @@ private:
 //---------------------------PUBLIC FUNCTION DEFINITIONS------------------------------//
 
 template<class T>
-AVL_tree<T>::AVL_tree(bool sort_by_score) : sort_by_score(sort_by_score){
+AVL_tree<T>::AVL_tree(bool sort_by_score) : sort_by_score(sort_by_score), root(nullptr){
 }
 
 template<class T>
 AVL_tree<T>::~AVL_tree() {
-    // FIX THIS!
-    // post_order_delete();
+     post_order_delete();
 }
 
 
 
 template<class T>
-AVL_tree<T>::Node::Node(T new_item) : height(0), balance_factor(0), content(new_item){ // may be changed once we move to pointers.
+AVL_tree<T>::Node::Node(T new_item) : height(0), balance_factor(0), content(new_item), parent(
+        nullptr), left(nullptr), right(nullptr){ // may be changed once we move to pointers.
 }
 
-/*
+
 template<class T>
 typename AVL_tree<T>::Node * AVL_tree<T>::add(T *item) {
     // returns a pointer to the node holding the pointer to the item. we need that
@@ -134,25 +134,25 @@ typename AVL_tree<T>::Node * AVL_tree<T>::add(T *item) {
     }
     return leaf;
 }
-*/
-/*
+
+
 template<class T>
 bool AVL_tree<T>::remove(int id) {
     return false;
 }
-*/
-/*
+
+
 template<class T>
 typename AVL_tree<T>::Node *AVL_tree<T>::find(int id) {
     return nullptr;
 }
-*/
-/*
+
+
 template<class T>
 void AVL_tree<T>::merge(AVL_tree<T> &other) {
 
 }
-*/
+
 
 
 //-----------------------------PRIVATE TREE FUNCTIONS-----------------------------//
@@ -167,7 +167,7 @@ void AVL_tree<T>::post_order_delete() {
     Node* temp;
     // while not in root or root has children:
     while (current->parent || (current == root && (root->left || root->right))){
-        if (current->left)
+        if (current->left != nullptr)
             current = current->left;
         else if (current->right){
             current = current->right;
@@ -188,7 +188,7 @@ void AVL_tree<T>::post_order_delete() {
     root = nullptr;
 }
 
-/*
+
 template<class T>
 typename AVL_tree<T>::Node* AVL_tree<T>::find_designated_parent(AVL_tree::Node* new_leaf) {
     Node* current = root;
@@ -217,8 +217,8 @@ typename AVL_tree<T>::Node* AVL_tree<T>::find_designated_parent(AVL_tree::Node* 
         }
     }
 }
-*/
-/*
+
+
 template <class T>
 int AVL_tree<T>::Node::get_comparison(const Node &other) {
     // since its unknown if the tree is sorted by id or by score, we need this function to work on both.
@@ -232,20 +232,20 @@ int AVL_tree<T>::Node::get_comparison(const Node &other) {
         return ID(*this->content) - ID(*other.content);
     }
 }
-*/
 
-/*
+
+
 template<class T>
 bool AVL_tree<T>::Node::operator==(const AVL_tree<T>::Node &other) {
     return get_comparison(other) == 0; //their comparators are equal
 }
-*/
+
 
 
 
 //----------------------------TREE SORTING FUNCTIONS------------------------------//
 
-/*
+
 template<class T>
 int AVL_tree<T>::Node::set_height() {
     int left_height = get_height(left);
@@ -363,7 +363,7 @@ void AVL_tree<T>::Node::RL_roll() {
     roll_left();
 }
 
-*/
+
 
 
 #endif //TECHNION_234218_DATA_STRUCTURES_WET_1_AVL_TREE_H
