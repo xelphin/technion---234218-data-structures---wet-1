@@ -42,8 +42,9 @@ public:
     Node* find(int id);
     void merge(AVL_tree<T> &other); //merge 2 trees together
 
+    enum class COMPARISON {A_SMALLER_THAN_B, A_BIGGER_THAN_B, A_EQUAL_TO_B};
+
 private:
-    const bool sort_by_score;
     Node *root;
 
     Node* find_designated_parent(Node* new_leaf);
@@ -91,7 +92,8 @@ private:
 //---------------------------PUBLIC FUNCTION DEFINITIONS------------------------------//
 
 template<class T>
-AVL_tree<T>::AVL_tree(bool sort_by_score) : sort_by_score(sort_by_score){
+AVL_tree<T>::AVL_tree(bool sort_by_score)
+{
 }
 
 template<class T>
@@ -213,7 +215,7 @@ int AVL_tree<T>::Node::get_comparison(const Node &other) {
     // since its unknown if the tree is sorted by id or by score, we need this function to work on both.
     // '!' operator is for score. '~' operator is for id.
     // the comparison is done between the dereferences of the pointers the nodes holds.
-    if (tree->sort_by_score == SORT_BY_SCORE){
+    if (tree->sort == SORT_BY_SCORE){
         return SCORE(*this->content) - SCORE(*other.content);
     }
     else

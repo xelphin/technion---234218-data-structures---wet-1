@@ -14,6 +14,10 @@
 #include <string>
 #include <iostream>
 
+// OUR TESTS !!!!
+#include "developer_tests.h"
+// erase later
+
 using namespace std;
 
 void print(string cmd, StatusType res);
@@ -22,6 +26,10 @@ void query_get_all_players(string cmd, world_cup_t *obj, int teamID);
 
 int main()
 {
+    // OUR TESTS (erase this code later)
+    run_all_tests();
+    // ---
+
     cin >> std::boolalpha;
 	
     int d1, d2, d3, d4, d5;

@@ -16,6 +16,10 @@
 #define WORLDCUP23A1_H_
 
 #include "wet1util.h"
+#include <string>
+#include <fstream>
+#include <iostream>
+#include <memory>
 #include "AVL_tree.h"
 #include "Player.h"
 #include "Team.h"
@@ -25,10 +29,12 @@ private:
     // Here you may add anything you want
     int amount_players;
 
-	AVL_tree<Player> all_players_AVL;
-    AVL_tree<Player> all_players_score_AVL;
-    AVL_tree<Team> teams_AVL;
-    AVL_tree<Team> valid_teams_AVL;
+	//AVL_tree<Player> all_players_AVL;
+    //AVL_tree<Player> all_players_score_AVL;
+    //AVL_tree<Team> teams_AVL;
+    //AVL_tree<Team> valid_teams_AVL;
+
+	
 
 	
 public:
