@@ -20,7 +20,6 @@
 #include "Player.h"
 #include "Team.h"
 
-
 class world_cup_t {
 private:
     // Here you may add anything you want
@@ -31,12 +30,12 @@ private:
     AVL_tree<Team> teams_AVL;
     AVL_tree<Team> valid_teams_AVL;
 
+	
 public:
 	// <DO-NOT-MODIFY> {
 	
 	world_cup_t();
-
-    virtual ~world_cup_t();
+	virtual ~world_cup_t();
 	
 	StatusType add_team(int teamId, int points);
 	

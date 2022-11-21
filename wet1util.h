@@ -24,14 +24,6 @@ enum struct StatusType {
 	INVALID_INPUT    = 2,
 	FAILURE          = 3,
 };
-static const char *StatusTypeStr[] =
-{
-   	"SUCCESS",
-	"ALLOCATION_ERROR",
-	"INVALID_INPUT",
-	"FAILURE"
-};
-
 
 // output_t<T>
 // The following class is used to support output with status code.

@@ -22,9 +22,7 @@ void query_get_all_players(string cmd, world_cup_t *obj, int teamID);
 
 int main()
 {
-	cin.sync_with_stdio(0);
     cin >> std::boolalpha;
-	cout.sync_with_stdio(0);
 	
     int d1, d2, d3, d4, d5;
     bool b1;
@@ -37,7 +35,7 @@ int main()
 	while (cin >> op)
     {
         if (!op.compare("add_team")) {
-            cin >> d1 >> d1;
+            cin >> d1 >> d2;
             print(op, obj->add_team(d1, d2));
         } else if (!op.compare("remove_team")) {
             cin >> d1;
@@ -94,8 +92,15 @@ int main()
 	return 0;
 }
 
-
 // Helpers
+static const char *StatusTypeStr[] =
+{
+   	"SUCCESS",
+	"ALLOCATION_ERROR",
+	"INVALID_INPUT",
+	"FAILURE"
+};
+
 void print(string cmd, StatusType res) 
 {
 	cout << cmd << ": " << StatusTypeStr[(int) res] << endl;
