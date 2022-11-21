@@ -4,10 +4,9 @@ void Team::add_player() {
 
 }
 
-Team::Team(int id, int totalPlayers, int totalPoints, int totalCards, Player *topScorer,
-           const AVL_tree<Player> &teamPlayers, const AVL_tree<Player> &teamPlayersScores) :
+Team::Team(int id, int totalPlayers, int totalPoints, int totalCards, Player *topScorer) :
            id(id),total_players(totalPlayers),total_points(totalPoints),total_cards(totalCards),top_scorer(topScorer),
-            team_players(teamPlayers),team_players_scores(teamPlayersScores) {}
+            team_players(SORT_BY_ID),team_players_scores(SORT_BY_SCORE) {}
 
 int Team::get_id() {
     return id;

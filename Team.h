@@ -7,9 +7,7 @@ class Player;
 
 class Team{
 public:
-
-    Team(int id, int totalPlayers, int totalPoints, int totalCards, Player *topScorer,
-         const AVL_tree<Player> &teamPlayers, const AVL_tree<Player> &teamPlayersScores);
+    Team(int id, int totalPlayers, int totalPoints, int totalCards, Player *topScorer);
 
     void add_player();
     int get_id();
