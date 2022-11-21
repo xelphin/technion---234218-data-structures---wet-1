@@ -98,7 +98,8 @@ AVL_tree<T>::AVL_tree(bool sort_by_score) : sort_by_score(sort_by_score){
 
 template<class T>
 AVL_tree<T>::~AVL_tree() {
-    post_order_delete();
+    // FIX THIS!
+    // post_order_delete();
 }
 
 

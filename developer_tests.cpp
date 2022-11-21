@@ -56,6 +56,7 @@ bool playerCompare()
 bool createAVL()
 {
     AVL_tree<Player*> tree1(true);
-    
+    // tree1.remove(123);
+    // Just call more tree.func() here and make sure there aren't valgrind errors
     return true;
 }
