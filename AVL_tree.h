@@ -103,7 +103,7 @@ AVL_tree<T>::AVL_tree(bool sort_by_score) : sort_by_score(sort_by_score), root(n
 
 template<class T>
 AVL_tree<T>::~AVL_tree() {
-     post_order_delete();
+    post_order_delete();
 }
 
 
@@ -123,22 +123,25 @@ typename AVL_tree<T>::Node* AVL_tree<T>::add(T item) {
     //
 
     Node *leaf = new Node(item); //in case of bad_alloc, memory is freed from the tree destructor.
+    leaf->tree = this;
 
-    //std::cout << "checking: " << ((*(*leaf).content)).get_id() << std::endl;
-    // std::cout << "checking: " << (*leaf).get_comparison(*root) << std::endl; // ??ODD
+    std::cout << "Entering: " << ((*(*leaf).content)).get_id() << std::endl;
 
     try {
-        // Node *parent = find_designated_parent(leaf);
-        if (root == nullptr) {
+        Node *parent = find_designated_parent(leaf);
+        if (parent == nullptr) {
             root = leaf;
+            leaf->tree = this;
+            return leaf;
         } 
-        /*
-        else if (leaf < parent) {
-            parent->left = leaf;
-        } else {
+        std::cout << "Parent id: " << ((*(*parent).content)).get_id() << std::endl;
+        if ((*leaf).get_comparison(*parent) > 0) {
             parent->right = leaf;
+        } else {
+            parent->left = leaf;
         }
-        */
+        leaf->parent = parent;
+        leaf->tree=this;
         // climb_up_and_rebalance_tree(leaf);
     }
     catch (...){
@@ -179,7 +182,7 @@ void AVL_tree<T>::post_order_delete() {
         return;
     }
     Node* current = root;
-    Node* temp;
+    Node* temp = root;
     // while not in root or root has children:
     while (current->parent || (current == root && (root->left || root->right))){
         if (current->left != nullptr)
@@ -198,6 +201,8 @@ void AVL_tree<T>::post_order_delete() {
             current = temp;
         }
     }
+    std::cout << "from d'tor: the root has no children now" << std::endl;
+    this->debugging_printTree();
     //finished deleting the tree. the root has no children.
     delete root;
     root = nullptr;
@@ -210,27 +215,35 @@ typename AVL_tree<T>::Node* AVL_tree<T>::find_designated_parent(AVL_tree::Node* 
     if (!current){
         return nullptr;
     }
-
+    
     while(true){ //while true loop ok because in every case we either return or go down tree.
-        if ((*new_leaf).get_comparison(*current)) //proceed to left branch. 
-            // TODO: "<" operator. check that this comparison is done right.
-        {
-            if (current->left){
-                current = current->left;
+
+        if ((*new_leaf).get_comparison(*current)>0)  { //proceed to left branch.
+            std::cout << "id: " << std::to_string((*(*new_leaf).content).get_id())
+            << " is bigger than: " << std::to_string((*(*current).content).get_id()) << std::endl;
+            if ((*current).right != nullptr){
+                std::cout << "move right" << std::endl;
+                current = (*current).right;
             }
-            else{ //no left child
+            else{ //no right child
+                std::cout << std::to_string((*(*current).content).get_id()) <<  "has no right child so: " << std::endl;
                 return current;
             }
         }
         else{ //proceed to right branch
-            if (current->right){
-                current = current->right;
+            std::cout << "id: " << std::to_string((*(*new_leaf).content).get_id())
+            << " is smaller than: " << std::to_string((*(*current).content).get_id()) << std::endl;
+            if ((*current).left != nullptr){
+                std::cout << "move left" << std::endl;
+                current = (*current).left;
             }
             else{
+                std::cout << std::to_string((*(*current).content).get_id()) << "has no left child so: " << std::endl;
                 return current;
             }
         }
     }
+    
 }
 
 
@@ -239,14 +252,17 @@ int AVL_tree<T>::Node::get_comparison(const Node &other) {
     // since its unknown if the tree is sorted by id or by score, we need this function to work on both.
     // '!' operator is for score. '~' operator is for id.
     // the comparison is done between the dereferences of the pointers the nodes holds.
-
     
+    if (tree == nullptr ) {
+        std::cout << "tree is a nullptr!" << std::endl;
+        return 0;
+    }
     if (tree->sort_by_score == SORT_BY_SCORE){
-        return SCORE((*this)->content) - SCORE(*other.content);
+        return SCORE(*(this->content)) - SCORE(*other.content);
     }
     else
     {
-        return ID((*this)->content) - ID(*other.content);
+        return ID(*(this->content)) - ID(*other.content);
     }
     
    return 0;

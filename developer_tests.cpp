@@ -60,10 +60,22 @@ bool createAVL()
 
     AVL_tree<Player*> tree1(false); // sort by ID
     Player player1(4, 2, 5, 6, 4, false); // id: 4
-    //Player player2(5, 2, 3, 3, 4, false); // id: 5
+    Player player2(1, 2, 3, 3, 4, false); // id: 1
+    Player player3(7, 2, 3, 3, 4, false); // id: 7
+    Player player4(3, 2, 3, 3, 4, false); // id: 3
+    Player player5(9, 2, 3, 3, 4, false); // id: 9
+    Player player6(2, 2, 3, 3, 4, false); // id: 2
     tree1.add(&player1);
-    //tree1.add(&player2);
-
+    tree1.debugging_printTree();
+    tree1.add(&player2);
+    tree1.debugging_printTree();
+    tree1.add(&player3);
+    tree1.debugging_printTree();
+    tree1.add(&player4);
+    tree1.debugging_printTree();
+    tree1.add(&player5);
+    tree1.debugging_printTree();
+    tree1.add(&player6);
     tree1.debugging_printTree();
 
     return true;
