@@ -349,7 +349,7 @@ void AVL_tree<T>::Node::choose_roll(AVL_tree::Node *originalUnbalanced) {
     else if (balance_factor == -2){
         if (right->balance_factor <= 0){
             std::cout << "roll: RR" << std::endl;
-            //RR_roll();
+            RR_roll(originalUnbalanced);
         }
         else if (right->balance_factor == 1){
             std::cout << "roll: RL" << std::endl;
@@ -363,11 +363,21 @@ void AVL_tree<T>::Node::choose_roll(AVL_tree::Node *originalUnbalanced) {
 
 template<class T>
 void AVL_tree<T>::Node::roll_left(AVL_tree::Node *originalUnbalanced) {
-    Node* original_right = right;
-    right = right->left;
-    original_right->left = this;
-    //update_parent(original_right);
-    set_balance_factor();
+   Node* B = originalUnbalanced;
+   Node* B_originalParent = B->parent;
+   Node* A = B->right;
+   Node* A_L = A->left;
+
+   A->parent = B_originalParent;
+   A->left = B;
+   B->parent = A;
+   B->right = A_L;
+   if (A_L != nullptr)
+    A_L->parent = B;
+
+   B->update_parent(B_originalParent, B, A);
+
+   B->balance_factor = 0;
 }
 
 template<class T>
