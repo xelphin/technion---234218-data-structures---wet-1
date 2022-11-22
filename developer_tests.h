@@ -25,6 +25,7 @@ void run_test(std::function<bool()> test, std::string test_name, std::string& su
 // PLAYER
 bool playerCompare();
 bool createAVL();
+bool balanceAVL_LL();
 
 
 #endif

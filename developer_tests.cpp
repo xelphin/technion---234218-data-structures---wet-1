@@ -16,6 +16,7 @@ bool run_all_tests() {
     bool success = true;
     run_test(playerCompare, "playerCompare", success_string, success);
     run_test(createAVL, "createAVL", success_string, success);
+    run_test(balanceAVL_LL, "balanceAVL_LL", success_string, success);
 
     std::cout << success_string << std::endl;
     return success;
@@ -30,7 +31,9 @@ void run_test(std::function<bool()> test, std::string test_name, std::string& su
         success = false;
         return;
     }
+    std::cout << "-------------------" << std::endl;
     printSuccess();
+    std::cout << "-------------------" << std::endl;
     std::cout << std::endl;
 }
 
@@ -55,16 +58,31 @@ bool playerCompare()
 
 bool createAVL()
 {
-    //AVL_tree<std::shared_ptr<Player>> tree1(true);
-    // std::shared_ptr<Player> player1(new Player(1, 2, 5, 6, 4, false));
-
     AVL_tree<Player*> tree1(false); // sort by ID
     Player player1(4, 2, 5, 6, 4, false); // id: 4
     Player player2(1, 2, 3, 3, 4, false); // id: 1
     Player player3(7, 2, 3, 3, 4, false); // id: 7
     Player player4(3, 2, 3, 3, 4, false); // id: 3
-    Player player5(9, 2, 3, 3, 4, false); // id: 9
-    Player player6(2, 2, 3, 3, 4, false); // id: 2
+    tree1.add(&player1);
+    tree1.debugging_printTree();
+    tree1.add(&player2);
+    tree1.debugging_printTree();
+    tree1.add(&player3);
+    tree1.debugging_printTree();
+    tree1.add(&player4);
+    tree1.debugging_printTree();
+
+    return true;
+}
+
+bool balanceAVL_LL()
+{
+    AVL_tree<Player*> tree1(false); // sort by ID
+    Player player1(8, 2, 5, 6, 4, false); // id: 8
+    Player player2(5, 2, 3, 3, 4, false); // id: 5
+    Player player3(3, 2, 3, 3, 4, false); // id: 3
+    Player player4(2, 2, 3, 3, 4, false); // id: 2
+    Player player5(1, 2, 3, 3, 4, false); // id: 1
     tree1.add(&player1);
     tree1.debugging_printTree();
     tree1.add(&player2);
@@ -74,8 +92,6 @@ bool createAVL()
     tree1.add(&player4);
     tree1.debugging_printTree();
     tree1.add(&player5);
-    tree1.debugging_printTree();
-    tree1.add(&player6);
     tree1.debugging_printTree();
 
     return true;
