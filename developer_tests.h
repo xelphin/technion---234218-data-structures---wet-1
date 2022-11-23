@@ -27,5 +27,6 @@ bool playerCompare();
 bool createAVL();
 bool balanceAVL_LL();
 bool balanceAVL_RR();
+bool balanceAVL_LR();
 
 #endif

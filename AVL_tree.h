@@ -304,9 +304,9 @@ void AVL_tree<T>::climb_up_and_rebalance_tree(AVL_tree::Node *leaf) {
     while (current){ //climbs up tree. stops after iterating on root.
         current->set_height();
         current->set_balance_factor();
-        std::cout << "Currently on: " << ((*(*current).content)).get_id()
-        << " -> balance factor " << std::to_string((*current).balance_factor) 
-        << ", height " << std::to_string((*current).height)<< std::endl;
+        //std::cout << "Currently on: " << ((*(*current).content)).get_id()
+        //<< " -> balance factor " << std::to_string((*current).balance_factor) 
+        //<< ", height " << std::to_string((*current).height)<< std::endl;
         if (abs((*current).balance_factor) == UNBALANCED){
             current->choose_roll(current); //because roll switches parent and child, we will still get to the new parent.
         }
@@ -325,7 +325,8 @@ void AVL_tree<T>::Node::update_parent(Node* X_originalParent, Node* X, Node* Y) 
         else 
             X_originalParent->right = Y;
    } else {
-        X->tree->root = Y;
+        Y->tree->root = Y;
+        Y->parent = nullptr;
    }
 }
 
@@ -342,7 +343,7 @@ void AVL_tree<T>::Node::choose_roll(AVL_tree::Node *originalUnbalanced) {
         }
         else if (left->balance_factor == -1){
             std::cout << "roll: LR" << std::endl;
-            //LR_roll();
+            LR_roll(originalUnbalanced);
         }
         else throw std::invalid_argument("bad balance factor");
     }
@@ -353,7 +354,7 @@ void AVL_tree<T>::Node::choose_roll(AVL_tree::Node *originalUnbalanced) {
         }
         else if (right->balance_factor == 1){
             std::cout << "roll: RL" << std::endl;
-            //RL_roll();
+            RL_roll(originalUnbalanced);
         }
         else throw std::invalid_argument("bad balance factor");
     }
@@ -406,8 +407,34 @@ void AVL_tree<T>::Node::LL_roll(AVL_tree::Node *originalUnbalanced) {
 
 template<class T>
 void AVL_tree<T>::Node::LR_roll(AVL_tree::Node *originalUnbalanced) {
-    left->roll_left(originalUnbalanced);
-    roll_right(originalUnbalanced);
+    Node* C = originalUnbalanced;
+    Node* C_originalParent = C->parent;
+    Node* A = C->left;
+    Node* B = A->right;
+    Node* B_L = B->left;
+    Node* B_R = B->right;
+
+    B->left = A;
+    A->parent = B;
+    B->right = C;
+    C->parent = B;
+    A->right = B_L;
+    if (B_L != nullptr)
+        B_L->parent = A;
+    C->left = B_R;
+    if (B_R != nullptr)
+        B_R->parent = C;
+
+    C->update_parent(C_originalParent, C, B);
+
+    A->balance_factor = 0;
+    B->balance_factor = 0;
+    C->balance_factor = -1;
+    A->height--;
+    B->height = A->height + 1;
+
+    //
+    this->tree->debugging_printTree();
 }
 
 template<class T>
@@ -417,8 +444,45 @@ void AVL_tree<T>::Node::RR_roll(AVL_tree::Node *originalUnbalanced) {
 
 template<class T>
 void AVL_tree<T>::Node::RL_roll(AVL_tree::Node *originalUnbalanced) {
-    right->roll_right(originalUnbalanced);
-    roll_left(originalUnbalanced);
+    /*
+   Node* C = originalUnbalanced;
+   Node* C_originalParent = C->parent;
+   Node* A = C->right;
+   Node* B = A->left;
+   Node* B_R = B->right;
+   Node* B_L = B->left;
+
+    B->right = A;
+    A->parent = B;
+    B->left = C;
+    C->parent = B;
+    A->left = B_R;
+    if (B_R != nullptr)
+        B_R->parent = A;
+    C->right = B_L;
+    if (B_L != nullptr)
+        B_L->parent = C;
+
+    C->update_parent(C_originalParent, C, B);
+    std::cout << "hello2" << std::endl;
+    if (B->parent != nullptr)
+        std::cout << "parent of B: " << ((*(*B->parent).content)).get_id() << std::endl;
+    if (B->left != nullptr)
+        std::cout << "left of B: " << ((*(*B->left).content)).get_id() << std::endl;
+    if (B->right != nullptr)
+        std::cout << "right of B: " << ((*(*B->right).content)).get_id() << std::endl;
+    
+    
+
+    A->balance_factor = 0;
+    B->balance_factor = 0;
+    C->balance_factor = -1;
+    A->height--;
+    B->height = A->height + 1;
+
+    //
+    this->tree->debugging_printTree();
+    */
 }
 
 
