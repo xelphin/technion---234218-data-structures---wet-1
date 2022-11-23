@@ -211,6 +211,7 @@ void AVL_tree<T>::post_order_delete() {
 template<class T>
 void AVL_tree<T>::in_order_traversal(Node* node, void (*func)(Node*))  {
     //receives a function, and activates it on every node in the tree in order.
+    //takes O(nodes_in_tree) time, O(log(nodes)) memory.
     if (node == nullptr){
         return;
     }
