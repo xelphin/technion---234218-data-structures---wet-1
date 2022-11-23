@@ -52,6 +52,7 @@ private:
     Node* find_designated_parent(Node* new_leaf);
     void climb_up_and_rebalance_tree(Node* leaf);
     void post_order_delete();
+    void in_order_traversal(Node* node, void (*func)(Node* node));
 
     void debugging_printTree(const std::string& prefix, const AVL_tree::Node* node, bool isLeft);
     void debugging_printTree(const AVL_tree::Node* node);
@@ -207,6 +208,17 @@ void AVL_tree<T>::post_order_delete() {
     root = nullptr;
 }
 
+template<class T>
+void AVL_tree<T>::in_order_traversal(Node* node, void (*func)(Node*))  {
+    //receives a function, and activates it on every node in the tree in order.
+    if (node == nullptr){
+        return;
+    }
+
+    in_order_traversal(node->left, func);
+    func(this);
+    in_order_traversal(node->right, func);
+}
 
 template<class T>
 typename AVL_tree<T>::Node* AVL_tree<T>::find_designated_parent(AVL_tree::Node* new_leaf) {
@@ -446,6 +458,7 @@ void AVL_tree<T>::debugging_printTree()
 {
     debugging_printTree(root);
 }
+
 // ----------------------------------
 
 
