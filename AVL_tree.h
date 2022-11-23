@@ -371,7 +371,9 @@ void AVL_tree<T>::Node::choose_roll() {
 template<class T>
 void AVL_tree<T>::Node::roll_left() {
     Node* original_right = right;
+    if (right->left){
     right->left->parent = this;
+    }
     right = right->left;
     original_right->left = this;
     update_parent(original_right);
@@ -381,7 +383,9 @@ void AVL_tree<T>::Node::roll_left() {
 template<class T>
 void AVL_tree<T>::Node::roll_right() {
     Node* original_left = left;
-    left->right->parent = this;
+    if(left->right){
+        left->right->parent = this;
+    }
     left = left->right;
     original_left->right = this;
     update_parent(original_left);
