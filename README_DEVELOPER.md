@@ -1,17 +1,19 @@
 # NOTES
 
-# RUN code
+## RUN code
 
 g++ -std=c++11 -DNDEBUG -Wall *.cpp
 
 valgrind --leak-check=full ./a.out
 
-## CURRENT
+## TODO
 
-Functions: int get_comparison(const Node &other)
+- AVL_tree: Implement remove functions + tests
+- AVL_tree: Implement search/find/return functions + tests
+- AVL_tree: Implement exceptions (case enter node that has same id/score as another...)
+- Team: Implement + tests
+- Player: Update to have Team pointer + Update tests (c'tor of Player in tests doesnt have *Team)
 
-needs to be tested, called from:
+-----
 
-typename AVL_tree<T>::Node* AVL_tree<T>::add(T item)
-
-commented out so that code will work
+- Implement functions from worldcup23a1.h
