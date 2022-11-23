@@ -19,6 +19,7 @@ bool run_all_tests() {
     run_test(balanceAVL_LL, "balanceAVL_LL", success_string, success);
     run_test(balanceAVL_RR, "balanceAVL_RR", success_string, success);
     run_test(balanceAVL_LR, "balanceAVL_LR", success_string, success);
+    run_test(balanceAVL_RL, "balanceAVL_RL", success_string, success);
 
     std::cout << success_string << std::endl;
     return success;
@@ -151,6 +152,41 @@ bool balanceAVL_LR()
     tree1.debugging_printTree();
     //
     tree1.add(&player5);
+    tree1.debugging_printTree();
+    return true;
+}
+
+bool balanceAVL_RL()
+{
+    AVL_tree<Player*> tree1(false); // sort by ID
+    Player player10(10, 2, 3, 3, 4, false); 
+    Player player5(5, 2, 3, 3, 4, false); 
+    Player player20(20, 2, 3, 3, 4, false); 
+    Player player4(4, 2, 3, 3, 4, false); 
+    Player player6(6, 2, 3, 3, 4, false); 
+    Player player15(15, 2, 3, 3, 4, false); 
+    Player player30(30, 2, 3, 3, 4, false); 
+    Player player12(12, 2, 3, 3, 4, false); 
+    Player player18(18, 2, 3, 3, 4, false); 
+    Player player25(25, 2, 3, 3, 4, false); 
+    Player player40(40, 2, 3, 3, 4, false); 
+    //
+    Player player19(19, 2, 3, 3, 4, false);
+    //
+    tree1.add(&player10);
+    tree1.add(&player5);
+    tree1.add(&player20);
+    tree1.add(&player4);
+    tree1.add(&player6);
+    tree1.add(&player15);
+    tree1.add(&player30);
+    tree1.add(&player12);
+    tree1.add(&player18);
+    tree1.add(&player25);
+    tree1.add(&player40);
+    tree1.debugging_printTree();
+    //
+    tree1.add(&player19);
     tree1.debugging_printTree();
     return true;
 }

@@ -76,7 +76,7 @@ public:
     explicit Node(T);
 
     int get_comparison(const Node &other); 
-    
+
     //tree sorting functions:
     int set_balance_factor();
     int set_height();
@@ -444,13 +444,12 @@ void AVL_tree<T>::Node::RR_roll() {
 
 template<class T>
 void AVL_tree<T>::Node::RL_roll() {
-    /*
-   Node* C = originalUnbalanced;
-   Node* C_originalParent = C->parent;
-   Node* A = C->right;
-   Node* B = A->left;
-   Node* B_R = B->right;
-   Node* B_L = B->left;
+    Node* C = this;
+    Node* C_originalParent = C->parent;
+    Node* A = C->right;
+    Node* B = A->left;
+    Node* B_L = B->left;
+    Node* B_R = B->right;
 
     B->right = A;
     A->parent = B;
@@ -464,15 +463,6 @@ void AVL_tree<T>::Node::RL_roll() {
         B_L->parent = C;
 
     C->update_parent(C_originalParent, B);
-    std::cout << "hello2" << std::endl;
-    if (B->parent != nullptr)
-        std::cout << "parent of B: " << ((*(*B->parent).content)).get_id() << std::endl;
-    if (B->left != nullptr)
-        std::cout << "left of B: " << ((*(*B->left).content)).get_id() << std::endl;
-    if (B->right != nullptr)
-        std::cout << "right of B: " << ((*(*B->right).content)).get_id() << std::endl;
-    
-    
 
     A->balance_factor = 0;
     B->balance_factor = 0;
@@ -482,7 +472,6 @@ void AVL_tree<T>::Node::RL_roll() {
 
     //
     this->tree->debugging_printTree();
-    */
 }
 
 
