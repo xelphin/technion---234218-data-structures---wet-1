@@ -201,8 +201,7 @@ void AVL_tree<T>::post_order_delete() {
             current = temp;
         }
     }
-    std::cout << "from d'tor: the root has no children now" << std::endl;
-    this->debugging_printTree();
+
     //finished deleting the tree. the root has no children.
     delete root;
     root = nullptr;
@@ -222,7 +221,7 @@ typename AVL_tree<T>::Node* AVL_tree<T>::find_designated_parent(AVL_tree::Node* 
             std::cout << "id: " << std::to_string((*(*new_leaf).content).get_id())
             << " is bigger than: " << std::to_string((*(*current).content).get_id()) << std::endl;
             if ((*current).right != nullptr){
-                std::cout << "move right" << std::endl;
+                std::cout << "check right" << std::endl;
                 current = (*current).right;
             }
             else{ //no right child
@@ -234,7 +233,7 @@ typename AVL_tree<T>::Node* AVL_tree<T>::find_designated_parent(AVL_tree::Node* 
             std::cout << "id: " << std::to_string((*(*new_leaf).content).get_id())
             << " is smaller than: " << std::to_string((*(*current).content).get_id()) << std::endl;
             if ((*current).left != nullptr){
-                std::cout << "move left" << std::endl;
+                std::cout << "check left" << std::endl;
                 current = (*current).left;
             }
             else{
@@ -432,9 +431,6 @@ void AVL_tree<T>::Node::LR_roll() {
     C->balance_factor = -1;
     A->height--;
     B->height = A->height + 1;
-
-    //
-    this->tree->debugging_printTree();
 }
 
 template<class T>
@@ -469,9 +465,6 @@ void AVL_tree<T>::Node::RL_roll() {
     C->balance_factor = -1;
     A->height--;
     B->height = A->height + 1;
-
-    //
-    this->tree->debugging_printTree();
 }
 
 
