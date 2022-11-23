@@ -257,7 +257,11 @@ int AVL_tree<T>::Node::get_comparison(const Node &other) {
         return 0;
     }
     if (tree->sort_by_score == SORT_BY_SCORE){
-        return SCORE(*(this->content)) - SCORE(*other.content);
+        int score = SCORE(*(this->content)) - SCORE(*other.content);
+        if (score != 0)
+            return score;
+        else
+            return ID(*(this->content)) - ID(*other.content);
     }
     else
     {
