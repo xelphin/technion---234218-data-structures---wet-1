@@ -11,9 +11,12 @@ public:
     Team(int id, int totalPlayers, int totalPoints, int totalCards, Player *topScorer);
 
     void add_player();
-    int get_id();
+    int get_id() const;
     int operator~();
     int operator!();
+
+    friend std::ostream& operator<<(std::ostream& os, const Team& team);
+
 private:
     int id;
     int total_players;
@@ -23,7 +26,7 @@ private:
     AVL_tree<Player*> team_players;
     AVL_tree<Player*> team_players_scores;
 
-    int get_points();
+    int get_points() const;
 };
 
 #endif //TECHNION_234218_DATA_STRUCTURES_WET_1_TEAM_H

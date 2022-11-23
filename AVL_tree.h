@@ -474,6 +474,7 @@ void AVL_tree<T>::Node::RL_roll() {
 
 
 // ONLY FOR DEBUGGING - ERASE LATER
+// TODO: Erase before submission
 template<class T>
 void AVL_tree<T>::debugging_printTree(const std::string& prefix, const AVL_tree::Node* node, bool isLeft, std::string& str) 
 {

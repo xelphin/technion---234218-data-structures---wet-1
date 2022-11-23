@@ -9,7 +9,7 @@ Team::Team(int id, int totalPlayers, int totalPoints, int totalCards, Player *to
 team_players(SORT_BY_SCORE),team_players_scores(SORT_BY_ID) 
 {}
 
-int Team::get_id() {
+int Team::get_id() const{
     return id;
 }
 
@@ -21,6 +21,12 @@ int Team::operator!() {
     return get_points();
 }
 
-int Team::get_points() {
+int Team::get_points() const{
     return total_points;
+}
+
+std::ostream& operator<<(std::ostream& os, const Team& toPrint)
+{
+    os << toPrint.get_id();
+    return os;
 }
