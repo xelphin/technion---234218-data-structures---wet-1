@@ -22,6 +22,8 @@
 bool run_all_tests();
 void run_test(std::function<bool()> test, std::string test_name, std::string& success_string, bool& success);
 
+// TREE COMPARE
+bool treeCompare(const std::string& tree, const std::string& wantedTree);
 // PLAYER
 bool playerCompare();
 bool createAVL();

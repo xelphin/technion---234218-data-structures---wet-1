@@ -43,7 +43,7 @@ public:
     Node* find(int id);
     void merge(AVL_tree<T> &other); //merge 2 trees together
 
-    void debugging_printTree(); // debugging -- erase later
+    std::string debugging_printTree(); // debugging -- erase later
 
 private:
     const bool sort_by_score;
@@ -53,8 +53,8 @@ private:
     void climb_up_and_rebalance_tree(Node* leaf);
     void post_order_delete();
 
-    void debugging_printTree(const std::string& prefix, const AVL_tree::Node* node, bool isLeft);
-    void debugging_printTree(const AVL_tree::Node* node);
+    void debugging_printTree(const std::string& prefix, const AVL_tree::Node* node, bool isLeft, std::string& str);
+    void debugging_printTree(const AVL_tree::Node* node, std::string& str);
     
 };
 
@@ -125,7 +125,7 @@ typename AVL_tree<T>::Node* AVL_tree<T>::add(T item) {
     Node *leaf = new Node(item); //in case of bad_alloc, memory is freed from the tree destructor.
     leaf->tree = this;
 
-    std::cout << "Entering: " << ((*(*leaf).content)).get_id() << std::endl;
+    std::cout << "Entering: " << ((*(*leaf).content)) << std::endl;
 
     try {
         Node *parent = find_designated_parent(leaf);
@@ -134,7 +134,7 @@ typename AVL_tree<T>::Node* AVL_tree<T>::add(T item) {
             leaf->tree = this;
             return leaf;
         } 
-        std::cout << "Parent id: " << ((*(*parent).content)).get_id() << std::endl;
+        std::cout << "Parent id: " << ((*(*parent).content)) << std::endl;
         if ((*leaf).get_comparison(*parent) > 0) {
             parent->right = leaf;
         } else {
@@ -218,26 +218,26 @@ typename AVL_tree<T>::Node* AVL_tree<T>::find_designated_parent(AVL_tree::Node* 
     while(true){ //while true loop ok because in every case we either return or go down tree.
 
         if ((*new_leaf).get_comparison(*current)>0)  { //proceed to left branch.
-            std::cout << "id: " << std::to_string((*(*new_leaf).content).get_id())
-            << " is bigger than: " << std::to_string((*(*current).content).get_id()) << std::endl;
+            std::cout << "id: " << (*(*new_leaf).content)
+            << " is bigger than: " << (*(*current).content) << std::endl;
             if ((*current).right != nullptr){
                 std::cout << "check right" << std::endl;
                 current = (*current).right;
             }
             else{ //no right child
-                std::cout << std::to_string((*(*current).content).get_id()) <<  " has no right child so: " << std::endl;
+                std::cout << (*(*current).content) <<  " has no right child so: " << std::endl;
                 return current;
             }
         }
         else{ //proceed to right branch
-            std::cout << "id: " << std::to_string((*(*new_leaf).content).get_id())
-            << " is smaller than: " << std::to_string((*(*current).content).get_id()) << std::endl;
+            std::cout << "id: " << (*(*new_leaf).content)
+            << " is smaller than: " << (*(*current).content) << std::endl;
             if ((*current).left != nullptr){
                 std::cout << "check left" << std::endl;
                 current = (*current).left;
             }
             else{
-                std::cout << std::to_string((*(*current).content).get_id()) << " has no left child so: " << std::endl;
+                std::cout << (*(*current).content) << " has no left child so: " << std::endl;
                 return current;
             }
         }
@@ -307,7 +307,7 @@ void AVL_tree<T>::climb_up_and_rebalance_tree(AVL_tree::Node *leaf) {
     while (current){ //climbs up tree. stops after iterating on root.
         current->set_height();
         current->set_balance_factor();
-        std::cout << "Currently on: " << ((*(*current).content)).get_id()
+        std::cout << "Currently on: " << (*(*current).content)
         << " -> balance factor " << std::to_string((*current).balance_factor) 
         << ", height " << std::to_string((*current).height)<< std::endl;
         if (abs((*current).balance_factor) == UNBALANCED){
@@ -475,33 +475,36 @@ void AVL_tree<T>::Node::RL_roll() {
 
 // ONLY FOR DEBUGGING - ERASE LATER
 template<class T>
-void AVL_tree<T>::debugging_printTree(const std::string& prefix, const AVL_tree::Node* node, bool isLeft) 
+void AVL_tree<T>::debugging_printTree(const std::string& prefix, const AVL_tree::Node* node, bool isLeft, std::string& str) 
 {
     if( node != nullptr )
     {
-        std::cout << prefix;
+        str += prefix;
 
-        std::cout << (isLeft ? "├──" : "└──" );
+        str += (isLeft ? "├──" : "└──" );
 
         // print the value of the node
-        std::cout << (*(node->content)).get_id() << std::endl;
+        str += std::to_string((*(node->content)).get_id());
+        str += "\n";
 
         // enter the next tree level - left and right branch
-        AVL_tree<T>::debugging_printTree( prefix + (isLeft ? "│   " : "    "), node->left, true);
-        AVL_tree<T>::debugging_printTree( prefix + (isLeft ? "│   " : "    "), node->right, false);
+        AVL_tree<T>::debugging_printTree( prefix + (isLeft ? "│   " : "    "), node->left, true, str);
+        AVL_tree<T>::debugging_printTree( prefix + (isLeft ? "│   " : "    "), node->right, false, str);
     }
 }
 
 template<class T>
-void AVL_tree<T>::debugging_printTree(const AVL_tree::Node* node)
+void AVL_tree<T>::debugging_printTree(const AVL_tree::Node* node, std::string& str)
 {
-    debugging_printTree("", node, false);
+    debugging_printTree("", node, false, str);
 }
 
 template<class T>
-void AVL_tree<T>::debugging_printTree()
+std::string AVL_tree<T>::debugging_printTree()
 {
-    debugging_printTree(root);
+    std::string tree = "";
+    debugging_printTree(root, tree);
+    return tree;
 }
 // ----------------------------------
 

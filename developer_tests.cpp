@@ -40,7 +40,12 @@ void run_test(std::function<bool()> test, std::string test_name, std::string& su
     std::cout << std::endl;
 }
 
-
+bool treeCompare(const std::string& tree, const std::string& wantedTree)
+{
+    if (wantedTree.compare(tree) == 0)
+        return true;
+    return false; 
+}
 // ----------------------------- TESTS -----------------------------
 
 
@@ -67,15 +72,17 @@ bool createAVL()
     Player player3(7, 2, 3, 3, 4, false); // id: 7
     Player player4(3, 2, 3, 3, 4, false); // id: 3
     tree1.add(&player1);
-    tree1.debugging_printTree();
+    std::cout << tree1.debugging_printTree();
     tree1.add(&player2);
-    tree1.debugging_printTree();
+    std::cout << tree1.debugging_printTree();
     tree1.add(&player3);
-    tree1.debugging_printTree();
+    std::cout << tree1.debugging_printTree();
     tree1.add(&player4);
-    tree1.debugging_printTree();
 
-    return true;
+    std::string finalTree = tree1.debugging_printTree();
+    std::cout << finalTree;
+    std::string wantedTree = "└──4\n    ├──1\n    │   └──3\n    └──7\n";
+    return treeCompare(finalTree,wantedTree);
 }
 
 bool balanceAVL_LL()
@@ -87,17 +94,15 @@ bool balanceAVL_LL()
     Player player4(2, 2, 3, 3, 4, false); // id: 2
     Player player5(1, 2, 3, 3, 4, false); // id: 1
     tree1.add(&player1);
-    tree1.debugging_printTree();
     tree1.add(&player2);
-    tree1.debugging_printTree();
     tree1.add(&player3);
-    tree1.debugging_printTree();
     tree1.add(&player4);
-    tree1.debugging_printTree();
     tree1.add(&player5);
-    tree1.debugging_printTree();
 
-    return true;
+    std::string finalTree = tree1.debugging_printTree();
+    std::cout << finalTree;
+    std::string wantedTree = "└──5\n    ├──2\n    │   ├──1\n    │   └──3\n    └──8\n";
+    return treeCompare(finalTree,wantedTree);
 }
 
 bool balanceAVL_RR()
@@ -111,20 +116,17 @@ bool balanceAVL_RR()
     Player player6(6, 2, 3, 3, 4, false); // id: 6
     Player player7(7, 2, 3, 3, 4, false); // id: 7
     tree1.add(&player1);
-    tree1.debugging_printTree();
     tree1.add(&player2);
-    tree1.debugging_printTree();
     tree1.add(&player3);
-    tree1.debugging_printTree();
     tree1.add(&player4);
-    tree1.debugging_printTree();
     tree1.add(&player5);
-    tree1.debugging_printTree();
     tree1.add(&player6);
-    tree1.debugging_printTree();
     tree1.add(&player7);
-    tree1.debugging_printTree();
-    return true;
+
+    std::string finalTree = tree1.debugging_printTree();
+    std::cout << finalTree;
+    std::string wantedTree = "└──4\n    ├──2\n    │   ├──1\n    │   └──3\n    └──6\n        ├──5\n        └──7\n";
+    return treeCompare(finalTree,wantedTree);
 }
 
 bool balanceAVL_LR()
@@ -149,11 +151,15 @@ bool balanceAVL_LR()
     tree1.add(&player2);
     tree1.add(&player6);
     tree1.add(&player8);
-    tree1.debugging_printTree();
+    std::cout << tree1.debugging_printTree();
     //
     tree1.add(&player5);
-    tree1.debugging_printTree();
-    return true;
+    //
+    std::string finalTree = tree1.debugging_printTree();
+    std::cout << finalTree;
+    std::string wantedTree = "└──7\n    ├──4\n    │   ├──3\n    │   │   ├──2\n    │   └──6";
+    wantedTree += "\n    │       ├──5\n    └──10\n        ├──8\n        └──20\n            └──21\n";
+    return treeCompare(finalTree,wantedTree);
 }
 
 bool balanceAVL_RL()
@@ -184,9 +190,13 @@ bool balanceAVL_RL()
     tree1.add(&player18);
     tree1.add(&player25);
     tree1.add(&player40);
-    tree1.debugging_printTree();
+    std::cout << tree1.debugging_printTree();
     //
     tree1.add(&player19);
-    tree1.debugging_printTree();
-    return true;
+    //
+    std::string finalTree = tree1.debugging_printTree();
+    std::cout << finalTree;
+    std::string wantedTree = "└──15\n    ├──10\n    │   ├──5\n    │   │   ├──4\n    │   │   └──6\n    │   └──12\n    └──20\n        ├──18";
+    wantedTree += "\n        │   └──19\n        └──30\n            ├──25\n            └──40\n";
+    return treeCompare(finalTree,wantedTree);
 }
