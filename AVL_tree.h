@@ -76,21 +76,21 @@ public:
     explicit Node(T);
 
     int get_comparison(const Node &other); 
+    
     //tree sorting functions:
     int set_balance_factor();
     int set_height();
     int get_height(Node* node);
-    void update_parent(Node* X_originalParent, Node* X, Node* Y);
-    void choose_roll(AVL_tree::Node *originalUnbalanced);
-    void roll_left(AVL_tree::Node *originalUnbalanced);
-    void roll_right(AVL_tree::Node *originalUnbalanced);
-    void LL_roll(AVL_tree::Node *originalUnbalanced);
-    void LR_roll(AVL_tree::Node *originalUnbalanced);
-    void RR_roll(AVL_tree::Node *originalUnbalanced);
-    void RL_roll(AVL_tree::Node *originalUnbalanced);
+    void choose_roll();
+
 private:
-
-
+    void update_parent(Node* X_originalParent, Node* Y);
+    void roll_right();
+    void roll_left();
+    void LL_roll();
+    void LR_roll();
+    void RR_roll();
+    void RL_roll();
 };
 
 
@@ -304,11 +304,11 @@ void AVL_tree<T>::climb_up_and_rebalance_tree(AVL_tree::Node *leaf) {
     while (current){ //climbs up tree. stops after iterating on root.
         current->set_height();
         current->set_balance_factor();
-        //std::cout << "Currently on: " << ((*(*current).content)).get_id()
-        //<< " -> balance factor " << std::to_string((*current).balance_factor) 
-        //<< ", height " << std::to_string((*current).height)<< std::endl;
+        std::cout << "Currently on: " << ((*(*current).content)).get_id()
+        << " -> balance factor " << std::to_string((*current).balance_factor) 
+        << ", height " << std::to_string((*current).height)<< std::endl;
         if (abs((*current).balance_factor) == UNBALANCED){
-            current->choose_roll(current); //because roll switches parent and child, we will still get to the new parent.
+            current->choose_roll(); //because roll switches parent and child, we will still get to the new parent.
         }
         current->set_height();
         current = (*current).parent;
@@ -317,10 +317,10 @@ void AVL_tree<T>::climb_up_and_rebalance_tree(AVL_tree::Node *leaf) {
 }
 
 template<class T>
-void AVL_tree<T>::Node::update_parent(Node* X_originalParent, Node* X, Node* Y) {
+void AVL_tree<T>::Node::update_parent(Node* X_originalParent, Node* Y) {
     // Replaces child of X_originalParent with Y
    if (X_originalParent != nullptr) {
-        if (X_originalParent->left == X)
+        if (X_originalParent->left == this)
             X_originalParent->left = Y;
         else 
             X_originalParent->right = Y;
@@ -331,7 +331,7 @@ void AVL_tree<T>::Node::update_parent(Node* X_originalParent, Node* X, Node* Y) 
 }
 
 template<class T>
-void AVL_tree<T>::Node::choose_roll(AVL_tree::Node *originalUnbalanced) {
+void AVL_tree<T>::Node::choose_roll() {
     //if this function is called, it means the BF of this node is ±2, and it should roll.
     //the numbers are according to the chart in the slides.
     std::cout << "the tree is unbalanced -> do roll" << std::endl;
@@ -339,22 +339,22 @@ void AVL_tree<T>::Node::choose_roll(AVL_tree::Node *originalUnbalanced) {
     if (balance_factor == 2){
         if (left->balance_factor >= 0){
             std::cout << "roll: LL" << std::endl;
-            LL_roll(originalUnbalanced);
+            this->LL_roll();
         }
         else if (left->balance_factor == -1){
             std::cout << "roll: LR" << std::endl;
-            LR_roll(originalUnbalanced);
+            this->LR_roll();
         }
         else throw std::invalid_argument("bad balance factor");
     }
     else if (balance_factor == -2){
         if (right->balance_factor <= 0){
             std::cout << "roll: RR" << std::endl;
-            RR_roll(originalUnbalanced);
+            this->RR_roll();
         }
         else if (right->balance_factor == 1){
             std::cout << "roll: RL" << std::endl;
-            RL_roll(originalUnbalanced);
+            this->RL_roll();
         }
         else throw std::invalid_argument("bad balance factor");
     }
@@ -363,8 +363,8 @@ void AVL_tree<T>::Node::choose_roll(AVL_tree::Node *originalUnbalanced) {
 }
 
 template<class T>
-void AVL_tree<T>::Node::roll_left(AVL_tree::Node *originalUnbalanced) {
-   Node* B = originalUnbalanced;
+void AVL_tree<T>::Node::roll_left() {
+   Node* B = this;
    Node* B_originalParent = B->parent;
    Node* A = B->right;
    Node* A_L = A->left;
@@ -376,14 +376,14 @@ void AVL_tree<T>::Node::roll_left(AVL_tree::Node *originalUnbalanced) {
    if (A_L != nullptr)
     A_L->parent = B;
 
-   B->update_parent(B_originalParent, B, A);
+   B->update_parent(B_originalParent, A);
 
    B->balance_factor = 0;
 }
 
 template<class T>
-void AVL_tree<T>::Node::roll_right(AVL_tree::Node *originalUnbalanced) {
-   Node* B = originalUnbalanced;
+void AVL_tree<T>::Node::roll_right() {
+   Node* B = this;
    Node* B_originalParent = B->parent;
    Node* A = B->left;
    Node* A_R = A->right;
@@ -395,19 +395,19 @@ void AVL_tree<T>::Node::roll_right(AVL_tree::Node *originalUnbalanced) {
    if (A_R != nullptr)
     A_R->parent = B;
 
-   B->update_parent(B_originalParent, B, A);
+   B->update_parent(B_originalParent, A);
 
    B->balance_factor = 0;
 }
 
 template<class T>
-void AVL_tree<T>::Node::LL_roll(AVL_tree::Node *originalUnbalanced) {
-    roll_right(originalUnbalanced);
+void AVL_tree<T>::Node::LL_roll() {
+    this->roll_right();
 }
 
 template<class T>
-void AVL_tree<T>::Node::LR_roll(AVL_tree::Node *originalUnbalanced) {
-    Node* C = originalUnbalanced;
+void AVL_tree<T>::Node::LR_roll() {
+    Node* C = this;
     Node* C_originalParent = C->parent;
     Node* A = C->left;
     Node* B = A->right;
@@ -425,7 +425,7 @@ void AVL_tree<T>::Node::LR_roll(AVL_tree::Node *originalUnbalanced) {
     if (B_R != nullptr)
         B_R->parent = C;
 
-    C->update_parent(C_originalParent, C, B);
+    C->update_parent(C_originalParent, B);
 
     A->balance_factor = 0;
     B->balance_factor = 0;
@@ -438,12 +438,12 @@ void AVL_tree<T>::Node::LR_roll(AVL_tree::Node *originalUnbalanced) {
 }
 
 template<class T>
-void AVL_tree<T>::Node::RR_roll(AVL_tree::Node *originalUnbalanced) {
-    roll_left(originalUnbalanced);
+void AVL_tree<T>::Node::RR_roll() {
+    this->roll_left();
 }
 
 template<class T>
-void AVL_tree<T>::Node::RL_roll(AVL_tree::Node *originalUnbalanced) {
+void AVL_tree<T>::Node::RL_roll() {
     /*
    Node* C = originalUnbalanced;
    Node* C_originalParent = C->parent;
@@ -463,7 +463,7 @@ void AVL_tree<T>::Node::RL_roll(AVL_tree::Node *originalUnbalanced) {
     if (B_L != nullptr)
         B_L->parent = C;
 
-    C->update_parent(C_originalParent, C, B);
+    C->update_parent(C_originalParent, B);
     std::cout << "hello2" << std::endl;
     if (B->parent != nullptr)
         std::cout << "parent of B: " << ((*(*B->parent).content)).get_id() << std::endl;
