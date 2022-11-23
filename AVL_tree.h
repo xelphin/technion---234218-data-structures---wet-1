@@ -84,7 +84,7 @@ public:
     void choose_roll();
 
 private:
-    void update_parent(Node* X_originalParent, Node* Y);
+    void update_parent(Node* replacement);
     void roll_right();
     void roll_left();
     void LL_roll();
@@ -320,17 +320,20 @@ void AVL_tree<T>::climb_up_and_rebalance_tree(AVL_tree::Node *leaf) {
 }
 
 template<class T>
-void AVL_tree<T>::Node::update_parent(Node* X_originalParent, Node* Y) {
-    // Replaces child of X_originalParent with Y
-   if (X_originalParent != nullptr) {
-        if (X_originalParent->left == this)
-            X_originalParent->left = Y;
-        else 
-            X_originalParent->right = Y;
-   } else {
-        Y->tree->root = Y;
-        Y->parent = nullptr;
-   }
+void AVL_tree<T>::Node::update_parent(Node* replacement) {
+    //updates the parent after a roll to point to the replacement of the old child.
+    if (parent) {
+        if (parent->left == this) {
+            parent->left = replacement;
+        }
+        else if (parent->right == this){
+            parent->right = replacement;
+        }
+    } else { // no parent implies this is the root
+        tree->root = replacement;
+    }
+    replacement->parent = parent;
+    parent = replacement;
 }
 
 template<class T>
@@ -367,40 +370,22 @@ void AVL_tree<T>::Node::choose_roll() {
 
 template<class T>
 void AVL_tree<T>::Node::roll_left() {
-   Node* B = this;
-   Node* B_originalParent = B->parent;
-   Node* A = B->right;
-   Node* A_L = A->left;
-
-   A->parent = B_originalParent;
-   A->left = B;
-   B->parent = A;
-   B->right = A_L;
-   if (A_L != nullptr)
-    A_L->parent = B;
-
-   B->update_parent(B_originalParent, A);
-
-   B->balance_factor = 0;
+    Node* original_right = right;
+    right->left->parent = this;
+    right = right->left;
+    original_right->left = this;
+    update_parent(original_right);
+    set_balance_factor();
 }
 
 template<class T>
 void AVL_tree<T>::Node::roll_right() {
-   Node* B = this;
-   Node* B_originalParent = B->parent;
-   Node* A = B->left;
-   Node* A_R = A->right;
-
-   A->parent = B_originalParent;
-   A->right = B;
-   B->parent = A;
-   B->left = A_R;
-   if (A_R != nullptr)
-    A_R->parent = B;
-
-   B->update_parent(B_originalParent, A);
-
-   B->balance_factor = 0;
+    Node* original_left = left;
+    left->right->parent = this;
+    left = left->right;
+    original_left->right = this;
+    update_parent(original_left);
+    set_balance_factor();
 }
 
 template<class T>
@@ -410,31 +395,8 @@ void AVL_tree<T>::Node::LL_roll() {
 
 template<class T>
 void AVL_tree<T>::Node::LR_roll() {
-    Node* C = this;
-    Node* C_originalParent = C->parent;
-    Node* A = C->left;
-    Node* B = A->right;
-    Node* B_L = B->left;
-    Node* B_R = B->right;
-
-    B->left = A;
-    A->parent = B;
-    B->right = C;
-    C->parent = B;
-    A->right = B_L;
-    if (B_L != nullptr)
-        B_L->parent = A;
-    C->left = B_R;
-    if (B_R != nullptr)
-        B_R->parent = C;
-
-    C->update_parent(C_originalParent, B);
-
-    A->balance_factor = 0;
-    B->balance_factor = 0;
-    C->balance_factor = -1;
-    A->height--;
-    B->height = A->height + 1;
+    left->roll_left();
+    roll_right();
 }
 
 template<class T>
@@ -444,31 +406,8 @@ void AVL_tree<T>::Node::RR_roll() {
 
 template<class T>
 void AVL_tree<T>::Node::RL_roll() {
-    Node* C = this;
-    Node* C_originalParent = C->parent;
-    Node* A = C->right;
-    Node* B = A->left;
-    Node* B_L = B->left;
-    Node* B_R = B->right;
-
-    B->right = A;
-    A->parent = B;
-    B->left = C;
-    C->parent = B;
-    A->left = B_R;
-    if (B_R != nullptr)
-        B_R->parent = A;
-    C->right = B_L;
-    if (B_L != nullptr)
-        B_L->parent = C;
-
-    C->update_parent(C_originalParent, B);
-
-    A->balance_factor = 0;
-    B->balance_factor = 0;
-    C->balance_factor = -1;
-    A->height--;
-    B->height = A->height + 1;
+    right->roll_right();
+    roll_left();
 }
 
 
