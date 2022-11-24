@@ -22,6 +22,8 @@
 bool run_all_tests();
 void run_test(std::function<bool()> test, std::string test_name, std::string& success_string, bool& success);
 
+// TEST UTILS
+void init_tree(AVL_tree<Player*> tree);
 // TREE COMPARE
 bool treeCompare(const std::string& tree, const std::string& wantedTree);
 // PLAYER
@@ -31,5 +33,8 @@ bool balanceAVL_LL();
 bool balanceAVL_RR();
 bool balanceAVL_LR();
 bool balanceAVL_RL();
+bool inorder_print();
+bool find_test();
+bool remove_test();
 
 #endif
