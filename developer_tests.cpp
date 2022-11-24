@@ -22,6 +22,7 @@ bool run_all_tests() {
     run_test(balanceAVL_RL, "balanceAVL_RL", success_string, success);
     run_test(inorder_print, "inorder print", success_string, success);
     run_test(find_test, "find", success_string, success);
+    run_test(remove_test, "remove", success_string, success);
 
 
     std::cout << success_string << std::endl;
@@ -268,8 +269,6 @@ bool find_test() {
     tree1.add(&player18);
     tree1.add(&player25);
     tree1.add(&player40);
-    std::cout << tree1.debugging_printTree();
-    //
     tree1.add(&player19);
     //
     std::string finalTree = tree1.debugging_printTree();
@@ -279,5 +278,54 @@ bool find_test() {
     for (int id = 1; id <= 11; ++id) {
         tree1.find_test_wrapper(id);
     }
+    return true;
+}
+
+bool remove_test() {
+    AVL_tree<Player*> tree1(false); // sort by ID
+    Player player10(10, 2, 3, 3, 4, false);
+    Player player5(5, 2, 3, 3, 4, false);
+    Player player20(20, 2, 3, 3, 4, false);
+    Player player4(4, 2, 3, 3, 4, false);
+    Player player6(6, 2, 3, 3, 4, false);
+    Player player15(15, 2, 3, 3, 4, false);
+    Player player30(30, 2, 3, 3, 4, false);
+    Player player12(12, 2, 3, 3, 4, false);
+    Player player18(18, 2, 3, 3, 4, false);
+    Player player25(25, 2, 3, 3, 4, false);
+    Player player40(40, 2, 3, 3, 4, false);
+    //
+    Player player19(19, 2, 3, 3, 4, false);
+    //
+    tree1.add(&player10);
+    tree1.add(&player5);
+    tree1.add(&player20);
+    tree1.add(&player4);
+    tree1.add(&player6);
+    tree1.add(&player15);
+    tree1.add(&player30);
+    tree1.add(&player12);
+    tree1.add(&player18);
+    tree1.add(&player25);
+    tree1.add(&player40);
+    tree1.add(&player19);
+    //
+    std::string finalTree = tree1.debugging_printTree();
+    std::cout << finalTree;
+    tree1.in_order_traversal_wrapper(AVL_tree<Player*>::print_node);
+
+    std::cout << "remove test: \n";
+    std::cout << "remove test, id range: 9-20\n";
+    for (int id = 9; id <= 20; ++id) {
+        std::cout << "-----------------------REMOVAL. id: " << id << std::endl;
+        if(tree1.remove(id)){
+            tree1.in_order_traversal_wrapper(AVL_tree<Player*>::print_node);
+            finalTree = tree1.debugging_printTree();
+            std::cout << finalTree;
+        }
+    }
+    finalTree = tree1.debugging_printTree();
+    std::cout << finalTree;
+
     return true;
 }

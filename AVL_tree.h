@@ -43,9 +43,11 @@ public:
     Node* find_id(int id);
     void merge(AVL_tree<T> &other); //merge 2 trees together
 
-    std::string debugging_printTree(); // debugging -- erase later
-    bool in_order_traversal_wrapper(bool (*func)(Node*)); //should be private. public for testing.
-    static bool print_node(Node* node); //tests function
+    void in_order_traversal_wrapper(void (*func)(Node*)); // used to iterate on all the nodes. im not sure if it should be private or public.
+
+    // TESTS AND DEBUGGING FUNCTIONS
+    std::string debugging_printTree();
+    static void print_node(Node* node);
     void find_test_wrapper(int id);
 
 private:
@@ -55,13 +57,12 @@ private:
     Node* find_designated_parent(Node* new_leaf);
     void climb_up_and_rebalance_tree(Node* leaf);
     void post_order_delete();
-    bool in_order_traversal(Node* node, bool (*func)(Node* node));
+    void in_order_traversal(Node* node, void (*func)(Node* node));
     Node* find_next_in_order(Node* node);
     void replace_nodes(Node* node, Node* replacement);
 
     void debugging_printTree(const std::string& prefix, const AVL_tree::Node* node, bool isLeft, std::string& str);
     void debugging_printTree(const AVL_tree::Node* node, std::string& str);
-    
 };
 
 
@@ -80,6 +81,8 @@ public:
     int height;
 
     explicit Node(T);
+    Node(const AVL_tree &) = delete; //cant copy nodes. make new ones.
+    Node &operator=(AVL_tree &other) = delete;
 
     int get_comparison(const Node &other); 
 
@@ -89,8 +92,9 @@ public:
     int get_height(Node* node);
     void choose_roll();
 
-private:
     void update_parent(Node* replacement);
+
+private:
     void roll_right();
     void roll_left();
     void LL_roll();
@@ -159,32 +163,45 @@ typename AVL_tree<T>::Node* AVL_tree<T>::add(T item) {
 }
 
 
-
 template<class T>
 bool AVL_tree<T>::remove(int id) {
-    Node node = find_id(id);
+    // true if the node was removed. false otherwise.
+    // time complexity: O(log(nodes))
+    Node* node = find_id(id);
     if (node == nullptr){
         return false;
     }
-    else
-    { // updates parent and children before deletion
-        if (node.left == nullptr && node.right == nullptr) //if leaf
-        {
-            node.update_parent(nullptr);
-        }
-        else if (node.left != nullptr && node.right == nullptr){ // only left child
-            node.update_parent(node.left);
-        }
-        else if (node.left == nullptr && node.right != nullptr){ // only right child
-            node.update_parent(node.right);
-        }
-        else { // 2 children
-            Node* replacement = find_next_in_order(node.right); // replacement does not have a left child this way.
-            replacement->update_parent(replacement->right); // update parent should work even on nullptr
-            replace_nodes(node, replacement);
-        }
+    Node* next_unbalanced_node;
+    // updates parent and children before deletion
+    if (node->left == nullptr && node->right == nullptr) //if leaf
+    {
+        node->update_parent(nullptr);
+        next_unbalanced_node = node->parent;
     }
+    else if (node->left != nullptr && node->right == nullptr){ // only left child
+        next_unbalanced_node = node->left;
+        node->update_parent(node->left);
+    }
+    else if (node->left == nullptr && node->right != nullptr){ // only right child
+        next_unbalanced_node = node->right;
+        node->update_parent(node->right);
+    }
+    else { // 2 children
+        Node* replacement = find_next_in_order(node->right); // replacement does not have a left child this way.
+        if (replacement != node->right){
+            std::cout << "SWAP1\n";
+            next_unbalanced_node = replacement->parent;
+            replacement->update_parent(replacement->right); // update parent should work even on nullptr
+        }
+        else{ // replacement is the right child of the removed node.
+            next_unbalanced_node = replacement;
+            std::cout << "SWAP2\n";
+        }
+        replace_nodes(node, replacement);
+    }
+    climb_up_and_rebalance_tree(next_unbalanced_node);
     delete node;
+    return true;
 }
 
 
@@ -234,6 +251,11 @@ void AVL_tree<T>::merge(AVL_tree<T> &other) {
 }
 
 
+template<class T>
+void AVL_tree<T>::in_order_traversal_wrapper(void (*func)(Node *)) {
+    in_order_traversal(root, func);
+}
+
 
 //-----------------------------PRIVATE TREE FUNCTIONS-----------------------------//
 
@@ -271,24 +293,48 @@ void AVL_tree<T>::post_order_delete() {
 
 
 template<class T>
-bool AVL_tree<T>::in_order_traversal(AVL_tree::Node* node, bool (*func)(Node*))  {
+void AVL_tree<T>::in_order_traversal(Node* node, void (*func)(Node*))  {
     //receives a function, and activates it on every node in the tree in order.
     //takes O(nodes_in_tree) time, O(log(nodes)) memory.
     if (node == nullptr){
-        return false;
+        return;
     }
 
-    if(not in_order_traversal(node->left, func)){
-        if(not func(node)){
-            in_order_traversal(node->right, func);
-        }
-    }
+    in_order_traversal(node->left, func);
+    func(node);
+    in_order_traversal(node->right, func);
 }
+
 
 template<class T>
-bool AVL_tree<T>::in_order_traversal_wrapper(bool (*func)(Node *)) {
-    in_order_traversal(root, func);
+typename AVL_tree<T>::Node *AVL_tree<T>::find_next_in_order(AVL_tree::Node *node) {
+    // used only in remove. this is called on the right child, and then we go as left as possible.
+    if (node == nullptr){
+        throw std::invalid_argument("next in order activated on nullptr");
+    }
+    Node* current = node;
+    while(current->left != nullptr) // while left child
+    {
+        current = current->left;
+    }
+    return current;
 }
+
+
+template<class T>
+void AVL_tree<T>::replace_nodes(AVL_tree::Node *node, AVL_tree::Node *replacement) {
+    // to be used ONLY in remove().
+    // this function is called only when node has 2 children.
+    // after this function, no pointers should point at node.
+    replacement->left = node->left;
+    node->left->parent = replacement;
+    if (node->right != replacement){ // sometimes the replacement is the right child. delicate edge case.
+        replacement->right = node->right;
+        node->right->parent = replacement;
+    }
+    node->update_parent(replacement);
+}
+
 
 template<class T>
 typename AVL_tree<T>::Node* AVL_tree<T>::find_designated_parent(AVL_tree::Node* new_leaf) {
@@ -540,43 +586,23 @@ void AVL_tree<T>::find_test_wrapper(int id) {
     print_node(find_id(id));
 }
 
-template<class T>
-typename AVL_tree<T>::Node *AVL_tree<T>::find_next_in_order(AVL_tree::Node *node) {
-    if (node == nullptr){
-        throw std::invalid_argument("next in order activated on nullptr");
-    }
-    Node* current = node;
-    while(current->left != nullptr) // while left child
-    {
-        current = current->left;
-    }
-    return current;
-}
 
 template<class T>
-void AVL_tree<T>::replace_nodes(AVL_tree::Node *node, AVL_tree::Node *replacement) {
-    // this function is called only when node has 2 children.
-    // after this function, no pointers should point at node.
-    replacement->left = node->left;
-    node->left->parent = replacement;
-    replacement->right = node->right;
-    node->right->parent = replacement;
-    node->update_parent(replacement);
-}
-
-
-template<class T>
-bool AVL_tree<T>::print_node(Node* node){
+void AVL_tree<T>::print_node(Node* node){
     //the format is: self, parent, left, right
     if (node == nullptr){
         std::cout << "NULL\n";
-        return false;
+        return;
     }
     std::cout << (*(node->content)).get_id() << " " <<
             ((node->parent) ? (*(node->parent->content)).get_id() : 0 ) << " " <<
             ((node->left) ? (*(node->left->content)).get_id() : 0 ) << " " <<
             ((node->right) ? (*(node->right->content)).get_id() : 0 ) <<std::endl;
-    return true;
+    if (node->left){
+        if ((node->left && node->left->parent != node) || (node->right && node->right->parent != node)){
+            throw std::invalid_argument("parent and child dont point at each other");
+        }
+    }
 }
 
 // ----------------------------------
