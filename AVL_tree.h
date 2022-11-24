@@ -44,8 +44,8 @@ public:
     void merge(AVL_tree<T> &other); //merge 2 trees together
 
     std::string debugging_printTree(); // debugging -- erase later
-    void in_order_traversal_wrapper(void (*func)(Node*)); //should be private. public for testing.
-    static void print_node(Node* node); //tests function
+    bool in_order_traversal_wrapper(bool (*func)(Node*)); //should be private. public for testing.
+    static bool print_node(Node* node); //tests function
     void find_test_wrapper(int id);
 
 private:
@@ -55,7 +55,9 @@ private:
     Node* find_designated_parent(Node* new_leaf);
     void climb_up_and_rebalance_tree(Node* leaf);
     void post_order_delete();
-    void in_order_traversal(Node* node, void (*func)(Node* node));
+    bool in_order_traversal(Node* node, bool (*func)(Node* node));
+    Node* find_next_in_order(Node* node);
+    void replace_nodes(Node* node, Node* replacement);
 
     void debugging_printTree(const std::string& prefix, const AVL_tree::Node* node, bool isLeft, std::string& str);
     void debugging_printTree(const AVL_tree::Node* node, std::string& str);
@@ -160,7 +162,29 @@ typename AVL_tree<T>::Node* AVL_tree<T>::add(T item) {
 
 template<class T>
 bool AVL_tree<T>::remove(int id) {
-    return false;
+    Node node = find_id(id);
+    if (node == nullptr){
+        return false;
+    }
+    else
+    { // updates parent and children before deletion
+        if (node.left == nullptr && node.right == nullptr) //if leaf
+        {
+            node.update_parent(nullptr);
+        }
+        else if (node.left != nullptr && node.right == nullptr){ // only left child
+            node.update_parent(node.left);
+        }
+        else if (node.left == nullptr && node.right != nullptr){ // only right child
+            node.update_parent(node.right);
+        }
+        else { // 2 children
+            Node* replacement = find_next_in_order(node.right); // replacement does not have a left child this way.
+            replacement->update_parent(replacement->right); // update parent should work even on nullptr
+            replace_nodes(node, replacement);
+        }
+    }
+    delete node;
 }
 
 
@@ -245,21 +269,24 @@ void AVL_tree<T>::post_order_delete() {
     root = nullptr;
 }
 
+
 template<class T>
-void AVL_tree<T>::in_order_traversal(Node* node, void (*func)(Node*))  {
+bool AVL_tree<T>::in_order_traversal(AVL_tree::Node* node, bool (*func)(Node*))  {
     //receives a function, and activates it on every node in the tree in order.
     //takes O(nodes_in_tree) time, O(log(nodes)) memory.
     if (node == nullptr){
-        return;
+        return false;
     }
 
-    in_order_traversal(node->left, func);
-    func(node);
-    in_order_traversal(node->right, func);
+    if(not in_order_traversal(node->left, func)){
+        if(not func(node)){
+            in_order_traversal(node->right, func);
+        }
+    }
 }
 
 template<class T>
-void AVL_tree<T>::in_order_traversal_wrapper(void (*func)(Node *)) {
+bool AVL_tree<T>::in_order_traversal_wrapper(bool (*func)(Node *)) {
     in_order_traversal(root, func);
 }
 
@@ -387,7 +414,9 @@ void AVL_tree<T>::Node::update_parent(Node* replacement) {
     } else { // no parent implies this is the root
         tree->root = replacement;
     }
-    replacement->parent = parent;
+    if (replacement){
+        replacement->parent = parent;
+    }
     parent = replacement;
 }
 
@@ -511,18 +540,43 @@ void AVL_tree<T>::find_test_wrapper(int id) {
     print_node(find_id(id));
 }
 
+template<class T>
+typename AVL_tree<T>::Node *AVL_tree<T>::find_next_in_order(AVL_tree::Node *node) {
+    if (node == nullptr){
+        throw std::invalid_argument("next in order activated on nullptr");
+    }
+    Node* current = node;
+    while(current->left != nullptr) // while left child
+    {
+        current = current->left;
+    }
+    return current;
+}
 
 template<class T>
-void AVL_tree<T>::print_node(Node* node){
+void AVL_tree<T>::replace_nodes(AVL_tree::Node *node, AVL_tree::Node *replacement) {
+    // this function is called only when node has 2 children.
+    // after this function, no pointers should point at node.
+    replacement->left = node->left;
+    node->left->parent = replacement;
+    replacement->right = node->right;
+    node->right->parent = replacement;
+    node->update_parent(replacement);
+}
+
+
+template<class T>
+bool AVL_tree<T>::print_node(Node* node){
     //the format is: self, parent, left, right
     if (node == nullptr){
         std::cout << "NULL\n";
-        return;
+        return false;
     }
     std::cout << (*(node->content)).get_id() << " " <<
             ((node->parent) ? (*(node->parent->content)).get_id() : 0 ) << " " <<
             ((node->left) ? (*(node->left->content)).get_id() : 0 ) << " " <<
             ((node->right) ? (*(node->right->content)).get_id() : 0 ) <<std::endl;
+    return true;
 }
 
 // ----------------------------------
