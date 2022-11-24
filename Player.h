@@ -10,11 +10,13 @@ class Team;
 class Player{
 public:
     Player(int playerId, int teamId, int gamesPlayed, int goals, int cards, bool goalKeeper);
-    int get_score();
-    int get_id();
+    int get_score() const;
+    int get_id() const;
 
     int operator~(); 
     int operator!();
+
+    friend std::ostream& operator<<(std::ostream& os, const Player& player);
 
 private:
     int playerId;
