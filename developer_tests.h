@@ -32,5 +32,6 @@ bool balanceAVL_RR();
 bool balanceAVL_LR();
 bool balanceAVL_RL();
 bool inorder_print();
+bool find_test();
 
 #endif

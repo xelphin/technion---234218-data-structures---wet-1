@@ -40,12 +40,13 @@ public:
 
     Node* add(T item);
     bool remove(int id);
-    Node* find(int id);
+    Node* find_id(int id);
     void merge(AVL_tree<T> &other); //merge 2 trees together
 
     std::string debugging_printTree(); // debugging -- erase later
-    void in_order_traversal_wrapper(void (*func)(Node*));
+    void in_order_traversal_wrapper(void (*func)(Node*)); //should be private. public for testing.
     static void print_node(Node* node); //tests function
+    void find_test_wrapper(int id);
 
 private:
     const bool sort_by_score;
@@ -164,8 +165,42 @@ bool AVL_tree<T>::remove(int id) {
 
 
 template<class T>
-typename AVL_tree<T>::Node *AVL_tree<T>::find(int id) {
-    return nullptr;
+typename AVL_tree<T>::Node *AVL_tree<T>::find_id(int id) {
+    Node* current = root;
+    if (!current){
+        return nullptr;
+    }
+
+    while(true){ //while true loop ok because in every case we either return or go down tree.
+        int difference = ((*current->content).get_id()) - id;
+        if (difference == 0){
+            return current;
+        }
+        else if ( difference < 0)  { //proceed to right(?) branch. current id smaller than wanted id.
+            std::cout << "id: " << id
+                      << " is bigger than: " << *current->content << std::endl;
+            if (current->right != nullptr){
+                std::cout << "check right" << std::endl;
+                current = current->right;
+            }
+            else{ //no right child
+                std::cout << (*current->content) <<  " has no right child so: " << std::endl;
+                return nullptr; //search failed
+            }
+        }
+        else{ //proceed to right branch
+            std::cout << "id: " << id
+                      << " is smaller than: " << *current->content << std::endl;
+            if (current->left != nullptr){
+                std::cout << "check left" << std::endl;
+                current = current->left;
+            }
+            else{
+                std::cout << *current->content << " has no left child so: " << std::endl;
+                return nullptr;
+            }
+        }
+    }
 }
 
 
@@ -230,6 +265,7 @@ void AVL_tree<T>::in_order_traversal_wrapper(void (*func)(Node *)) {
 
 template<class T>
 typename AVL_tree<T>::Node* AVL_tree<T>::find_designated_parent(AVL_tree::Node* new_leaf) {
+    //I THINK DOCUMENTATION IN THIS FUNCTION IS WRONG.
     Node* current = root;
     if (!current){
         return nullptr;
@@ -237,27 +273,27 @@ typename AVL_tree<T>::Node* AVL_tree<T>::find_designated_parent(AVL_tree::Node* 
     
     while(true){ //while true loop ok because in every case we either return or go down tree.
 
-        if ((*new_leaf).get_comparison(*current)>0)  { //proceed to left branch.
-            std::cout << "id: " << (*(*new_leaf).content)
-            << " is bigger than: " << (*(*current).content) << std::endl;
-            if ((*current).right != nullptr){
+        if (new_leaf->get_comparison(*current)>0)  { //proceed to left branch.
+            std::cout << "id: " << (*new_leaf->content)
+            << " is bigger than: " << (*current->content) << std::endl;
+            if (current->right != nullptr){
                 std::cout << "check right" << std::endl;
-                current = (*current).right;
+                current = current->right;
             }
             else{ //no right child
-                std::cout << (*(*current).content) <<  " has no right child so: " << std::endl;
+                std::cout << (*current->content) <<  " has no right child so: " << std::endl;
                 return current;
             }
         }
         else{ //proceed to right branch
-            std::cout << "id: " << (*(*new_leaf).content)
-            << " is smaller than: " << (*(*current).content) << std::endl;
-            if ((*current).left != nullptr){
+            std::cout << "id: " << (*new_leaf->content)
+            << " is smaller than: " << (*current->content) << std::endl;
+            if (current->left != nullptr){
                 std::cout << "check left" << std::endl;
-                current = (*current).left;
+                current = current->left;
             }
             else{
-                std::cout << (*(*current).content) << " has no left child so: " << std::endl;
+                std::cout << (*current->content) << " has no left child so: " << std::endl;
                 return current;
             }
         }
@@ -321,19 +357,19 @@ int AVL_tree<T>::Node::set_balance_factor() {
 
 template<class T>
 void AVL_tree<T>::climb_up_and_rebalance_tree(AVL_tree::Node *leaf) {
-    Node* current = leaf; //not node.parent, so it also updates the height of the node to 0 if its a leaf.
+    Node* current = leaf; //not node.parent, so it also updates the height of the node to 0 if it's a leaf.
     
     while (current){ //climbs up tree. stops after iterating on root.
         current->set_height();
         current->set_balance_factor();
-        std::cout << "Currently on: " << (*(*current).content)
-        << " -> balance factor " << std::to_string((*current).balance_factor) 
-        << ", height " << std::to_string((*current).height)<< std::endl;
-        if (abs((*current).balance_factor) == UNBALANCED){
+        std::cout << "Currently on: " << (*current->content)
+        << " -> balance factor " << std::to_string(current->balance_factor) 
+        << ", height " << std::to_string(current->height)<< std::endl;
+        if (abs(current->balance_factor) == UNBALANCED){
             current->choose_roll(); //because roll switches parent and child, we will still get to the new parent.
         }
         current->set_height();
-        current = (*current).parent;
+        current = current->parent;
     }
     
 }
@@ -470,11 +506,19 @@ std::string AVL_tree<T>::debugging_printTree()
     return tree;
 }
 
+template<class T>
+void AVL_tree<T>::find_test_wrapper(int id) {
+    print_node(find_id(id));
+}
 
 
 template<class T>
 void AVL_tree<T>::print_node(Node* node){
     //the format is: self, parent, left, right
+    if (node == nullptr){
+        std::cout << "NULL\n";
+        return;
+    }
     std::cout << (*(node->content)).get_id() << " " <<
             ((node->parent) ? (*(node->parent->content)).get_id() : 0 ) << " " <<
             ((node->left) ? (*(node->left->content)).get_id() : 0 ) << " " <<
