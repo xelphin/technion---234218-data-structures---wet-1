@@ -43,7 +43,9 @@ public:
     Node* find(int id);
     void merge(AVL_tree<T> &other); //merge 2 trees together
 
+    void in_order_traversal_wrapper(void (*func)(Node*));
     void debugging_printTree(); // debugging -- erase later
+    static void print_node(Node* node); //tests function
 
 private:
     const bool sort_by_score;
@@ -56,7 +58,6 @@ private:
 
     void debugging_printTree(const std::string& prefix, const AVL_tree::Node* node, bool isLeft);
     void debugging_printTree(const AVL_tree::Node* node);
-    
 };
 
 
@@ -92,6 +93,7 @@ private:
     void LR_roll();
     void RR_roll();
     void RL_roll();
+
 };
 
 
@@ -217,8 +219,13 @@ void AVL_tree<T>::in_order_traversal(Node* node, void (*func)(Node*))  {
     }
 
     in_order_traversal(node->left, func);
-    func(this);
+    func(node);
     in_order_traversal(node->right, func);
+}
+
+template<class T>
+void AVL_tree<T>::in_order_traversal_wrapper(void (*func)(Node *)) {
+    in_order_traversal(root, func);
 }
 
 template<class T>
@@ -255,7 +262,6 @@ typename AVL_tree<T>::Node* AVL_tree<T>::find_designated_parent(AVL_tree::Node* 
             }
         }
     }
-    
 }
 
 
@@ -458,6 +464,17 @@ template<class T>
 void AVL_tree<T>::debugging_printTree()
 {
     debugging_printTree(root);
+}
+
+
+
+template<class T>
+void AVL_tree<T>::print_node(Node* node){
+    //the format is: self, parent, left, right
+    std::cout << (*(node->content)).get_id() << " " <<
+            ((node->parent) ? (*(node->parent->content)).get_id() : 0 ) << " " <<
+            ((node->left) ? (*(node->left->content)).get_id() : 0 ) << " " <<
+            ((node->right) ? (*(node->right->content)).get_id() : 0 ) <<std::endl;
 }
 
 // ----------------------------------

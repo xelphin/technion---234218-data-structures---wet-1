@@ -29,5 +29,6 @@ bool balanceAVL_LL();
 bool balanceAVL_RR();
 bool balanceAVL_LR();
 bool balanceAVL_RL();
+bool inorder_print();
 
 #endif
