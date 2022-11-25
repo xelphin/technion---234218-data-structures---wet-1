@@ -8,9 +8,10 @@ class Player;
 
 class Team{
 public:
-    Team(int id, int totalPlayers, int totalPoints, int totalCards, Player *topScorer);
+    Team(int id);
 
-    void add_player();
+    void add_player(Player* player);
+    void remove_player(int id);
     int get_id() const;
     int operator~();
     int operator!();

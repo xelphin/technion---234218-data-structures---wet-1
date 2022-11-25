@@ -23,6 +23,7 @@ bool run_all_tests() {
     run_test(inorder_print, "inorder print", success_string, success);
     run_test(find_test, "find", success_string, success);
     run_test(remove_test, "remove", success_string, success);
+    run_test(team_create, "team_create", success_string, success);
 
 
     std::cout << success_string << std::endl;
@@ -326,6 +327,19 @@ bool remove_test() {
     }
     finalTree = tree1.debugging_printTree();
     std::cout << finalTree;
+
+    return true;
+}
+
+
+bool team_create() {
+    // Check that I can create a Team
+    Player player1(4, 2, 5, 6, 4, false); // id: 4
+    Player player2(1, 2, 3, 3, 4, false); // id: 1
+    Player player3(7, 2, 3, 3, 4, false); // id: 7
+    Player player4(3, 2, 3, 3, 4, false); // id: 3
+
+    Team team(1);
 
     return true;
 }
