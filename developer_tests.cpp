@@ -334,10 +334,10 @@ bool remove_test() {
 
 bool team_create() {
     // Check that I can create a Team
-    Player player1(4, 2, 5, 6, 4, false); // id: 4
-    Player player2(1, 2, 3, 3, 4, false); // id: 1
-    Player player3(7, 2, 3, 3, 4, false); // id: 7
-    Player player4(3, 2, 3, 3, 4, false); // id: 3
+    Player player1(1, 2, 5, 4, 4, false);
+    Player player2(2, 2, 3, 3, 4, false);
+    Player player3(3, 2, 3, 2, 4, false);
+    Player player4(4, 2, 3, 1, 4, false);
 
     Team team(1);
     team.add_player(&player1);
