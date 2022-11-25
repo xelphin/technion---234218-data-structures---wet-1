@@ -14,16 +14,16 @@ void printSuccess ();
 bool run_all_tests() {
     std::string success_string = "ALL (OUR) TESTS SUCCEEDED";
     bool success = true;
-    run_test(playerCompare, "playerCompare", success_string, success);
-    run_test(createAVL, "createAVL", success_string, success);
-    run_test(balanceAVL_LL, "balanceAVL_LL", success_string, success);
-    run_test(balanceAVL_RR, "balanceAVL_RR", success_string, success);
-    run_test(balanceAVL_LR, "balanceAVL_LR", success_string, success);
-    run_test(balanceAVL_RL, "balanceAVL_RL", success_string, success);
+    //run_test(playerCompare, "playerCompare", success_string, success);
+    //run_test(createAVL, "createAVL", success_string, success);
+    //run_test(balanceAVL_LL, "balanceAVL_LL", success_string, success);
+    //run_test(balanceAVL_RR, "balanceAVL_RR", success_string, success);
+    //run_test(balanceAVL_LR, "balanceAVL_LR", success_string, success);
+    //run_test(balanceAVL_RL, "balanceAVL_RL", success_string, success);
     run_test(inorder_print, "inorder print", success_string, success);
-    run_test(find_test, "find", success_string, success);
-    run_test(remove_test, "remove", success_string, success);
-    run_test(team_create, "team_create", success_string, success);
+    //run_test(find_test, "find", success_string, success);
+    //run_test(remove_test, "remove", success_string, success);
+    //run_test(team_create, "team_create", success_string, success);
 
 
     std::cout << success_string << std::endl;
@@ -243,9 +243,9 @@ bool inorder_print(){
     tree1.debugging_printTree();
     //
     tree1.add(&player19);
-    tree1.debugging_printTree();
 
     std::cout << "inorder traversal print: \n";
+
     // TODO: Check function actually works
     int arrSize = tree1.get_amount();
     Player **arrTree = new Player *[arrSize];
@@ -260,9 +260,11 @@ bool inorder_print(){
     }
     std::cout << std::endl;
     delete[] arrTree;
-    tree1.debugging_printTree(); // TODO: make sure my tree isn't deleted
+    std::cout << tree1.debugging_printTree(); // TODO: make sure my tree isn't deleted
 
     return myOutput.compare( "4 5 6 10 12 15 18 19 20 25 30 40 ") == 0;
+
+
 }
 
 bool find_test() {
