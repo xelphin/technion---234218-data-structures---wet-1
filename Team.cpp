@@ -42,6 +42,16 @@ void Team::remove_player(int id)
     // TODO: top_scorer mechanism when you have remove
 }
 
+AVL_tree<Player*>* Team::get_AVL_tree_id()
+{
+    return &team_players;
+}
+
+AVL_tree<Player*>* Team::get_AVL_tree_score()
+{
+    return &team_players_scores;
+}
+
 std::ostream& operator<<(std::ostream& os, const Team& toPrint)
 {
     os << toPrint.get_id();

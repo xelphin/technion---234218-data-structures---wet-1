@@ -340,6 +340,16 @@ bool team_create() {
     Player player4(3, 2, 3, 3, 4, false); // id: 3
 
     Team team(1);
+    team.add_player(&player1);
+    team.add_player(&player2);
+    team.add_player(&player3);
+    team.add_player(&player4);
+
+    std::string team_treeID = (*(team.get_AVL_tree_id())).debugging_printTree();
+    std::cout << team_treeID;
+
+    std::string team_treeScore = (*(team.get_AVL_tree_score())).debugging_printTree();
+    std::cout << team_treeScore;
 
     return true;
 }

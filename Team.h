@@ -12,6 +12,8 @@ public:
 
     void add_player(Player* player);
     void remove_player(int id);
+    AVL_tree<Player*>* get_AVL_tree_id();
+    AVL_tree<Player*>* get_AVL_tree_score();
     int get_id() const;
     int operator~();
     int operator!();
