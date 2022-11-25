@@ -34,6 +34,7 @@ class AVL_tree {
 
 public:
     explicit AVL_tree(bool sort_by_score);
+    explicit AVL_tree(AVL_tree<T> tree1, AVL_tree<T> tree2, bool sort_by_score);
     ~AVL_tree();
     AVL_tree(const AVL_tree &) = delete; //cant copy trees
     AVL_tree &operator=(AVL_tree &other) = delete;
@@ -44,7 +45,7 @@ public:
     void merge(AVL_tree<T> &other); //merge 2 trees together
     int get_amount();
 
-    void in_order_traversal_wrapper(void (*func)(Node*)); // used to iterate on all the nodes. im not sure if it should be private or public.
+    void in_order_traversal_wrapper(T arr[], int size); // used to iterate on all the nodes. im not sure if it should be private or public.
 
     // TESTS AND DEBUGGING FUNCTIONS
     std::string debugging_printTree();
@@ -59,7 +60,7 @@ private:
     Node* find_designated_parent(Node* new_leaf);
     void climb_up_and_rebalance_tree(Node* leaf);
     void post_order_delete();
-    void in_order_traversal(Node* node, void (*func)(Node* node));
+    void in_order_traversal(Node* node, T arr[], int size, int& currIndex);
     Node* find_next_in_order(Node* node);
     void replace_nodes(Node* node, Node* replacement);
 
@@ -111,6 +112,13 @@ private:
 
 template<class T>
 AVL_tree<T>::AVL_tree(bool sort_by_score) : sort_by_score(sort_by_score), root(nullptr), amount(0){
+}
+
+template<class T>
+AVL_tree<T>::AVL_tree(AVL_tree<T> tree1, AVL_tree<T> tree2, bool sort_by_score)
+    : sort_by_score(sort_by_score), root(nullptr), amount(0)
+{
+
 }
 
 template<class T>
@@ -257,8 +265,9 @@ void AVL_tree<T>::merge(AVL_tree<T> &other) {
 
 
 template<class T>
-void AVL_tree<T>::in_order_traversal_wrapper(void (*func)(Node *)) {
-    in_order_traversal(root, func);
+void AVL_tree<T>::in_order_traversal_wrapper(T arr[], int size) {
+    int currIndex = 0;
+    in_order_traversal(root, arr, size, currIndex);
 }
 
 
@@ -298,16 +307,19 @@ void AVL_tree<T>::post_order_delete() {
 
 
 template<class T>
-void AVL_tree<T>::in_order_traversal(Node* node, void (*func)(Node*))  {
+void AVL_tree<T>::in_order_traversal(Node* node,T arr[], int size, int& currIndex)  {
     //receives a function, and activates it on every node in the tree in order.
     //takes O(nodes_in_tree) time, O(log(nodes)) memory.
     if (node == nullptr){
         return;
     }
 
-    in_order_traversal(node->left, func);
-    func(node);
-    in_order_traversal(node->right, func);
+    in_order_traversal(node->left, arr, size,currIndex);
+    if (currIndex > size-1)
+        throw;
+    arr[currIndex] = node;
+    currIndex++;
+    in_order_traversal(node->right, arr, size,currIndex);
 }
 
 

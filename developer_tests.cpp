@@ -213,6 +213,7 @@ bool balanceAVL_RL()
 }
 
 bool inorder_print(){
+    // TODO: Update function so that it puts values into array
     AVL_tree<Player*> tree1(false); // sort by ID
     Player player10(10, 2, 3, 3, 4, false);
     Player player5(5, 2, 3, 3, 4, false);
@@ -245,7 +246,9 @@ bool inorder_print(){
     tree1.debugging_printTree();
 
     std::cout << "inorder traversal print: \n";
-    tree1.in_order_traversal_wrapper(AVL_tree<Player*>::print_node);
+    // TODO: Check function actually works
+
+    // tree1.in_order_traversal_wrapper(AVL_tree<Player*>::print_node);
     return true;
 }
 
@@ -319,14 +322,14 @@ bool remove_test() {
     //
     std::string finalTree = tree1.debugging_printTree();
     std::cout << finalTree;
-    tree1.in_order_traversal_wrapper(AVL_tree<Player*>::print_node);
+    //tree1.in_order_traversal_wrapper(AVL_tree<Player*>::print_node);
 
     std::cout << "remove test: \n";
     std::cout << "remove test, id range: 9-20\n";
     for (int id = 9; id <= 20; ++id) {
         std::cout << "-----------------------REMOVAL. id: " << id << std::endl;
         if(tree1.remove(id)){
-            tree1.in_order_traversal_wrapper(AVL_tree<Player*>::print_node);
+            //tree1.in_order_traversal_wrapper(AVL_tree<Player*>::print_node);
             finalTree = tree1.debugging_printTree();
             std::cout << finalTree;
         }
