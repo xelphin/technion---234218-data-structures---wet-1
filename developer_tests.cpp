@@ -71,6 +71,7 @@ bool playerCompare()
 
 bool createAVL()
 {
+    int tests = 0;
     AVL_tree<Player*> tree1(false); // sort by ID
     Player player1(4, 2, 5, 6, 4, false); // id: 4
     Player player2(1, 2, 3, 3, 4, false); // id: 1
@@ -87,7 +88,12 @@ bool createAVL()
     std::string finalTree = tree1.debugging_printTree();
     std::cout << finalTree;
     std::string wantedTree = "└──4\n    ├──1\n    │   └──3\n    └──7\n";
-    return treeCompare(finalTree,wantedTree);
+    tests += treeCompare(finalTree,wantedTree);
+
+    std::cout << "amount of nodes " << std::to_string(tree1.get_amount()) << std::endl;
+    tests += (tree1.get_amount() == 4);
+
+    return tests == 2;
 }
 
 bool balanceAVL_LL()
@@ -328,12 +334,13 @@ bool remove_test() {
     finalTree = tree1.debugging_printTree();
     std::cout << finalTree;
 
-    return true;
+    return tree1.get_amount() == 6;
 }
 
 
 bool team_create() {
     // Check that I can create a Team
+    int tests = 0;
     Player player1(1, 2, 5, 4, 4, false);
     Player player2(2, 2, 3, 3, 4, false);
     Player player3(3, 2, 3, 2, 4, false);
@@ -348,8 +355,14 @@ bool team_create() {
     std::string team_treeID = (*(team.get_AVL_tree_id())).debugging_printTree();
     std::cout << team_treeID;
 
+    std::string wantedTree = "└──2\n    ├──1\n    └──3\n        └──4\n";
+    tests += treeCompare(team_treeID,wantedTree);
+
     std::string team_treeScore = (*(team.get_AVL_tree_score())).debugging_printTree();
     std::cout << team_treeScore;
+    wantedTree = "└──2\n    ├──3\n    │   ├──4\n    └──1\n";
+    tests += treeCompare(team_treeScore,wantedTree);
 
-    return true;
+    return tests == 2;
 }
+

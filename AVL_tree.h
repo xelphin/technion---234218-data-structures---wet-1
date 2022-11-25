@@ -42,6 +42,7 @@ public:
     bool remove(int id);
     Node* find_id(int id);
     void merge(AVL_tree<T> &other); //merge 2 trees together
+    int get_amount();
 
     void in_order_traversal_wrapper(void (*func)(Node*)); // used to iterate on all the nodes. im not sure if it should be private or public.
 
@@ -53,6 +54,7 @@ public:
 private:
     const bool sort_by_score;
     Node *root;
+    int amount;
 
     Node* find_designated_parent(Node* new_leaf);
     void climb_up_and_rebalance_tree(Node* leaf);
@@ -108,7 +110,7 @@ private:
 //---------------------------PUBLIC FUNCTION DEFINITIONS------------------------------//
 
 template<class T>
-AVL_tree<T>::AVL_tree(bool sort_by_score) : sort_by_score(sort_by_score), root(nullptr){
+AVL_tree<T>::AVL_tree(bool sort_by_score) : sort_by_score(sort_by_score), root(nullptr), amount(0){
 }
 
 template<class T>
@@ -142,6 +144,7 @@ typename AVL_tree<T>::Node* AVL_tree<T>::add(T item) {
         if (parent == nullptr) {
             root = leaf;
             leaf->tree = this;
+            this->amount++;
             return leaf;
         } 
         std::cout << "Parent id: " << ((*(*parent).content)) << std::endl;
@@ -153,6 +156,7 @@ typename AVL_tree<T>::Node* AVL_tree<T>::add(T item) {
         leaf->parent = parent;
         leaf->tree=this;
         climb_up_and_rebalance_tree(leaf);
+        this->amount++;
     }
     catch (...){
         delete leaf;
@@ -201,6 +205,7 @@ bool AVL_tree<T>::remove(int id) {
     }
     climb_up_and_rebalance_tree(next_unbalanced_node);
     delete node;
+    this->amount--;
     return true;
 }
 
@@ -397,6 +402,11 @@ int AVL_tree<T>::Node::get_comparison(const Node &other) {
     }
     
    return 0;
+}
+
+template <class T>
+int AVL_tree<T>::get_amount() {
+    return amount;
 }
 
 
