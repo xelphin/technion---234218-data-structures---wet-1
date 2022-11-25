@@ -247,9 +247,22 @@ bool inorder_print(){
 
     std::cout << "inorder traversal print: \n";
     // TODO: Check function actually works
+    int arrSize = tree1.get_amount();
+    Player **arrTree = new Player *[arrSize];
+    tree1.debugging_printTree();
+    tree1.in_order_traversal_wrapper(arrTree, arrSize);
+    std::cout << "CHECKING INORDER --------------------------------------------------------------------------" << std::endl;
+    std::string myOutput = "";
+    for(int i=0; i< arrSize; i++) {
+        if (arrTree[i]!=nullptr) {
+            myOutput += std::to_string(arrTree[i]->get_id()) + " ";
+        }
+    }
+    std::cout << std::endl;
+    delete[] arrTree;
+    tree1.debugging_printTree(); // TODO: make sure my tree isn't deleted
 
-    // tree1.in_order_traversal_wrapper(AVL_tree<Player*>::print_node);
-    return true;
+    return myOutput.compare( "4 5 6 10 12 15 18 19 20 25 30 40 ") == 0;
 }
 
 bool find_test() {
