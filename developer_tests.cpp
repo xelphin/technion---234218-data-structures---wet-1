@@ -478,7 +478,7 @@ bool worldCup_Remove()
     worldCup.add_team(3,0);
     worldCup.add_team(4,0);
     //
-    tests += StatusType::FAILURE == worldCup.remove_team(2);
+    tests += StatusType::SUCCESS == worldCup.remove_team(2);
     // TODO: Create more checks for when add_player implemented
     return tests == 1;
 }

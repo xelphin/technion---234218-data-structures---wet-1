@@ -42,7 +42,7 @@ StatusType world_cup_t::remove_team(int teamId)
         if (teams_AVL.find_id(teamId) != nullptr) { // O(log(k))
             // TODO: make more efficient instead of calling find_id twice (note: can't * if nullptr)
             Team* team = &(*((teams_AVL.find_id(teamId))->content)); // O(log(k))
-            if (team->get_total_players() <= 0)
+            if (team->get_total_players() > 0)
                 return StatusType::FAILURE;
             success = teams_AVL.remove(teamId);
             valid_teams_AVL.remove(teamId);
