@@ -29,6 +29,7 @@ bool run_all_tests() {
     run_test(worldCup_Constructor, "worldCup_Constructor", success_string, success);
     run_test(worldCup_Add, "worldCup_Add", success_string, success);
     run_test(worldCup_Remove, "worldCup_Remove", success_string, success);
+    run_test(worldCup_Add_Player, "worldCup_Add_Player", success_string, success);
 
     std::cout << success_string << std::endl;
     return success;
@@ -390,26 +391,28 @@ bool remove_test() {
 bool team_create() {
     // Check that I can create a Team
     int tests = 0;
-    Player player1(1, 2, 5, 4, 4, false);
-    Player player2(2, 2, 3, 3, 4, false);
-    Player player3(3, 2, 3, 2, 4, false);
-    Player player4(4, 2, 3, 1, 4, false);
+    std::shared_ptr<Player> player1(new Player(1, 2, 5, 4, 4, false));
+    std::shared_ptr<Player> player2(new Player(2, 2, 5, 3, 4, false));
+    std::shared_ptr<Player> player3(new Player(3, 2, 5, 2, 4, false));
+    std::shared_ptr<Player> player4(new Player(4, 2, 5, 1, 4, false));
 
     Team team(1,0);
-    team.add_player(&player1);
-    team.add_player(&player2);
-    team.add_player(&player3);
-    team.add_player(&player4);
+    team.add_player(player1);
+    team.add_player(player2);
+    team.add_player(player3);
+    team.add_player(player4);
 
     std::string team_treeID = (*(team.get_AVL_tree_id())).debugging_printTree();
     std::cout << team_treeID;
 
     std::string wantedTree = "└──2\n    ├──1\n    └──3\n        └──4\n";
+    std::cout << wantedTree;
     tests += treeCompare(team_treeID,wantedTree);
 
     std::string team_treeScore = (*(team.get_AVL_tree_score())).debugging_printTree();
     std::cout << team_treeScore;
     wantedTree = "└──2\n    ├──3\n    │   ├──4\n    └──1\n";
+    std::cout << wantedTree;
     tests += treeCompare(team_treeScore,wantedTree);
 
     return tests == 2;
@@ -478,4 +481,21 @@ bool worldCup_Remove()
     tests += StatusType::FAILURE == worldCup.remove_team(2);
     // TODO: Create more checks for when add_player implemented
     return tests == 1;
+}
+
+bool worldCup_Add_Player()
+{
+    int tests = 0;
+    world_cup_t worldCup;
+    worldCup.add_team(1,0);
+    worldCup.add_team(2,0);
+    tests += StatusType::SUCCESS == worldCup.add_player(1, 2, 5, 6, 4, false);
+    tests += StatusType::FAILURE == worldCup.add_player(1, 1, 5, 6, 4, false);
+    tests += StatusType::SUCCESS == worldCup.add_player(2, 2, 5, 6, 4, false);
+    tests += StatusType::INVALID_INPUT == worldCup.add_player(3, 2, 5, -1, 4, false);
+    tests += StatusType::INVALID_INPUT == worldCup.add_player(3, 2, 0, 2, 0, false);
+    tests += StatusType::SUCCESS == worldCup.add_player(3, 2, 5, 2, 0, false);
+    tests += StatusType::FAILURE == worldCup.add_player(4, 3, 5, 2, 0, false);
+    tests += StatusType::SUCCESS == worldCup.add_player(4, 2, 5, 2, 0, false);
+    return tests == 8;
 }

@@ -3,6 +3,7 @@
 
 #include "Player.h"
 #include "AVL_tree.h"
+#include <memory>
 
 class Player;
 
@@ -10,11 +11,12 @@ class Team{
 public:
     Team(int id, int points);
 
-    void add_player(Player* player);
+    void add_player(std::shared_ptr<Player> player);
+    std::shared_ptr<Player> find_player(int id);
     bool remove_player(int id);
     int get_total_players() const;
-    AVL_tree<Player*>* get_AVL_tree_id();
-    AVL_tree<Player*>* get_AVL_tree_score();
+    AVL_tree<std::shared_ptr<Player>>* get_AVL_tree_id();
+    AVL_tree<std::shared_ptr<Player>>* get_AVL_tree_score();
     int get_id() const;
     int operator~();
     int operator!();
@@ -28,8 +30,8 @@ private:
     int total_points;
     int total_cards;
     Player *top_scorer; //may be changed to a different type of pointer later on.
-    AVL_tree<Player*> team_players;
-    AVL_tree<Player*> team_players_scores;
+    AVL_tree<std::shared_ptr<Player>> team_players;
+    AVL_tree<std::shared_ptr<Player>> team_players_scores;
 
     int get_points() const;
 };

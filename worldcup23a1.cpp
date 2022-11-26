@@ -58,15 +58,46 @@ StatusType world_cup_t::remove_team(int teamId)
 	return StatusType::FAILURE;
 }
 
-/*
+
 
 StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
                                    int goals, int cards, bool goalKeeper)
 {
-	// TODO: Your code goes here
+
+    std::cout << "Inside add_player: " << std::endl;
+    if (teamId <= 0 || playerId <= 0 || gamesPlayed<0 || goals<0 || cards < 0)
+        return StatusType::INVALID_INPUT;
+    if (gamesPlayed==0 && (goals>0 || cards>0) )
+        return StatusType::INVALID_INPUT;
+
+    // Find Team
+    Team* team;
+    if (teams_AVL.find_id(teamId) != nullptr && all_players_AVL.find_id(playerId) == nullptr) { // O(log(k) + log(n))
+        // TODO: make more efficient instead of calling find_id twice (note: can't * if nullptr)
+        team = &(*((teams_AVL.find_id(teamId))->content)); // O(log(k))
+        try {
+            std::shared_ptr<Player> player(new Player(playerId, teamId, gamesPlayed, goals, cards, goalKeeper));
+            team->add_player(player);
+            all_players_AVL.add(player);
+            all_players_score_AVL.add(player);
+        } catch (std::bad_alloc const&) {
+            all_players_AVL.remove(playerId);
+            all_players_score_AVL.remove(playerId);
+            return StatusType::ALLOCATION_ERROR;
+        } catch (const ID_ALREADY_EXISTS& e) {
+            std::cout << "id: " << std::to_string(playerId) << " already exists" << std::endl;
+            return StatusType::FAILURE;
+        }
+
+    } else {
+        std::cout << "team couldn't be found: " << std::to_string(teams_AVL.find_id(teamId) == nullptr)  << std::endl;
+        std::cout << "player exists already: " << std::to_string(all_players_AVL.find_id(teamId) != nullptr)  << std::endl;
+        return StatusType::FAILURE;
+    }
+
 	return StatusType::SUCCESS;
 }
-
+/*
 StatusType world_cup_t::remove_player(int playerId)
 {
 	// TODO: Your code goes here

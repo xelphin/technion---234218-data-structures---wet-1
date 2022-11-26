@@ -283,7 +283,7 @@ typename AVL_tree<T>::Node *AVL_tree<T>::find_id(int id) {
             //std::cout << "id: " << id
             //          << " is bigger than: " << *current->content << std::endl;
             if (current->right != nullptr){
-                std::cout << "check right" << std::endl;
+                //std::cout << "check right" << std::endl;
                 current = current->right;
             }
             else{ //no right child

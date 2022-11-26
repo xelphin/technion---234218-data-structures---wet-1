@@ -28,17 +28,26 @@ int Team::get_points() const{
     return total_points;
 }
 
-void Team::add_player(Player* player) {
+void Team::add_player(std::shared_ptr<Player> player) {
     team_players.add(player);
     team_players_scores.add(player);
     if (top_scorer == nullptr) {
-        top_scorer = player;
+        top_scorer = &*player;
     } else if (top_scorer->get_score() < player->get_score()) {
-        top_scorer = player;
+        top_scorer = &*player;
     } else if (top_scorer->get_score() == player->get_score() && top_scorer->get_id() == player->get_id()) {
-        top_scorer = player;
+        top_scorer = &*player;
     }
     total_players++;
+}
+
+std::shared_ptr<Player> Team::find_player(int id)
+{
+    // O(log(n))
+    if (team_players.find_id(id) == nullptr) {
+        return nullptr;
+    }
+    return team_players.find_id(id)->content;
 }
 
 bool Team::remove_player(int id)
@@ -52,12 +61,12 @@ bool Team::remove_player(int id)
     // TODO: top_scorer mechanism when you have remove
 }
 
-AVL_tree<Player*>* Team::get_AVL_tree_id()
+AVL_tree<std::shared_ptr<Player>>* Team::get_AVL_tree_id()
 {
     return &team_players;
 }
 
-AVL_tree<Player*>* Team::get_AVL_tree_score()
+AVL_tree<std::shared_ptr<Player>>* Team::get_AVL_tree_score()
 {
     return &team_players_scores;
 }
