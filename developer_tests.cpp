@@ -425,6 +425,7 @@ bool createAVL_byMerge()
     Player player5(5, 2, 3, 3, 4, false);
     Player player6(6, 2, 3, 3, 4, false);
     Player player7(7, 2, 3, 3, 4, false);
+    Player player8(8, 2, 3, 3, 4, false);
 
     tree1.add(&player1);
     tree1.add(&player3);
@@ -434,6 +435,7 @@ bool createAVL_byMerge()
     tree2.add(&player2);
     tree2.add(&player5);
     tree2.add(&player6);
+    tree2.add(&player8);
     //
     AVL_tree<Player*> tree(tree1, tree2, false);
 

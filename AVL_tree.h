@@ -44,6 +44,7 @@ public:
     Node* find_id(int id);
     void merge(AVL_tree<T> &other); //merge 2 trees together
     int get_amount();
+    Node* make_AVL_tree_from_array(T arr[], int start, int end);
 
     void in_order_traversal_wrapper(T arr[], int size); // used to iterate on all the nodes. im not sure if it should be private or public.
     static void merge_sort(T newArr[], T arr1[], int size1, T arr2[], int size2, bool sort_by_score);
@@ -120,29 +121,49 @@ template<class T>
 AVL_tree<T>::AVL_tree(AVL_tree<T>& tree1, AVL_tree<T>& tree2, bool sort_by_score)
     : sort_by_score(sort_by_score), root(nullptr), amount(0)
 {
+    // Complexity: O( sizeTree1 + sizeTree2)
     int sizeTree1 = tree1.get_amount();
     int sizeTree2 = tree2.get_amount();
     T *arrTree1 = new T [sizeTree1];
     T *arrTree2 = new T [sizeTree2];
-    // Fill each array
+
+    // Fill an inorder array for each tree
     tree1.in_order_traversal_wrapper(arrTree1, sizeTree1);
     tree2.in_order_traversal_wrapper(arrTree2, sizeTree2);
-
 
     // Create new array
     T *arrTree = new T [sizeTree1 + sizeTree2];
     AVL_tree<T>::merge_sort(arrTree, arrTree1, sizeTree1, arrTree2, sizeTree2, sort_by_score);
-    std::cout << "newArr: " << std::endl;
-    for (int i = 0; i< sizeTree1+sizeTree2; i++) {
-        if (arrTree[i]!=nullptr)
-                std::cout << *arrTree[i] << std::endl;
-    }
-    // TODO: Fill tree with values from arrTree
 
+    // Create tree
+    this->root = this->AVL_tree<T>::make_AVL_tree_from_array(arrTree, 0, (sizeTree1 + sizeTree2) -1);
+    this->amount = sizeTree1 + sizeTree2;
+
+    // Free arrays
     delete[] arrTree1;
     delete[] arrTree2;
     delete[] arrTree;
+}
 
+template<class T>
+typename AVL_tree<T>::Node *AVL_tree<T>::make_AVL_tree_from_array(T arr[], int start, int end)
+{
+    int diff = end-start;
+    if (diff < 0)
+        return nullptr;
+    int midIndex = start + diff/2;
+    if (arr[midIndex] == nullptr)
+        throw;
+
+    Node *node = new Node(arr[midIndex]); //in case of bad_alloc, memory is freed from the tree destructor.
+    node->tree = this;
+    node->left = this->AVL_tree<T>::make_AVL_tree_from_array(arr,start,midIndex-1);
+    node->right = this->AVL_tree<T>::make_AVL_tree_from_array(arr,midIndex+1,end);
+    if (node->left != nullptr)
+        node->left->parent = node;
+    if (node->right != nullptr)
+        node->right->parent = node;
+    return node;
 }
 
 template<class T>
