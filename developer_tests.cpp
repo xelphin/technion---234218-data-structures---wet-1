@@ -436,6 +436,8 @@ bool createAVL_byMerge()
     tree2.add(&player5);
     tree2.add(&player6);
     tree2.add(&player8);
+    std::cout << tree1.debugging_printTree();
+    std::cout << tree2.debugging_printTree();
     //
     AVL_tree<Player*> tree(tree1, tree2, false);
     std::cout << tree.debugging_printTree();
