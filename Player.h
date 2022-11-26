@@ -12,6 +12,7 @@ public:
     Player(int playerId, int teamId, int gamesPlayed, int goals, int cards, bool goalKeeper);
     int get_score() const;
     int get_id() const;
+    int compare(const Player& player2, bool sort_by_score) const;
 
     int operator~(); 
     int operator!();

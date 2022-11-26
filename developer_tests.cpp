@@ -24,6 +24,8 @@ bool run_all_tests() {
     //run_test(find_test, "find", success_string, success);
     //run_test(remove_test, "remove", success_string, success);
     //run_test(team_create, "team_create", success_string, success);
+    // createAVL_byMerge
+    run_test(createAVL_byMerge, "createAVL_byMerge", success_string, success);
 
 
     std::cout << success_string << std::endl;
@@ -384,3 +386,27 @@ bool team_create() {
     return tests == 2;
 }
 
+bool createAVL_byMerge()
+{
+    // Create trees 1 and 2
+    AVL_tree<Player*> tree1(false); // sort by ID
+    AVL_tree<Player*> tree2(false); // sort by ID
+    Player player1(1, 2, 5, 6, 4, false);
+    Player player2(2, 2, 5, 6, 4, false);
+    Player player3(3, 2, 3, 3, 4, false);
+    Player player4(4, 2, 3, 3, 4, false);
+    Player player5(5, 2, 3, 3, 4, false);
+    Player player6(6, 2, 3, 3, 4, false);
+    Player player7(7, 2, 3, 3, 4, false);
+    tree1.add(&player1);
+    tree2.add(&player2);
+    tree1.add(&player3);
+    tree1.add(&player4);
+    tree2.add(&player5);
+    tree2.add(&player6);
+    tree1.add(&player7);
+    //
+    AVL_tree<Player*> tree(tree1, tree2, false);
+
+    return true;
+}

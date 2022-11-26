@@ -34,7 +34,7 @@ class AVL_tree {
 
 public:
     explicit AVL_tree(bool sort_by_score);
-    explicit AVL_tree(AVL_tree<T> tree1, AVL_tree<T> tree2, bool sort_by_score);
+    explicit AVL_tree(AVL_tree<T>& tree1, AVL_tree<T>& tree2, bool sort_by_score);
     ~AVL_tree();
     AVL_tree(const AVL_tree &) = delete; //cant copy trees
     AVL_tree &operator=(AVL_tree &other) = delete;
@@ -46,6 +46,8 @@ public:
     int get_amount();
 
     void in_order_traversal_wrapper(T arr[], int size); // used to iterate on all the nodes. im not sure if it should be private or public.
+    static void merge_sort(T newArr[], T arr1[], int size1, T arr2[], int size2, bool sort_by_score);
+    static void fill_array(T newArr[], T oldArr[], int size, int indexNew, int indexOld);
 
     // TESTS AND DEBUGGING FUNCTIONS
     std::string debugging_printTree();
@@ -115,9 +117,25 @@ AVL_tree<T>::AVL_tree(bool sort_by_score) : sort_by_score(sort_by_score), root(n
 }
 
 template<class T>
-AVL_tree<T>::AVL_tree(AVL_tree<T> tree1, AVL_tree<T> tree2, bool sort_by_score)
+AVL_tree<T>::AVL_tree(AVL_tree<T>& tree1, AVL_tree<T>& tree2, bool sort_by_score)
     : sort_by_score(sort_by_score), root(nullptr), amount(0)
 {
+
+    int sizeTree1 = tree1.get_amount();
+    int sizeTree2 = tree2.get_amount();
+    T *arrTree1 = new T [sizeTree1];
+    T *arrTree2 = new T [sizeTree2];
+    // Fill each array
+    tree1.in_order_traversal_wrapper(arrTree1, sizeTree1);
+    tree2.in_order_traversal_wrapper(arrTree2, sizeTree2);
+    // Create new array
+    T *arrTree = new T [sizeTree1 + sizeTree2];
+    // TODO: Fill arrTree
+    // TODO: Fill tree with values from arrTree
+
+    delete[] arrTree1;
+    delete[] arrTree2;
+    delete[] arrTree;
 
 }
 
@@ -270,6 +288,55 @@ void AVL_tree<T>::in_order_traversal_wrapper(T arr[], int size) {
     in_order_traversal(root, arr, size, currIndex);
 }
 
+template<class T>
+void AVL_tree<T>::merge_sort(T newArr[], T arr1[], int size1, T arr2[], int size2, bool sort_by_score)
+{
+    // size of newArr[] MUST BE == size1+size2 !!!!!
+    if (size1 < 0 || size2 < 0)
+            throw;
+    if (size1 == 0) {
+        fill_array(newArr, arr2, size2, 0, 0);
+        return;
+    }
+    if (size2 == 0) {
+        fill_array(newArr, arr1, size1, 0, 0);
+        return;
+    }
+    //
+    int index1 = 0;
+    int index2 = 0;
+    int index = 0;
+    while(index1 != size1-1 || index2 != size2-1) {
+        if (arr1[index1] == nullptr || arr2[index2] == nullptr)
+            throw;
+        if ((*arr1[index1]).compare(arr2[index2]) < 0) {
+            newArr[index] = arr1[index1];
+            index1++;
+        } else if ((*arr1[index1]).compare(arr2[index2]) > 0) {
+            newArr[index] = arr2[index2];
+            index2++;
+        } else {
+            throw;
+        }
+        index++;
+    }
+    if (index1 != size1-1) { // fill the rest of newArr with the remainder of arr1
+        fill_array(newArr, arr1, size1, index, index1);
+        return;
+    }
+    if (index2 != size2-1) { // fill the rest of newArr with the remainder of arr2
+        fill_array(newArr, arr2, size2, index, index2);
+        return;
+    }
+}
+
+template<class T>
+void AVL_tree<T>::fill_array(T newArr[], T oldArr[], int size, int indexNew, int indexOld)
+{
+    for (int i=0; i<size; i++) {
+        newArr[i] = oldArr[i];
+    }
+}
 
 //-----------------------------PRIVATE TREE FUNCTIONS-----------------------------//
 

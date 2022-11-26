@@ -57,3 +57,18 @@ std::ostream& operator<<(std::ostream& os, const Team& toPrint)
     os << toPrint.get_id();
     return os;
 }
+
+int Team::compare(const Team& team2, bool sort_by_score) const
+{
+    if (sort_by_score == SORT_BY_SCORE){
+        int score_diff = Team::get_points() - team2.get_points();
+        if (score_diff != 0)
+            return score_diff;
+        else
+            return Team::get_id() - team2.get_id();
+    }
+    else
+    {
+        return Team::get_id() - team2.get_id();
+    }
+}

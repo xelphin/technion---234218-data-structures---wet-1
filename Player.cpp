@@ -27,3 +27,18 @@ std::ostream& operator<<(std::ostream& os, const Player& toPrint)
     os << toPrint.get_id();
     return os;
 }
+
+int Player::compare(const Player& player2, bool sort_by_score) const
+{
+    if (sort_by_score == SORT_BY_SCORE){
+        int score_diff = Player::get_score() - player2.get_score();
+        if (score_diff != 0)
+            return score_diff;
+        else
+            return Player::get_id() - player2.get_id();
+    }
+    else
+    {
+        return Player::get_id() - player2.get_id();
+    }
+}

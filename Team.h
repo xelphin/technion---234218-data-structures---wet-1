@@ -19,6 +19,7 @@ public:
     int operator!();
 
     friend std::ostream& operator<<(std::ostream& os, const Team& team);
+    int compare(const Team& team2, bool sort_by_score) const;
 
 private:
     int id;
