@@ -8,7 +8,7 @@ class Player;
 
 class Team{
 public:
-    Team(int id);
+    Team(int id, int points);
 
     void add_player(Player* player);
     void remove_player(int id);

@@ -33,9 +33,9 @@ class AVL_tree {
     class Node;
 
 public:
-    explicit AVL_tree(bool sort_by_score);
+    explicit AVL_tree(bool sort_by_score); // O(1)
     explicit AVL_tree(AVL_tree<T>& tree1, AVL_tree<T>& tree2, bool sort_by_score);
-    ~AVL_tree();
+    ~AVL_tree(); // O(n[amount nodes])
     AVL_tree(const AVL_tree &) = delete; //cant copy trees
     AVL_tree &operator=(AVL_tree &other) = delete;
 
@@ -203,8 +203,10 @@ typename AVL_tree<T>::Node* AVL_tree<T>::add(T item) {
         std::cout << "Parent id: " << ((*(*parent).content)) << std::endl;
         if ((*leaf).get_comparison(*parent) > 0) {
             parent->right = leaf;
-        } else {
+        } else if ((*leaf).get_comparison(*parent) < 0) {
             parent->left = leaf;
+        } else {
+            // TODO: THROW EXCEPTION
         }
         leaf->parent = parent;
         leaf->tree=this;

@@ -13,13 +13,24 @@ world_cup_t::~world_cup_t()
     std::cout << "D'tor world_cup_t: created success" << std::endl;
 }
 
-/*
+
 StatusType world_cup_t::add_team(int teamId, int points)
 {
-	// TODO: Your code goes here
+    /*
+	if (teamId <= 0 || points<0)
+        return StatusType::INVALID_INPUT;
+    try {
+        std::shared_ptr<Team> team(new Team(teamId, points));
+        teams_AVL.add(std::move(team));
+        valid_teams_AVL.add(team);
+    } catch (std::bad_alloc const&){
+        return StatusType::ALLOCATION_ERROR;
+    }
+    // TODO: return FAILURE
+     */
 	return StatusType::SUCCESS;
 }
-
+/*
 StatusType world_cup_t::remove_team(int teamId)
 {
 	// TODO: Your code goes here

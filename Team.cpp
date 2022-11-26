@@ -2,8 +2,8 @@
 
 
 
-Team::Team(int id)
-: id(id),total_players(0),total_points(0),total_cards(0),top_scorer(nullptr),
+Team::Team(int id, int points)
+: id(id),total_players(0),total_points(points),total_cards(0),top_scorer(nullptr),
 team_players(SORT_BY_ID),team_players_scores(SORT_BY_SCORE)
 {}
 

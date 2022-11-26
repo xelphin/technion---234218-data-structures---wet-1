@@ -14,17 +14,17 @@ void printSuccess ();
 bool run_all_tests() {
     std::string success_string = "ALL (OUR) TESTS SUCCEEDED";
     bool success = true;
-    //run_test(playerCompare, "playerCompare", success_string, success);
-    //run_test(createAVL, "createAVL", success_string, success);
-    //run_test(balanceAVL_LL, "balanceAVL_LL", success_string, success);
-    //run_test(balanceAVL_RR, "balanceAVL_RR", success_string, success);
-    //run_test(balanceAVL_LR, "balanceAVL_LR", success_string, success);
-    //run_test(balanceAVL_RL, "balanceAVL_RL", success_string, success);
+    run_test(playerCompare, "playerCompare", success_string, success);
+    run_test(createAVL, "createAVL", success_string, success);
+    run_test(balanceAVL_LL, "balanceAVL_LL", success_string, success);
+    run_test(balanceAVL_RR, "balanceAVL_RR", success_string, success);
+    run_test(balanceAVL_LR, "balanceAVL_LR", success_string, success);
+    run_test(balanceAVL_RL, "balanceAVL_RL", success_string, success);
     run_test(inorder_print, "inorder print", success_string, success);
     run_test(inorder_print_check2, "inorder_print_check2()", success_string, success);
-    //run_test(find_test, "find", success_string, success);
-    //run_test(remove_test, "remove", success_string, success);
-    //run_test(team_create, "team_create", success_string, success);
+    run_test(find_test, "find", success_string, success);
+    run_test(remove_test, "remove", success_string, success);
+    run_test(team_create, "team_create", success_string, success);
     run_test(createAVL_byMerge, "createAVL_byMerge", success_string, success);
     run_test(worldCup_Constructor, "worldCup_Constructor", success_string, success);
 
@@ -394,7 +394,7 @@ bool team_create() {
     Player player3(3, 2, 3, 2, 4, false);
     Player player4(4, 2, 3, 1, 4, false);
 
-    Team team(1);
+    Team team(1,0);
     team.add_player(&player1);
     team.add_player(&player2);
     team.add_player(&player3);
