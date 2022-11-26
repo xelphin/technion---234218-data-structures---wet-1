@@ -21,10 +21,10 @@ bool run_all_tests() {
     //run_test(balanceAVL_LR, "balanceAVL_LR", success_string, success);
     //run_test(balanceAVL_RL, "balanceAVL_RL", success_string, success);
     run_test(inorder_print, "inorder print", success_string, success);
+    run_test(inorder_print_check2, "inorder_print_check2()", success_string, success);
     //run_test(find_test, "find", success_string, success);
     //run_test(remove_test, "remove", success_string, success);
     //run_test(team_create, "team_create", success_string, success);
-    // createAVL_byMerge
     run_test(createAVL_byMerge, "createAVL_byMerge", success_string, success);
 
 
@@ -269,6 +269,33 @@ bool inorder_print(){
 
 }
 
+bool inorder_print_check2(){
+    // TODO: Update function so that it puts values into array
+    AVL_tree<Player*> tree1(false); // sort by ID
+    Player player2(2, 2, 3, 3, 4, false);
+    Player player5(5, 2, 3, 3, 4, false);
+    Player player6(6, 2, 3, 3, 4, false);
+    tree1.add(&player2);
+    tree1.add(&player5);
+    tree1.add(&player6);
+
+    int arrSize = tree1.get_amount();
+    Player **arrTree = new Player *[arrSize];
+    tree1.debugging_printTree();
+    tree1.in_order_traversal_wrapper(arrTree, arrSize);
+    std::cout << "CHECKING INORDER --------------------------------------------------------------------------" << std::endl;
+    std::string myOutput = "";
+    for(int i=0; i< arrSize; i++) {
+        if (arrTree[i]!=nullptr) {
+            myOutput += std::to_string(arrTree[i]->get_id()) + " ";
+        }
+    }
+    std::cout << myOutput << std::endl;
+    delete[] arrTree;
+
+    return true;
+}
+
 bool find_test() {
     AVL_tree<Player*> tree1(false); // sort by ID
     Player player10(10, 2, 3, 3, 4, false);
@@ -398,13 +425,15 @@ bool createAVL_byMerge()
     Player player5(5, 2, 3, 3, 4, false);
     Player player6(6, 2, 3, 3, 4, false);
     Player player7(7, 2, 3, 3, 4, false);
+
     tree1.add(&player1);
-    tree2.add(&player2);
     tree1.add(&player3);
     tree1.add(&player4);
+    tree1.add(&player7);
+
+    tree2.add(&player2);
     tree2.add(&player5);
     tree2.add(&player6);
-    tree1.add(&player7);
     //
     AVL_tree<Player*> tree(tree1, tree2, false);
 

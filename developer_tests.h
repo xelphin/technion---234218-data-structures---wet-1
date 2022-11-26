@@ -34,6 +34,7 @@ bool balanceAVL_RR();
 bool balanceAVL_LR();
 bool balanceAVL_RL();
 bool inorder_print();
+bool inorder_print_check2();
 bool find_test();
 bool remove_test();
 bool team_create();
