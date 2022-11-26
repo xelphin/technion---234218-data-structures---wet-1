@@ -40,4 +40,6 @@ bool remove_test();
 bool team_create();
 bool createAVL_byMerge();
 
+bool worldCup_Constructor();
+
 #endif

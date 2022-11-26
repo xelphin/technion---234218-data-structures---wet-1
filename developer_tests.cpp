@@ -26,6 +26,7 @@ bool run_all_tests() {
     //run_test(remove_test, "remove", success_string, success);
     //run_test(team_create, "team_create", success_string, success);
     run_test(createAVL_byMerge, "createAVL_byMerge", success_string, success);
+    run_test(worldCup_Constructor, "worldCup_Constructor", success_string, success);
 
 
     std::cout << success_string << std::endl;
@@ -445,4 +446,10 @@ bool createAVL_byMerge()
 
     std::string wantedTree = "└──4\n    ├──2\n    │   ├──1\n    │   └──3\n    └──6\n        ├──5\n        └──7\n            └──8\n";
     return treeCompare(finalTree,wantedTree);
+}
+
+bool worldCup_Constructor()
+{
+    world_cup_t worldCup;
+    return true;
 }

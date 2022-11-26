@@ -29,10 +29,10 @@ private:
     // Here you may add anything you want
     int amount_players;
 
-	//AVL_tree<Player*> all_players_AVL;
-    //AVL_tree<Player*> all_players_score_AVL;
-    //AVL_tree<Team*> teams_AVL;
-    //AVL_tree<Team*> valid_teams_AVL;
+	AVL_tree<Player*> all_players_AVL;
+    AVL_tree<Player*> all_players_score_AVL;
+    AVL_tree<Team*> teams_AVL;
+    AVL_tree<Team*> valid_teams_AVL;
 
 	// NOTICE: Still some discussion on whether to use Team* or std::shared_ptr<Team>
 	//		   (For example because we have Team inside of valid_TeamsAVL and in teams_AVL etc.)

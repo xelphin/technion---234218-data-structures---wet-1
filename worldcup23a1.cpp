@@ -1,17 +1,19 @@
 #include "worldcup23a1.h"
 
-/*
-world_cup_t::world_cup_t() //TODO: sort by score or id?
+
+world_cup_t::world_cup_t()
+: amount_players(0), all_players_AVL(SORT_BY_ID), all_players_score_AVL(SORT_BY_SCORE),
+  teams_AVL(SORT_BY_ID), valid_teams_AVL(SORT_BY_ID)
 {
-	std::cout << "am here" << std::endl;
+	std::cout << "C'tor world_cup_t: success" << std::endl;
 }
 
 world_cup_t::~world_cup_t()
 {
-	// TODO: Your code goes here
+    std::cout << "D'tor world_cup_t: created success" << std::endl;
 }
 
-
+/*
 StatusType world_cup_t::add_team(int teamId, int points)
 {
 	// TODO: Your code goes here
