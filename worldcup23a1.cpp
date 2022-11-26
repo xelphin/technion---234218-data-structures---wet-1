@@ -4,38 +4,61 @@
 world_cup_t::world_cup_t()
 : amount_players(0), all_players_AVL(SORT_BY_ID), all_players_score_AVL(SORT_BY_SCORE),
   teams_AVL(SORT_BY_ID), valid_teams_AVL(SORT_BY_ID)
-{
-	std::cout << "C'tor world_cup_t: success" << std::endl;
-}
+{}
 
 world_cup_t::~world_cup_t()
-{
-    std::cout << "D'tor world_cup_t: created success" << std::endl;
-}
+{}
 
 
 StatusType world_cup_t::add_team(int teamId, int points)
 {
-    /*
+    std::cout << "Inside add_team: " << std::endl;
 	if (teamId <= 0 || points<0)
         return StatusType::INVALID_INPUT;
     try {
         std::shared_ptr<Team> team(new Team(teamId, points));
-        teams_AVL.add(std::move(team));
-        valid_teams_AVL.add(team);
+        // valid_teams_AVL.add(team); TODO: Implement properly when needed later
+        teams_AVL.add(team); // CHECK:
     } catch (std::bad_alloc const&){
         return StatusType::ALLOCATION_ERROR;
+    } catch (const ID_ALREADY_EXISTS& e) {
+        return StatusType::FAILURE;
     }
-    // TODO: return FAILURE
-     */
+    std::cout << "Valid Teams: " << std::endl;
+    std::cout << valid_teams_AVL.debugging_printTree();
+    std::cout << "Teams: " << std::endl;
+    std::cout << teams_AVL.debugging_printTree();
 	return StatusType::SUCCESS;
 }
-/*
+
 StatusType world_cup_t::remove_team(int teamId)
 {
-	// TODO: Your code goes here
+    std::cout << "Inside remove_team: " << std::endl;
+    bool success = false;
+    if (teamId <=0) {
+        return StatusType::INVALID_INPUT;
+    }
+	try {
+        if (teams_AVL.find_id(teamId) != nullptr) { // O(log(k))
+            // TODO: make more efficient instead of calling find_id twice (note: can't * if nullptr)
+            Team* team = &(*((teams_AVL.find_id(teamId))->content)); // O(log(k))
+            if (team->get_total_players() <= 0)
+                return StatusType::FAILURE;
+            success = teams_AVL.remove(teamId);
+            valid_teams_AVL.remove(teamId);
+        }
+
+    } catch (std::bad_alloc const& ) {
+        return StatusType::ALLOCATION_ERROR;
+    }
+    std::cout << "Teams: " << std::endl;
+    std::cout << teams_AVL.debugging_printTree();
+    if (success)
+            return StatusType::SUCCESS;
 	return StatusType::FAILURE;
 }
+
+/*
 
 StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
                                    int goals, int cards, bool goalKeeper)

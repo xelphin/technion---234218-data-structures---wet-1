@@ -27,7 +27,8 @@ bool run_all_tests() {
     run_test(team_create, "team_create", success_string, success);
     run_test(createAVL_byMerge, "createAVL_byMerge", success_string, success);
     run_test(worldCup_Constructor, "worldCup_Constructor", success_string, success);
-
+    run_test(worldCup_Add, "worldCup_Add", success_string, success);
+    run_test(worldCup_Remove, "worldCup_Remove", success_string, success);
 
     std::cout << success_string << std::endl;
     return success;
@@ -452,4 +453,29 @@ bool worldCup_Constructor()
 {
     world_cup_t worldCup;
     return true;
+}
+
+bool worldCup_Add()
+{
+    int test = 0;
+    world_cup_t worldCup;
+    test += StatusType::SUCCESS == worldCup.add_team(1,2);
+    test += StatusType::FAILURE == worldCup.add_team(1,2);
+    test += StatusType::INVALID_INPUT == worldCup.add_team(-1,2);
+    test += StatusType::SUCCESS == worldCup.add_team(2,2);
+    return test == 4;
+}
+
+bool worldCup_Remove()
+{
+    int tests = 0;
+    world_cup_t worldCup;
+    worldCup.add_team(1,0);
+    worldCup.add_team(2,0);
+    worldCup.add_team(3,0);
+    worldCup.add_team(4,0);
+    //
+    tests += StatusType::FAILURE == worldCup.remove_team(2);
+    // TODO: Create more checks for when add_player implemented
+    return tests == 1;
 }

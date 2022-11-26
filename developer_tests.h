@@ -41,5 +41,7 @@ bool team_create();
 bool createAVL_byMerge();
 
 bool worldCup_Constructor();
+bool worldCup_Add();
+bool worldCup_Remove();
 
 #endif

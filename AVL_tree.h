@@ -18,6 +18,7 @@
 
 #include "stdexcept"
 #include "iostream"
+#include "Exception.h"
 
 #define SORT_BY_SCORE true
 #define SORT_BY_ID false
@@ -190,7 +191,7 @@ typename AVL_tree<T>::Node* AVL_tree<T>::add(T item) {
     Node *leaf = new Node(item); //in case of bad_alloc, memory is freed from the tree destructor.
     leaf->tree = this;
 
-    std::cout << "Entering: " << ((*(*leaf).content)) << std::endl;
+    //std::cout << "Entering: " << ((*(*leaf).content)) << std::endl;
 
     try {
         Node *parent = find_designated_parent(leaf);
@@ -200,22 +201,23 @@ typename AVL_tree<T>::Node* AVL_tree<T>::add(T item) {
             this->amount++;
             return leaf;
         } 
-        std::cout << "Parent id: " << ((*(*parent).content)) << std::endl;
+        //std::cout << "Parent id: " << ((*(*parent).content)) << std::endl;
         if ((*leaf).get_comparison(*parent) > 0) {
             parent->right = leaf;
         } else if ((*leaf).get_comparison(*parent) < 0) {
             parent->left = leaf;
         } else {
-            // TODO: THROW EXCEPTION
+            delete leaf;
+            throw ID_ALREADY_EXISTS();
         }
         leaf->parent = parent;
         leaf->tree=this;
         climb_up_and_rebalance_tree(leaf);
         this->amount++;
     }
-    catch (...){
+    catch (std::bad_alloc const&){
         delete leaf;
-        throw;
+        throw std::bad_alloc();
     }
     return leaf;
 
@@ -248,13 +250,13 @@ bool AVL_tree<T>::remove(int id) {
     else { // 2 children
         Node* replacement = find_next_in_order(node->right); // replacement does not have a left child this way.
         if (replacement != node->right){
-            std::cout << "SWAP1\n";
+            //std::cout << "SWAP1\n";
             next_unbalanced_node = replacement->parent;
             replacement->update_parent(replacement->right); // update parent should work even on nullptr
         }
         else{ // replacement is the right child of the removed node.
             next_unbalanced_node = replacement;
-            std::cout << "SWAP2\n";
+            //std::cout << "SWAP2\n";
         }
         replace_nodes(node, replacement);
     }
@@ -278,26 +280,26 @@ typename AVL_tree<T>::Node *AVL_tree<T>::find_id(int id) {
             return current;
         }
         else if ( difference < 0)  { //proceed to right(?) branch. current id smaller than wanted id.
-            std::cout << "id: " << id
-                      << " is bigger than: " << *current->content << std::endl;
+            //std::cout << "id: " << id
+            //          << " is bigger than: " << *current->content << std::endl;
             if (current->right != nullptr){
                 std::cout << "check right" << std::endl;
                 current = current->right;
             }
             else{ //no right child
-                std::cout << (*current->content) <<  " has no right child so: " << std::endl;
+                //std::cout << (*current->content) <<  " has no right child so: " << std::endl;
                 return nullptr; //search failed
             }
         }
         else{ //proceed to right branch
-            std::cout << "id: " << id
-                      << " is smaller than: " << *current->content << std::endl;
+            //std::cout << "id: " << id
+            //          << " is smaller than: " << *current->content << std::endl;
             if (current->left != nullptr){
-                std::cout << "check left" << std::endl;
+                //std::cout << "check left" << std::endl;
                 current = current->left;
             }
             else{
-                std::cout << *current->content << " has no left child so: " << std::endl;
+                //std::cout << *current->content << " has no left child so: " << std::endl;
                 return nullptr;
             }
         }
@@ -458,26 +460,26 @@ typename AVL_tree<T>::Node* AVL_tree<T>::find_designated_parent(AVL_tree::Node* 
     while(true){ //while true loop ok because in every case we either return or go down tree.
 
         if (new_leaf->get_comparison(*current)>0)  { //proceed to left branch.
-            std::cout << "id: " << (*new_leaf->content)
-            << " is bigger than: " << (*current->content) << std::endl;
+            //std::cout << "id: " << (*new_leaf->content)
+            //<< " is bigger than: " << (*current->content) << std::endl;
             if (current->right != nullptr){
-                std::cout << "check right" << std::endl;
+                //std::cout << "check right" << std::endl;
                 current = current->right;
             }
             else{ //no right child
-                std::cout << (*current->content) <<  " has no right child so: " << std::endl;
+                //std::cout << (*current->content) <<  " has no right child so: " << std::endl;
                 return current;
             }
         }
         else{ //proceed to right branch
-            std::cout << "id: " << (*new_leaf->content)
-            << " is smaller than: " << (*current->content) << std::endl;
+            //std::cout << "id: " << (*new_leaf->content)
+            //<< " is smaller than: " << (*current->content) << std::endl;
             if (current->left != nullptr){
-                std::cout << "check left" << std::endl;
+                //std::cout << "check left" << std::endl;
                 current = current->left;
             }
             else{
-                std::cout << (*current->content) << " has no left child so: " << std::endl;
+                //std::cout << (*current->content) << " has no left child so: " << std::endl;
                 return current;
             }
         }
@@ -492,7 +494,7 @@ int AVL_tree<T>::Node::get_comparison(const Node &other) {
     // the comparison is done between the dereferences of the pointers the nodes holds.
     
     if (tree == nullptr ) {
-        std::cout << "tree is a nullptr!" << std::endl;
+        //std::cout << "tree is a nullptr!" << std::endl;
         return 0;
     }
     if (tree->sort_by_score == SORT_BY_SCORE){
@@ -551,9 +553,9 @@ void AVL_tree<T>::climb_up_and_rebalance_tree(AVL_tree::Node *leaf) {
     while (current){ //climbs up tree. stops after iterating on root.
         current->set_height();
         current->set_balance_factor();
-        std::cout << "Currently on: " << (*current->content)
-        << " -> balance factor " << std::to_string(current->balance_factor) 
-        << ", height " << std::to_string(current->height)<< std::endl;
+        //std::cout << "Currently on: " << (*current->content)
+        //<< " -> balance factor " << std::to_string(current->balance_factor)
+        //<< ", height " << std::to_string(current->height)<< std::endl;
         if (abs(current->balance_factor) == UNBALANCED){
             current->choose_roll(); //because roll switches parent and child, we will still get to the new parent.
         }
@@ -590,22 +592,22 @@ void AVL_tree<T>::Node::choose_roll() {
     
     if (balance_factor == 2){
         if (left->balance_factor >= 0){
-            std::cout << "roll: LL" << std::endl;
+            //std::cout << "roll: LL" << std::endl;
             this->LL_roll();
         }
         else if (left->balance_factor == -1){
-            std::cout << "roll: LR" << std::endl;
+            //std::cout << "roll: LR" << std::endl;
             this->LR_roll();
         }
         else throw std::invalid_argument("bad balance factor");
     }
     else if (balance_factor == -2){
         if (right->balance_factor <= 0){
-            std::cout << "roll: RR" << std::endl;
+            //std::cout << "roll: RR" << std::endl;
             this->RR_roll();
         }
         else if (right->balance_factor == 1){
-            std::cout << "roll: RL" << std::endl;
+            //std::cout << "roll: RL" << std::endl;
             this->RL_roll();
         }
         else throw std::invalid_argument("bad balance factor");
@@ -710,10 +712,10 @@ void AVL_tree<T>::print_node(Node* node){
         std::cout << "NULL\n";
         return;
     }
-    std::cout << (*(node->content)).get_id() << " " <<
-            ((node->parent) ? (*(node->parent->content)).get_id() : 0 ) << " " <<
-            ((node->left) ? (*(node->left->content)).get_id() : 0 ) << " " <<
-            ((node->right) ? (*(node->right->content)).get_id() : 0 ) <<std::endl;
+    //std::cout << (*(node->content)).get_id() << " " <<
+    //        ((node->parent) ? (*(node->parent->content)).get_id() : 0 ) << " " <<
+    //        ((node->left) ? (*(node->left->content)).get_id() : 0 ) << " " <<
+    //        ((node->right) ? (*(node->right->content)).get_id() : 0 ) <<std::endl;
     if (node->left){
         if ((node->left && node->left->parent != node) || (node->right && node->right->parent != node)){
             throw std::invalid_argument("parent and child dont point at each other");

@@ -11,6 +11,11 @@ int Team::get_id() const{
     return id;
 }
 
+int Team::get_total_players() const
+{
+    return total_players;
+}
+
 int Team::operator~() {
     return get_id();
 }
@@ -33,12 +38,17 @@ void Team::add_player(Player* player) {
     } else if (top_scorer->get_score() == player->get_score() && top_scorer->get_id() == player->get_id()) {
         top_scorer = player;
     }
+    total_players++;
 }
 
-void Team::remove_player(int id)
+bool Team::remove_player(int id)
 {
-    team_players.remove(id);
+    bool success = team_players.remove(id);
     team_players_scores.remove(id);
+    if (success) {
+        total_players--;
+    }
+    return success;
     // TODO: top_scorer mechanism when you have remove
 }
 

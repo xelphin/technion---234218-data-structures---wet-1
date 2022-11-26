@@ -11,7 +11,8 @@ public:
     Team(int id, int points);
 
     void add_player(Player* player);
-    void remove_player(int id);
+    bool remove_player(int id);
+    int get_total_players() const;
     AVL_tree<Player*>* get_AVL_tree_id();
     AVL_tree<Player*>* get_AVL_tree_score();
     int get_id() const;
