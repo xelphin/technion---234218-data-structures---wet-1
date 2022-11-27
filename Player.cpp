@@ -14,6 +14,16 @@ int Player::get_id() const {
     return playerId;
 }
 
+int Player::get_gamesPlayed() const
+{
+    return gamesPlayed;
+}
+
+int Player::get_cards() const
+{
+    return cards;
+}
+
 int Player::operator~() {
     return get_id();
 }
@@ -51,4 +61,17 @@ void Player::set_team(Team* playerTeam)
 Team* Player::get_team() const
 {
     return this->team;
+}
+
+void Player::update_gamesPlayed(int toAdd)
+{
+    this->gamesPlayed += toAdd;
+}
+void Player::update_scoredGoals(int toAdd)
+{
+    this->goals += toAdd;
+}
+void Player::update_cardsReceived(int toAdd)
+{
+    this->cards += toAdd;
 }

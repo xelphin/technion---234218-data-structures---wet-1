@@ -12,9 +12,15 @@ public:
     Player(int playerId, int teamId, int gamesPlayed, int goals, int cards, bool goalKeeper);
     int get_score() const;
     int get_id() const;
+    int get_gamesPlayed() const;
+    int get_cards() const;
     int compare(const Player& player2, bool sort_by_score) const;
     void set_team(Team* playerTeam);
     Team* get_team() const;
+
+    void update_gamesPlayed(int toAdd);
+    void update_scoredGoals(int toAdd);
+    void update_cardsReceived(int toAdd);
 
     int operator~(); 
     int operator!();

@@ -117,10 +117,10 @@ StatusType world_cup_t::remove_player(int playerId)
     // ATTEMPT REMOVE
     try {
         // FIND PLAYER
-        if (all_players_AVL.find_id(playerId) != nullptr) { // O(log(k))
+        if (all_players_AVL.find_id(playerId) != nullptr) { // O(log(n))
             // TODO: make more efficient instead of calling find_id twice (note: can't * if nullptr)
             // PLAYER FOUND
-            Player* player = &(*((all_players_AVL.find_id(playerId))->content)); // O(log(k))
+            Player* player = &(*((all_players_AVL.find_id(playerId))->content)); // O(log(n))
             if (player != nullptr) { // note: have to do check for code to work
                 Team* playerTeam = (*player).get_team();
                 if (playerTeam != nullptr) {
@@ -156,14 +156,49 @@ StatusType world_cup_t::remove_player(int playerId)
 
     return StatusType::FAILURE;
 }
-/*
+
 StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
                                         int scoredGoals, int cardsReceived)
 {
-	// TODO: Your code goes here
+    std::cout << "Inside update_player_stats: attempt update: " << std::to_string(playerId) << std::endl;
+    // INVALID INPUT
+    if (playerId <=0 || gamesPlayed<0 || scoredGoals < 0 || cardsReceived < 0) {
+        return StatusType::INVALID_INPUT;
+    }
+    // ATTEMPT UPDATE
+    try {
+        // FIND PLAYER
+        if (all_players_AVL.find_id(playerId) != nullptr) { // O(log(n))
+            // TODO: make more efficient instead of calling find_id twice (note: can't * if nullptr)
+            // PLAYER FOUND
+            Player* player = &(*((all_players_AVL.find_id(playerId))->content)); // O(log(k))
+            if (player != nullptr) { // note: have to do check for code to work
+                // UPDATE PLAYER
+                player->update_gamesPlayed(gamesPlayed);
+                player->update_scoredGoals(scoredGoals);
+                player->update_cardsReceived(cardsReceived);
+                std::cout << "Player " << (playerId) << " gamesPlayed: " << (player->get_gamesPlayed())
+                << " scoredGoals: " << (player->get_score()) << " cardsReceived: " << (player->get_cards()) << std::endl;
+                // TODO: Check player really gets updated (not just from looking at prints)
+            } else {
+                std::cout << "OUR ERROR - SHOULD NEVER GET HERE!!!!" << std::endl;
+                return StatusType::FAILURE;
+            }
+
+        } else {
+            // PLAYER NOT FOUND
+            std::cout << "Player not found, our Player_AVL: " << std::endl;
+            std::cout << all_players_AVL.debugging_printTree();
+            return StatusType::FAILURE;
+        }
+
+    } catch (std::bad_alloc const& ) {
+        return StatusType::ALLOCATION_ERROR;
+    }
+    //
 	return StatusType::SUCCESS;
 }
-
+/*
 StatusType world_cup_t::play_match(int teamId1, int teamId2)
 {
 	// TODO: Your code goes here

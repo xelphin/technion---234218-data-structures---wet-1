@@ -31,6 +31,7 @@ bool run_all_tests() {
     run_test(worldCup_Add_Player, "worldCup_Add_Player", success_string, success);
     run_test(worldCup_Remove_Player, "worldCup_Remove_Player", success_string, success);
     run_test(worldCup_Remove_Team, "worldCup_Remove_Team", success_string, success);
+    run_test(worldCup_Update_Player_Stats, "worldCup_Update_Player_Stats", success_string, success);
 
     std::cout << success_string << std::endl;
     return success;
@@ -541,4 +542,22 @@ bool worldCup_Remove_Team()
     tests += StatusType::SUCCESS == worldCup.remove_team(2);
 
     return tests == 12;
+}
+
+bool worldCup_Update_Player_Stats()
+{
+    int tests = 0;
+    world_cup_t worldCup;
+    worldCup.add_team(1,0);
+    worldCup.add_team(2,0);
+    worldCup.add_team(3,0);
+    worldCup.add_team(4,0);
+    worldCup.add_player(1, 1, 5, 6, 4, false);
+    worldCup.add_player(2, 2, 5, 6, 4, false);
+    worldCup.add_player(3, 2, 5, 6, 4, false);
+    //
+    tests += StatusType::SUCCESS == worldCup.update_player_stats(1, 2, 3, 0);
+    tests += StatusType::FAILURE == worldCup.update_player_stats(4, 2, 3, 0);
+    tests += StatusType::INVALID_INPUT == worldCup.update_player_stats(2, -1, 3, 0);
+    return tests == 3;
 }

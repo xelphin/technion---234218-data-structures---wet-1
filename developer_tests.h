@@ -45,5 +45,6 @@ bool worldCup_Add();
 bool worldCup_Add_Player();
 bool worldCup_Remove_Player();
 bool worldCup_Remove_Team();
+bool worldCup_Update_Player_Stats();
 
 #endif
