@@ -44,5 +44,6 @@ bool worldCup_Constructor();
 bool worldCup_Add();
 bool worldCup_Remove();
 bool worldCup_Add_Player();
+bool worldCup_Remove_Player();
 
 #endif

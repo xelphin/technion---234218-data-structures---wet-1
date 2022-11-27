@@ -65,45 +65,88 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
 {
 
     std::cout << "Inside add_player: " << std::endl;
+    // INVALID INPUT (checks)
     if (teamId <= 0 || playerId <= 0 || gamesPlayed<0 || goals<0 || cards < 0)
         return StatusType::INVALID_INPUT;
     if (gamesPlayed==0 && (goals>0 || cards>0) )
         return StatusType::INVALID_INPUT;
 
-    // Find Team
     Team* team;
     if (teams_AVL.find_id(teamId) != nullptr && all_players_AVL.find_id(playerId) == nullptr) { // O(log(k) + log(n))
         // TODO: make more efficient instead of calling find_id twice (note: can't * if nullptr)
-        team = &(*((teams_AVL.find_id(teamId))->content)); // O(log(k))
+        // TEAM exists and PLAYER doesn't exist
+        team = &(*((teams_AVL.find_id(teamId))->content)); // GET Team Content: O(log(k))
+        // TRY Create PLAYER and ADD to TEAM and AVLs
         try {
             std::shared_ptr<Player> player(new Player(playerId, teamId, gamesPlayed, goals, cards, goalKeeper));
-            team->add_player(player);
+            (*team).add_player(player); // TODO: Check
+            std::cout << "Our playerTEAM AVL now: " << std::endl;
+            std::cout << (*(*team).get_AVL_tree_id()).debugging_printTree();
+            (*player).set_team(team); // TODO: Check
             all_players_AVL.add(player);
             all_players_score_AVL.add(player);
-        } catch (std::bad_alloc const&) {
+        } catch (std::bad_alloc const&) { // EXCEPTION: Bad Alloc
             all_players_AVL.remove(playerId);
             all_players_score_AVL.remove(playerId);
             return StatusType::ALLOCATION_ERROR;
-        } catch (const ID_ALREADY_EXISTS& e) {
+        } catch (const ID_ALREADY_EXISTS& e) { // EXCEPTION: ID already exists
             std::cout << "id: " << std::to_string(playerId) << " already exists" << std::endl;
             return StatusType::FAILURE;
         }
 
     } else {
+        // TEAM DOES NOT EXIST
         std::cout << "team couldn't be found: " << std::to_string(teams_AVL.find_id(teamId) == nullptr)  << std::endl;
         std::cout << "player exists already: " << std::to_string(all_players_AVL.find_id(teamId) != nullptr)  << std::endl;
         return StatusType::FAILURE;
     }
-
+    // SUCCESS
 	return StatusType::SUCCESS;
 }
-/*
+
 StatusType world_cup_t::remove_player(int playerId)
 {
-	// TODO: Your code goes here
-	return StatusType::SUCCESS;
-}
+    /*
+    std::cout << "Inside remove_player: attempt remove" << std::to_string(playerId) << std::endl;
+    bool success1 = false;
+    bool success2 = false;
+    // INVALID INPUT
+    if (playerId <=0) {
+        return StatusType::INVALID_INPUT;
+    }
+    // ATTEMPT REMOVE
+    try {
+        // FIND PLAYER
+        if (all_players_AVL.find_id(playerId) != nullptr) { // O(log(k))
+            // TODO: make more efficient instead of calling find_id twice (note: can't * if nullptr)
+            // PLAYER FOUND
+            Player* player = &(*((all_players_AVL.find_id(playerId))->content)); // O(log(k))
+            Team* playerTeam = (*player).get_team(); // TODO: CONTINUE HERE!!!
+            // REMOVE from playerTEAM AVLs
+            success1 = (*playerTeam).remove_player(playerId);
+            std::cout << "Our playerTEAM AVL now: " << std::endl;
+            std::cout << (*(*playerTeam).get_AVL_tree_id()).debugging_printTree();
+            // REMOVE from WORLD_CUP AVLs
+            success2 = all_players_AVL.remove(playerId);
+            all_players_score_AVL.remove(playerId);
+        } else {
+            // PLAYER NOT FOUND
+            return StatusType::FAILURE;
+        }
 
+    } catch (std::bad_alloc const& ) {
+        return StatusType::ALLOCATION_ERROR;
+    }
+
+    if (success1 && success2) {
+        return StatusType::SUCCESS;
+    }
+    // DON'T DELETE TILL FINISHED ALL DEBUGGING
+    std::cout << "OUR ERROR - SHOULD NEVER GET HERE!!!!" << std::endl;
+    */
+    return StatusType::FAILURE;
+}
+/*
 StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
                                         int scoredGoals, int cardsReceived)
 {

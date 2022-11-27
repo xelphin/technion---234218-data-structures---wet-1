@@ -1,7 +1,7 @@
 #include "Player.h"
 
 Player::Player(int playerId, int teamId, int gamesPlayed, int goals, int cards, bool goalKeeper) 
-: playerId(playerId), teamId(teamId), gamesPlayed(gamesPlayed), goals(goals), cards(cards), goalKeeper(goalKeeper)
+: playerId(playerId), teamId(teamId), gamesPlayed(gamesPlayed), goals(goals), cards(cards), goalKeeper(goalKeeper), team(nullptr)
 {
     // TODO: find Team using TeamId and connect our Team* to it (if team doesn't exist -> throw error)
 }
@@ -41,4 +41,14 @@ int Player::compare(const Player& player2, bool sort_by_score) const
     {
         return Player::get_id() - player2.get_id();
     }
+}
+
+void Player::set_team(Team* playerTeam)
+{
+   this->team = playerTeam;
+}
+
+Team* Player::get_team() const
+{
+    return this->team;
 }
