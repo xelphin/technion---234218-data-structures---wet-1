@@ -264,6 +264,7 @@ output_t<int> world_cup_t::get_team_points(int teamId)
 StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
 {
 	// TODO: Your code goes here
+    // Make sure to put update the values of played_games in each team before you unite log(n), and whatever else
 	return StatusType::SUCCESS;
 }
 
