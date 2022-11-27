@@ -21,9 +21,12 @@ int Player::get_gamesPlayed() const
 
 int Player::get_cards() const
 {
-    return cards;
+    return Player::cards;
 }
-
+bool Player::get_isGoalKeeper() const
+{
+    return goalKeeper;
+}
 int Player::operator~() {
     return get_id();
 }

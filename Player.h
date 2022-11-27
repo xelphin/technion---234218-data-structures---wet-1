@@ -14,6 +14,7 @@ public:
     int get_id() const;
     int get_gamesPlayed() const;
     int get_cards() const;
+    bool get_isGoalKeeper() const;
     int compare(const Player& player2, bool sort_by_score) const;
     void set_team(Team* playerTeam);
     Team* get_team() const;

@@ -14,12 +14,21 @@ public:
     void add_player(std::shared_ptr<Player> player);
     std::shared_ptr<Player> find_player(int id);
     bool remove_player(int id);
-    int get_total_players() const;
+
     AVL_tree<std::shared_ptr<Player>>* get_AVL_tree_id();
     AVL_tree<std::shared_ptr<Player>>* get_AVL_tree_score();
     int get_id() const;
     int operator~();
     int operator!();
+
+    void update_scoredGoals(int toAdd);
+    void update_cardsReceived(int toAdd);
+    void update_addAGoalKeeper(bool add);
+    void update_removeAGoalKeeper(bool remove);
+    int get_cards() const;
+    int get_goals() const;
+    int get_total_players() const;
+    int get_total_points() const;
 
     friend std::ostream& operator<<(std::ostream& os, const Team& team);
     int compare(const Team& team2, bool sort_by_score) const;
@@ -27,8 +36,10 @@ public:
 private:
     int id;
     int total_players;
-    int total_points;
+    int total_points; // ?
+    int total_goals;
     int total_cards;
+    int total_goalKeepers;
     Player *top_scorer; //may be changed to a different type of pointer later on.
     AVL_tree<std::shared_ptr<Player>> team_players;
     AVL_tree<std::shared_ptr<Player>> team_players_scores;

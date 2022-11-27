@@ -63,7 +63,6 @@ StatusType world_cup_t::remove_team(int teamId)
 StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
                                    int goals, int cards, bool goalKeeper)
 {
-
     std::cout << "Inside add_player: " << std::endl;
     // INVALID INPUT (checks)
     if (teamId <= 0 || playerId <= 0 || gamesPlayed<0 || goals<0 || cards < 0)
@@ -79,8 +78,15 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
         // TRY Create PLAYER and ADD to TEAM and AVLs
         try {
             std::shared_ptr<Player> player(new Player(playerId, teamId, gamesPlayed, goals, cards, goalKeeper));
-            (*team).add_player(player);
-            (*player).set_team(team);
+            if (team!=nullptr) {
+                team->add_player(player);
+                team->update_cardsReceived(cards);
+                team->update_scoredGoals(goals);
+                team->update_addAGoalKeeper(goalKeeper);
+            }
+            else
+                return StatusType::FAILURE;
+            player->set_team(team);
             all_players_AVL.add(player);
             all_players_score_AVL.add(player);
         } catch (std::bad_alloc const&) { // EXCEPTION: Bad Alloc
@@ -104,7 +110,6 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
 
 StatusType world_cup_t::remove_player(int playerId)
 {
-
     std::cout << "Inside remove_player: attempt remove" << std::to_string(playerId) << std::endl;
     std::cout << "(Before) Player_AVL: " << std::endl;
     std::cout << all_players_AVL.debugging_printTree();
@@ -124,9 +129,12 @@ StatusType world_cup_t::remove_player(int playerId)
             if (player != nullptr) { // note: have to do check for code to work
                 Team* playerTeam = (*player).get_team();
                 if (playerTeam != nullptr) {
+                    // REMOVE from PLAYER_TEAM
                     success1 = (*playerTeam).remove_player(playerId); // we know: playerTeam != nullptr
-                    std::cout << "Our playerTEAM AVL now: " << std::endl;
-                    std::cout << (*(*playerTeam).get_AVL_tree_id()).debugging_printTree();
+                    // UPDATE PLAYER_TEAM
+                    playerTeam->update_cardsReceived(-(player->get_cards())); // TODO: check if needed
+                    playerTeam->update_scoredGoals(-(player->get_score()));
+                    playerTeam->update_removeAGoalKeeper(player->get_isGoalKeeper());
                     // REMOVE from WORLD_CUP AVLs
                     success2 = all_players_AVL.remove(playerId);
                     all_players_score_AVL.remove(playerId);
@@ -173,13 +181,19 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
             // PLAYER FOUND
             Player* player = &(*((all_players_AVL.find_id(playerId))->content)); // O(log(k))
             if (player != nullptr) { // note: have to do check for code to work
+                Team* playerTeam = (*player).get_team();
+                if (playerTeam == nullptr)
+                    return StatusType::FAILURE;
                 // UPDATE PLAYER
                 player->update_gamesPlayed(gamesPlayed);
                 player->update_scoredGoals(scoredGoals);
                 player->update_cardsReceived(cardsReceived);
                 std::cout << "Player " << (playerId) << " gamesPlayed: " << (player->get_gamesPlayed())
                 << " scoredGoals: " << (player->get_score()) << " cardsReceived: " << (player->get_cards()) << std::endl;
-                // TODO: Check player really gets updated (not just from looking at prints)
+                // UPDATE TEAM
+                playerTeam->update_cardsReceived(cardsReceived);
+                playerTeam->update_scoredGoals(scoredGoals);
+                // TODO: Check player/team really gets updated (not just from looking at prints)
             } else {
                 std::cout << "OUR ERROR - SHOULD NEVER GET HERE!!!!" << std::endl;
                 return StatusType::FAILURE;
@@ -198,13 +212,13 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
     //
 	return StatusType::SUCCESS;
 }
-/*
+
 StatusType world_cup_t::play_match(int teamId1, int teamId2)
 {
-	// TODO: Your code goes here
+
 	return StatusType::SUCCESS;
 }
-
+/*
 output_t<int> world_cup_t::get_num_played_games(int playerId)
 {
 	// TODO: Your code goes here

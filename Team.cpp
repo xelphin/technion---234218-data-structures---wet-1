@@ -3,7 +3,7 @@
 
 
 Team::Team(int id, int points)
-: id(id),total_players(0),total_points(points),total_cards(0),top_scorer(nullptr),
+: id(id),total_players(0),total_points(points), total_goals(0), total_cards(0), total_goalKeepers(0), top_scorer(nullptr),
 team_players(SORT_BY_ID),team_players_scores(SORT_BY_SCORE)
 {}
 
@@ -11,10 +11,7 @@ int Team::get_id() const{
     return id;
 }
 
-int Team::get_total_players() const
-{
-    return total_players;
-}
+
 
 int Team::operator~() {
     return get_id();
@@ -90,4 +87,45 @@ int Team::compare(const Team& team2, bool sort_by_score) const
     {
         return Team::get_id() - team2.get_id();
     }
+}
+
+void Team::update_scoredGoals(int toAdd)
+{
+    this->total_goals += toAdd;
+}
+void Team::update_cardsReceived(int toAdd)
+{
+    this->total_cards += toAdd;
+}
+
+void Team::update_addAGoalKeeper(bool add)
+{
+    if (add)
+        this->total_goalKeepers += 1;
+}
+
+void Team::update_removeAGoalKeeper(bool remove)
+{
+    if (remove)
+        this->total_goalKeepers -= 1;
+}
+
+int Team::get_cards() const
+{
+    return total_cards;
+}
+
+int Team::get_goals() const
+{
+    return total_goals;
+}
+
+int Team::get_total_players() const
+{
+    return total_players;
+}
+
+int Team::get_total_points() const
+{
+    return total_points;
 }
