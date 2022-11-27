@@ -29,7 +29,7 @@ bool run_all_tests() {
     run_test(worldCup_Constructor, "worldCup_Constructor", success_string, success);
     run_test(worldCup_Add, "worldCup_Add", success_string, success);
     run_test(worldCup_Add_Player, "worldCup_Add_Player", success_string, success);
-    // run_test(worldCup_Remove_Player, "worldCup_Remove_Player", success_string, success);
+    run_test(worldCup_Remove_Player, "worldCup_Remove_Player", success_string, success);
     // run_test(worldCup_Remove, "worldCup_Remove", success_string, success);
 
     std::cout << success_string << std::endl;
@@ -495,8 +495,10 @@ bool worldCup_Remove_Player()
     world_cup_t worldCup;
     worldCup.add_team(1,0);
     worldCup.add_team(2,0);
+    worldCup.add_team(3,0);
     worldCup.add_player(1, 1, 5, 6, 4, false);
     worldCup.add_player(2, 3, 5, 6, 4, false);
+    worldCup.add_player(4, 3, 5, 6, 4, false);
 
     tests += StatusType::SUCCESS == worldCup.remove_player(1);
     tests += StatusType::FAILURE == worldCup.remove_player(1);

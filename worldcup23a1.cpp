@@ -79,10 +79,8 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
         // TRY Create PLAYER and ADD to TEAM and AVLs
         try {
             std::shared_ptr<Player> player(new Player(playerId, teamId, gamesPlayed, goals, cards, goalKeeper));
-            (*team).add_player(player); // TODO: Check
-            std::cout << "Our playerTEAM AVL now: " << std::endl;
-            std::cout << (*(*team).get_AVL_tree_id()).debugging_printTree();
-            (*player).set_team(team); // TODO: Check
+            (*team).add_player(player);
+            (*player).set_team(team);
             all_players_AVL.add(player);
             all_players_score_AVL.add(player);
         } catch (std::bad_alloc const&) { // EXCEPTION: Bad Alloc
@@ -106,8 +104,10 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
 
 StatusType world_cup_t::remove_player(int playerId)
 {
-    /*
+
     std::cout << "Inside remove_player: attempt remove" << std::to_string(playerId) << std::endl;
+    std::cout << "(Before) Player_AVL: " << std::endl;
+    std::cout << all_players_AVL.debugging_printTree();
     bool success1 = false;
     bool success2 = false;
     // INVALID INPUT
@@ -121,16 +121,26 @@ StatusType world_cup_t::remove_player(int playerId)
             // TODO: make more efficient instead of calling find_id twice (note: can't * if nullptr)
             // PLAYER FOUND
             Player* player = &(*((all_players_AVL.find_id(playerId))->content)); // O(log(k))
-            Team* playerTeam = (*player).get_team(); // TODO: CONTINUE HERE!!!
-            // REMOVE from playerTEAM AVLs
-            success1 = (*playerTeam).remove_player(playerId);
-            std::cout << "Our playerTEAM AVL now: " << std::endl;
-            std::cout << (*(*playerTeam).get_AVL_tree_id()).debugging_printTree();
-            // REMOVE from WORLD_CUP AVLs
-            success2 = all_players_AVL.remove(playerId);
-            all_players_score_AVL.remove(playerId);
+            if (player != nullptr) { // note: have to do check for code to work
+                Team* playerTeam = (*player).get_team();
+                if (playerTeam != nullptr) {
+                    success1 = (*playerTeam).remove_player(playerId); // we know: playerTeam != nullptr
+                    std::cout << "Our playerTEAM AVL now: " << std::endl;
+                    std::cout << (*(*playerTeam).get_AVL_tree_id()).debugging_printTree();
+                    // REMOVE from WORLD_CUP AVLs
+                    success2 = all_players_AVL.remove(playerId);
+                    all_players_score_AVL.remove(playerId);
+                } else {
+                    success1 = false;
+                }
+            } else {
+                success2 = false;
+            }
+
         } else {
             // PLAYER NOT FOUND
+            std::cout << "Player not found, our Player_AVL: " << std::endl;
+            std::cout << all_players_AVL.debugging_printTree();
             return StatusType::FAILURE;
         }
 
@@ -143,7 +153,7 @@ StatusType world_cup_t::remove_player(int playerId)
     }
     // DON'T DELETE TILL FINISHED ALL DEBUGGING
     std::cout << "OUR ERROR - SHOULD NEVER GET HERE!!!!" << std::endl;
-    */
+
     return StatusType::FAILURE;
 }
 /*
