@@ -25,10 +25,15 @@ public:
     void update_cardsReceived(int toAdd);
     void update_addAGoalKeeper(bool add);
     void update_removeAGoalKeeper(bool remove);
+    void update_totalPoints(int toAdd);
+    void update_wins();
+    void update_gamesPlayed();
     int get_cards() const;
     int get_goals() const;
     int get_total_players() const;
     int get_total_points() const;
+    int get_match_score() const;
+    int get_gamesPlayed() const;
 
     friend std::ostream& operator<<(std::ostream& os, const Team& team);
     int compare(const Team& team2, bool sort_by_score) const;
@@ -40,6 +45,8 @@ private:
     int total_goals;
     int total_cards;
     int total_goalKeepers;
+    int wins;
+    int gamesPlayed;
     Player *top_scorer; //may be changed to a different type of pointer later on.
     AVL_tree<std::shared_ptr<Player>> team_players;
     AVL_tree<std::shared_ptr<Player>> team_players_scores;

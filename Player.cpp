@@ -16,6 +16,8 @@ int Player::get_id() const {
 
 int Player::get_gamesPlayed() const
 {
+    if (team != nullptr)
+        return gamesPlayed + team->get_gamesPlayed();
     return gamesPlayed;
 }
 

@@ -213,9 +213,39 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
 	return StatusType::SUCCESS;
 }
 
-StatusType world_cup_t::play_match(int teamId1, int teamId2)
+StatusType world_cup_t::play_match(int teamId1, int teamId2) // O(log(k))
 {
-
+    // TODO: Check team really gets updated where necessary and properly -> Check from play_match test
+    // INVALID INPUT
+    if (teamId1 <=0 || teamId2<=0 || teamId1 == teamId2) {
+        return StatusType::INVALID_INPUT;
+    }
+    // FIND TEAMS O(log(k))
+    Team* team1;
+    Team* team2;
+    if (teams_AVL.find_id(teamId1) != nullptr) {
+        team1 = &(*((teams_AVL.find_id(teamId1))->content)); // GET Team Content: O(log(k))
+    } else {
+        return StatusType::FAILURE;
+    }
+    if (teams_AVL.find_id(teamId1) != nullptr) {
+        team2 = &(*((teams_AVL.find_id(teamId2))->content)); // GET Team Content: O(log(k))
+    } else {
+        return StatusType::FAILURE;
+    }
+    // GET SCORES O(1)
+    int score1 = team1->get_match_score();
+    int score2 = team2->get_match_score();
+    // APPLY POINTS O(1)
+    if (score1 == score2) {
+        team1->update_totalPoints(1);
+        team2->update_totalPoints(1);
+    } else if (score1 < score2) {
+        team2->update_totalPoints(3);
+    } else {
+        team1->update_totalPoints(3);
+    }
+    // NOTE: Player->get_gamesPlayed() : takes into account Teams gamesPlayed
 	return StatusType::SUCCESS;
 }
 /*
