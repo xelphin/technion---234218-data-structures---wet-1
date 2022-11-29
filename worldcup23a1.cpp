@@ -39,15 +39,16 @@ StatusType world_cup_t::remove_team(int teamId)
         return StatusType::INVALID_INPUT;
     }
 	try {
-        if (teams_AVL.find_id(teamId) != nullptr) { // O(log(k))
-            // TODO: make more efficient instead of calling find_id twice (note: can't * if nullptr)
-            Team* team = &(*((teams_AVL.find_id(teamId))->content)); // O(log(k))
+        Team* team = &(*(teams_AVL.get_content(teamId))); // O(log(k))
+        if (team != nullptr) {
             if (team->get_total_players() > 0)
                 return StatusType::FAILURE;
             success = teams_AVL.remove(teamId);
             valid_teams_AVL.remove(teamId);
         }
-
+        else{
+            return StatusType::FAILURE;
+        }
     } catch (std::bad_alloc const& ) {
         return StatusType::ALLOCATION_ERROR;
     }
@@ -70,22 +71,17 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
     if (gamesPlayed==0 && (goals>0 || cards>0) )
         return StatusType::INVALID_INPUT;
 
-    Team* team;
-    if (teams_AVL.find_id(teamId) != nullptr && all_players_AVL.find_id(playerId) == nullptr) { // O(log(k) + log(n))
-        // TODO: make more efficient instead of calling find_id twice (note: can't * if nullptr)
+    Team* team = &(*(teams_AVL.get_content(teamId))); // O(log(k))
+    if (team != nullptr && all_players_AVL.find_id(playerId) == nullptr) { // O(log(k) + log(n))
         // TEAM exists and PLAYER doesn't exist
-        team = &(*((teams_AVL.find_id(teamId))->content)); // GET Team Content: O(log(k))
-        // TRY Create PLAYER and ADD to TEAM and AVLs
+        // TRY to Create PLAYER and ADD to TEAM and AVLs
         try {
             std::shared_ptr<Player> player(new Player(playerId, teamId, gamesPlayed, goals, cards, goalKeeper));
-            if (team!=nullptr) {
-                team->add_player(player);
-                team->update_cardsReceived(cards);
-                team->update_scoredGoals(goals);
-                team->update_addAGoalKeeper(goalKeeper);
-            }
-            else
-                return StatusType::FAILURE;
+            team->add_player(player);
+            team->update_cardsReceived(cards);
+            team->update_scoredGoals(goals);
+            team->update_addAGoalKeeper(goalKeeper);
+
             player->set_team(team);
             all_players_AVL.add(player);
             all_players_score_AVL.add(player);
@@ -122,27 +118,22 @@ StatusType world_cup_t::remove_player(int playerId)
     // ATTEMPT REMOVE
     try {
         // FIND PLAYER
-        if (all_players_AVL.find_id(playerId) != nullptr) { // O(log(n))
-            // TODO: make more efficient instead of calling find_id twice (note: can't * if nullptr)
+        Player* player = &(*(all_players_AVL.get_content(playerId))); // O(log(n))
+        if (player != nullptr) { // O(log(n))
             // PLAYER FOUND
-            Player* player = &(*((all_players_AVL.find_id(playerId))->content)); // O(log(n))
-            if (player != nullptr) { // note: have to do check for code to work
-                Team* playerTeam = (*player).get_team();
-                if (playerTeam != nullptr) {
-                    // REMOVE from PLAYER_TEAM
-                    success1 = (*playerTeam).remove_player(playerId); // we know: playerTeam != nullptr
-                    // UPDATE PLAYER_TEAM
-                    playerTeam->update_cardsReceived(-(player->get_cards())); // TODO: check if needed
-                    playerTeam->update_scoredGoals(-(player->get_score()));
-                    playerTeam->update_removeAGoalKeeper(player->get_isGoalKeeper());
-                    // REMOVE from WORLD_CUP AVLs
-                    success2 = all_players_AVL.remove(playerId);
-                    all_players_score_AVL.remove(playerId);
-                } else {
-                    success1 = false;
-                }
+            Team* playerTeam = (*player).get_team();
+            if (playerTeam != nullptr) {
+                // REMOVE from PLAYER_TEAM
+                success1 = (*playerTeam).remove_player(playerId); // we know: playerTeam != nullptr
+                // UPDATE PLAYER_TEAM
+                playerTeam->update_cardsReceived(-(player->get_cards())); // TODO: check if needed
+                playerTeam->update_scoredGoals(-(player->get_score()));
+                playerTeam->update_removeAGoalKeeper(player->get_isGoalKeeper());
+                // REMOVE from WORLD_CUP AVLs
+                success2 = all_players_AVL.remove(playerId);
+                all_players_score_AVL.remove(playerId);
             } else {
-                success2 = false;
+                success1 = false;
             }
 
         } else {
@@ -176,29 +167,22 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
     // ATTEMPT UPDATE
     try {
         // FIND PLAYER
-        if (all_players_AVL.find_id(playerId) != nullptr) { // O(log(n))
-            // TODO: make more efficient instead of calling find_id twice (note: can't * if nullptr)
+        Player* player = &(*(all_players_AVL.get_content(playerId))); // O(log(k))
+        if (player != nullptr) { // O(log(n))
             // PLAYER FOUND
-            Player* player = &(*((all_players_AVL.find_id(playerId))->content)); // O(log(k))
-            if (player != nullptr) { // note: have to do check for code to work
-                Team* playerTeam = (*player).get_team();
-                if (playerTeam == nullptr)
-                    return StatusType::FAILURE;
-                // UPDATE PLAYER
-                player->update_gamesPlayed(gamesPlayed);
-                player->update_scoredGoals(scoredGoals);
-                player->update_cardsReceived(cardsReceived);
-                std::cout << "Player " << (playerId) << " gamesPlayed: " << (player->get_gamesPlayed())
-                << " scoredGoals: " << (player->get_score()) << " cardsReceived: " << (player->get_cards()) << std::endl;
-                // UPDATE TEAM
-                playerTeam->update_cardsReceived(cardsReceived);
-                playerTeam->update_scoredGoals(scoredGoals);
-                // TODO: Check player/team really gets updated (not just from looking at prints)
-            } else {
-                std::cout << "OUR ERROR - SHOULD NEVER GET HERE!!!!" << std::endl;
+            Team* playerTeam = (*player).get_team();
+            if (playerTeam == nullptr)
                 return StatusType::FAILURE;
-            }
-
+            // UPDATE PLAYER
+            player->update_gamesPlayed(gamesPlayed);
+            player->update_scoredGoals(scoredGoals);
+            player->update_cardsReceived(cardsReceived);
+            std::cout << "Player " << (playerId) << " gamesPlayed: " << (player->get_gamesPlayed())
+            << " scoredGoals: " << (player->get_score()) << " cardsReceived: " << (player->get_cards()) << std::endl;
+            // UPDATE TEAM
+            playerTeam->update_cardsReceived(cardsReceived);
+            playerTeam->update_scoredGoals(scoredGoals);
+            // TODO: Check player/team really gets updated (not just from looking at prints)
         } else {
             // PLAYER NOT FOUND
             std::cout << "Player not found, our Player_AVL: " << std::endl;
@@ -220,19 +204,13 @@ StatusType world_cup_t::play_match(int teamId1, int teamId2) // O(log(k))
     if (teamId1 <=0 || teamId2<=0 || teamId1 == teamId2) {
         return StatusType::INVALID_INPUT;
     }
-    // FIND TEAMS O(log(k))
-    Team* team1;
-    Team* team2;
-    if (teams_AVL.find_id(teamId1) != nullptr) {
-        team1 = &(*((teams_AVL.find_id(teamId1))->content)); // GET Team Content: O(log(k))
-    } else {
+    // FIND TEAMS O(log(k)), GET Team Content: O(log(k))
+    Team* team1 = &(*teams_AVL.get_content(teamId1));
+    Team* team2 = &(*teams_AVL.get_content(teamId2));
+    if(team1 == nullptr || team2 == nullptr){
         return StatusType::FAILURE;
     }
-    if (teams_AVL.find_id(teamId1) != nullptr) {
-        team2 = &(*((teams_AVL.find_id(teamId2))->content)); // GET Team Content: O(log(k))
-    } else {
-        return StatusType::FAILURE;
-    }
+
     // GET SCORES O(1)
     int score1 = team1->get_match_score();
     int score2 = team2->get_match_score();

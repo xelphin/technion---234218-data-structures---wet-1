@@ -11,13 +11,11 @@ int Team::get_id() const{
     return id;
 }
 
-
-
-int Team::operator~() {
+int Team::operator ID() const {
     return get_id();
 }
 
-int Team::operator!() {
+int Team::operator SCORE() const {
     return get_points();
 }
 
@@ -25,14 +23,14 @@ int Team::get_points() const{
     return total_points;
 }
 
-void Team::add_player(std::shared_ptr<Player> player) {
+void Team::add_player(std::shared_ptr<Player> player) { //TODO: clang tidy: make player a const reference?
+    // TODO: check that the argument is valid
     team_players.add(player);
     team_players_scores.add(player);
-    if (top_scorer == nullptr) {
-        top_scorer = &*player;
-    } else if (top_scorer->get_score() < player->get_score()) {
-        top_scorer = &*player;
-    } else if (top_scorer->get_score() == player->get_score() && top_scorer->get_id() == player->get_id()) {
+    if (top_scorer == nullptr ||
+        (top_scorer->get_score() < player->get_score()) ||
+        (top_scorer->get_score() == player->get_score() && top_scorer->get_id() == player->get_id()))
+    {
         top_scorer = &*player;
     }
     total_players++;
@@ -41,10 +39,8 @@ void Team::add_player(std::shared_ptr<Player> player) {
 std::shared_ptr<Player> Team::find_player(int id)
 {
     // O(log(n))
-    if (team_players.find_id(id) == nullptr) {
-        return nullptr;
-    }
-    return team_players.find_id(id)->content;
+    // TODO: make sure this does not need to return a pointer to the shared pointer.
+    return team_players.get_content(id);
 }
 
 bool Team::remove_player(int id)

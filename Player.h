@@ -18,14 +18,14 @@ public:
     bool get_isGoalKeeper() const;
     Team* get_team() const;
     int compare(const Player& player2, bool sort_by_score) const;
+    int operator SCORE() const;
+    int operator ID() const;
 
     void set_team(Team* playerTeam);
     void update_gamesPlayed(int toAdd);
     void update_scoredGoals(int toAdd);
     void update_cardsReceived(int toAdd);
 
-    int operator SCORE();
-    int operator ID();
 
     friend std::ostream& operator<<(std::ostream& os, const Player& player);
 
