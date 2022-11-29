@@ -314,7 +314,6 @@ typename AVL_tree<T>::Node *AVL_tree<T>::find_id(int id) {
 
 template<class T>
 T AVL_tree<T>::get_content(int id) {
-    //TODO: make sure T* is the right return type.
     Node* node = find_id(id);
     if (node){
         return node->content;

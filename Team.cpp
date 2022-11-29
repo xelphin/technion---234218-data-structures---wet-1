@@ -43,15 +43,16 @@ std::shared_ptr<Player> Team::find_player(int id)
     return team_players.get_content(id);
 }
 
-bool Team::remove_player(int id)
+bool Team::remove_player(int player_id)
 {
-    bool success = team_players.remove(id);
-    team_players_scores.remove(id);
+    // needs to be O(players in the system)
+    bool success = team_players.remove(player_id);
+    team_players_scores.remove(player_id);
     if (success) {
         total_players--;
     }
     return success;
-    // TODO: top_scorer mechanism when you have remove
+    // TODO: top_scorer mechanism when you have remove. possibly use inorder_traversal() for that, since we just need O(n), not log.
 }
 
 AVL_tree<std::shared_ptr<Player>>* Team::get_AVL_tree_id()
@@ -72,6 +73,7 @@ std::ostream& operator<<(std::ostream& os, const Team& toPrint)
 
 int Team::compare(const Team& team2, bool sort_by_score) const
 {
+    //TODO: make sure int is right return type.
     if (sort_by_score == SORT_BY_SCORE){
         int score_diff = Team::get_points() - team2.get_points();
         if (score_diff != 0)
@@ -97,13 +99,13 @@ void Team::update_cardsReceived(int toAdd)
 void Team::update_addAGoalKeeper(bool add)
 {
     if (add)
-        this->total_goalKeepers += 1;
+        this->total_goalKeepers++;
 }
 
 void Team::update_removeAGoalKeeper(bool remove)
 {
     if (remove)
-        this->total_goalKeepers -= 1;
+        this->total_goalKeepers--;
 }
 void Team::update_totalPoints(int toAdd)
 {

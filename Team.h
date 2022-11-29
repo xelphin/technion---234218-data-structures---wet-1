@@ -13,7 +13,7 @@ public:
 
     void add_player(std::shared_ptr<Player> player);
     std::shared_ptr<Player> find_player(int id);
-    bool remove_player(int id);
+    bool remove_player(int player_id);
 
     int get_id() const;
     int get_cards() const;

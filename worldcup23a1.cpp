@@ -13,7 +13,7 @@ world_cup_t::~world_cup_t()
 StatusType world_cup_t::add_team(int teamId, int points)
 {
     std::cout << "Inside add_team: " << std::endl;
-	if (teamId <= 0 || points<0)
+	if (teamId <= 0 || points < 0)
         return StatusType::INVALID_INPUT;
     try {
         std::shared_ptr<Team> team(new Team(teamId, points));
@@ -44,7 +44,9 @@ StatusType world_cup_t::remove_team(int teamId)
             if (team->get_total_players() > 0)
                 return StatusType::FAILURE;
             success = teams_AVL.remove(teamId);
-            valid_teams_AVL.remove(teamId);
+            if (success){ // also needs to remove from other AVL
+                valid_teams_AVL.remove(teamId);
+            }
         }
         else{
             return StatusType::FAILURE;
@@ -54,9 +56,7 @@ StatusType world_cup_t::remove_team(int teamId)
     }
     std::cout << "Teams: " << std::endl;
     std::cout << teams_AVL.debugging_printTree();
-    if (success)
-            return StatusType::SUCCESS;
-	return StatusType::FAILURE;
+    return success ? StatusType::SUCCESS : StatusType::FAILURE;
 }
 
 
@@ -119,7 +119,7 @@ StatusType world_cup_t::remove_player(int playerId)
     try {
         // FIND PLAYER
         Player* player = &(*(all_players_AVL.get_content(playerId))); // O(log(n))
-        if (player != nullptr) { // O(log(n))
+        if (player != nullptr) {
             // PLAYER FOUND
             Team* playerTeam = (*player).get_team();
             if (playerTeam != nullptr) {
@@ -129,13 +129,12 @@ StatusType world_cup_t::remove_player(int playerId)
                 playerTeam->update_cardsReceived(-(player->get_cards())); // TODO: check if needed
                 playerTeam->update_scoredGoals(-(player->get_score()));
                 playerTeam->update_removeAGoalKeeper(player->get_isGoalKeeper());
-                // REMOVE from WORLD_CUP AVLs
-                success2 = all_players_AVL.remove(playerId);
-                all_players_score_AVL.remove(playerId);
             } else {
                 success1 = false;
             }
-
+            // REMOVE from WORLD_CUP AVLs (even if player does not have a team)
+            success2 = all_players_AVL.remove(playerId);
+            all_players_score_AVL.remove(playerId);
         } else {
             // PLAYER NOT FOUND
             std::cout << "Player not found, our Player_AVL: " << std::endl;
@@ -152,7 +151,6 @@ StatusType world_cup_t::remove_player(int playerId)
     }
     // DON'T DELETE TILL FINISHED ALL DEBUGGING
     std::cout << "OUR ERROR - SHOULD NEVER GET HERE!!!!" << std::endl;
-
     return StatusType::FAILURE;
 }
 
@@ -160,15 +158,14 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
                                         int scoredGoals, int cardsReceived)
 {
     std::cout << "Inside update_player_stats: attempt update: " << std::to_string(playerId) << std::endl;
-    // INVALID INPUT
-    if (playerId <=0 || gamesPlayed<0 || scoredGoals < 0 || cardsReceived < 0) {
+    if (playerId <= 0 || gamesPlayed < 0 || scoredGoals < 0 || cardsReceived < 0) {
         return StatusType::INVALID_INPUT;
     }
     // ATTEMPT UPDATE
     try {
         // FIND PLAYER
-        Player* player = &(*(all_players_AVL.get_content(playerId))); // O(log(k))
-        if (player != nullptr) { // O(log(n))
+        Player* player = &(*(all_players_AVL.get_content(playerId))); // O(log(players))
+        if (player != nullptr) {
             // PLAYER FOUND
             Team* playerTeam = (*player).get_team();
             if (playerTeam == nullptr)
@@ -200,11 +197,10 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
 StatusType world_cup_t::play_match(int teamId1, int teamId2) // O(log(k))
 {
     // TODO: Check team really gets updated where necessary and properly -> Check from play_match test
-    // INVALID INPUT
-    if (teamId1 <=0 || teamId2<=0 || teamId1 == teamId2) {
+    if (teamId1 <= 0 || teamId2 <= 0 || teamId1 == teamId2) {
         return StatusType::INVALID_INPUT;
     }
-    // FIND TEAMS O(log(k)), GET Team Content: O(log(k))
+    //GET Team Content: O(log(n))
     Team* team1 = &(*teams_AVL.get_content(teamId1));
     Team* team2 = &(*teams_AVL.get_content(teamId2));
     if(team1 == nullptr || team2 == nullptr){
