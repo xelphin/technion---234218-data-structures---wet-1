@@ -34,7 +34,7 @@ int main()
 	
     int d1, d2, d3, d4, d5;
     bool b1;
-
+_
     // Init
 	world_cup_t *obj = new world_cup_t();
 	
