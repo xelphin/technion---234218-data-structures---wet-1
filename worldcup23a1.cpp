@@ -70,19 +70,15 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
         // TRY to Create PLAYER and ADD to TEAM and AVLs
         try {
             std::shared_ptr<Player> player(new Player(playerId, teamId, gamesPlayed, goals, cards, goalKeeper));
-            std::cout << "here0" << std::endl;
             team->add_player(player);
-            std::cout << "here1" << std::endl;
             team->update_cardsReceived(cards);
             team->update_scoredGoals(goals);
             team->update_addAGoalKeeper(goalKeeper);
 
-            std::cout << "here2" << std::endl;
+
             player->set_team(team);
-            std::cout << "here3" << std::endl;
             all_players_AVL.add(player);
             all_players_score_AVL.add(player);
-            std::cout << "here4" << std::endl;
         } catch (std::bad_alloc const&) { // EXCEPTION: Bad Alloc
             all_players_AVL.remove(playerId);
             all_players_score_AVL.remove(playerId);
@@ -204,10 +200,10 @@ StatusType world_cup_t::play_match(int teamId1, int teamId2) // O(log(k))
         std::cout << "Tie" << std::endl;
     } else if (score1 < score2) {
         team2->update_totalPoints(3);
-        std::cout << "Team: " << (teamId2) << "won" << std::endl;
+        std::cout << "Team: " << (teamId2) << " won" << std::endl;
     } else {
         team1->update_totalPoints(3);
-        std::cout << "Team: " << (teamId1) << "won" << std::endl;;
+        std::cout << "Team: " << (teamId1) << " won" << std::endl;;
     }
 
     // UPDATE GAMES PLAYED O(1)

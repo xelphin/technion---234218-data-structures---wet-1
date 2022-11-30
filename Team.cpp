@@ -23,12 +23,12 @@ int Team::get_points() const{
     return total_points;
 }
 
-void Team::add_player(const std::shared_ptr<Player>& player) { //TODO: clang tidy: make player a const reference?
-    // TODO: check that the argument is valid
+void Team::add_player(const std::shared_ptr<Player>& player) {
     if (player == nullptr)
         return;
     team_players.add(player);
     team_players_scores.add(player);
+    // TODO: Matan fix this lol
 //    if (top_scorer == nullptr ||
 //        (top_scorer->get_score() < player->get_score()) ||
 //        (top_scorer->get_score() == player->get_score() && top_scorer->get_id() == player->get_id()))
