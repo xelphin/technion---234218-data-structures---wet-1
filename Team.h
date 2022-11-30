@@ -11,7 +11,7 @@ class Team{
 public:
     Team(int id, int points);
 
-    void add_player(std::shared_ptr<Player> player);
+    void add_player(const std::shared_ptr<Player>& player);
     std::shared_ptr<Player> find_player(int id);
     bool remove_player(int player_id);
 
