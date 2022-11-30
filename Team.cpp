@@ -29,12 +29,12 @@ void Team::add_player(const std::shared_ptr<Player>& player) { //TODO: clang tid
         return;
     team_players.add(player);
     team_players_scores.add(player);
-    if (top_scorer == nullptr ||
-        (top_scorer->get_score() < player->get_score()) ||
-        (top_scorer->get_score() == player->get_score() && top_scorer->get_id() == player->get_id()))
-    {
-        top_scorer = &*player;
-    }
+//    if (top_scorer == nullptr ||
+//        (top_scorer->get_score() < player->get_score()) ||
+//        (top_scorer->get_score() == player->get_score() && top_scorer->get_id() == player->get_id()))
+//    {
+//        top_scorer = &*player;
+//    }
     total_players++;
 }
 
