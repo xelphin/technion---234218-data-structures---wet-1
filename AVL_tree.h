@@ -163,6 +163,9 @@ typename AVL_tree<T>::Node *AVL_tree<T>::make_AVL_tree_from_array(T arr[], int s
 
     Node *node = new Node(arr[midIndex]); //in case of bad_alloc, memory is freed from the tree destructor.
     node->tree = this;
+    if (node->content != nullptr) { // TODO: Notice that you SHOULDN'T stop pointing at old team before you get here
+        node->content->set_gamesPlayed(node->content->get_gamesPlayed());
+    }
     node->left = this->AVL_tree<T>::make_AVL_tree_from_array(arr,start,midIndex-1);
     node->right = this->AVL_tree<T>::make_AVL_tree_from_array(arr,midIndex+1,end);
     if (node->left != nullptr)

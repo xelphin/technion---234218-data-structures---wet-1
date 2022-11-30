@@ -76,6 +76,13 @@ void Player::update_gamesPlayed(int toAdd)
 {
     this->gamesPlayed += toAdd;
 }
+
+void Player::set_gamesPlayed(int initTo)
+{
+    if (team != nullptr)
+        this->gamesPlayed = gamesPlayed + team->get_gamesPlayed();
+}
+
 void Player::update_scoredGoals(int toAdd)
 {
     this->goals += toAdd;

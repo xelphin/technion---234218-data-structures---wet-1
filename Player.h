@@ -23,6 +23,7 @@ public:
 
     void set_team(Team* playerTeam);
     void update_gamesPlayed(int toAdd);
+    void set_gamesPlayed(int initTo);
     void update_scoredGoals(int toAdd);
     void update_cardsReceived(int toAdd);
 

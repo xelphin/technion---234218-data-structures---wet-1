@@ -276,7 +276,8 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
                          total_goalKeepers, nullptr,
                          team1_players, team2_players, team1_players_scores, team2_players_scores));
 
-
+        // TODO: Change the players team* to point now to our new Team instead of the old one (in order traversal)
+        // TODO: Matan, in function make_AVL_tree_from_array() in AVL_tree class, I update the playedGames of player (which depends on their oldTeam), so before you change the Players to point to our newTeam, make sure to wait after this (line 166 there)
         //teams_AVL.remove(teamId1);
         //valid_teams_AVL.remove(teamId1);
         //teams_AVL.remove(teamId2);
