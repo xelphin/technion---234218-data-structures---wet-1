@@ -176,15 +176,15 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
 StatusType world_cup_t::play_match(int teamId1, int teamId2) // O(log(k))
 {
     // TODO: Check team really gets updated where necessary and properly -> Check from play_match test
-    if (teamId1 <= 0 || teamId2 <= 0 || teamId1 == teamId2) {
-        return StatusType::INVALID_INPUT;
-    }
+    //if (teamId1 <= 0 || teamId2 <= 0 || teamId1 == teamId2) {
+    //    return StatusType::INVALID_INPUT;
+    //}
     //GET Team Content: O(log(k))
-    Team* team1 = &(*teams_AVL.get_content(teamId1));
-    Team* team2 = &(*teams_AVL.get_content(teamId2));
-    if(team1 == nullptr || team2 == nullptr){
-        return StatusType::FAILURE;
-    }
+    //Team* team1 = &(*teams_AVL.get_content(teamId1));
+    //Team* team2 = &(*teams_AVL.get_content(teamId2));
+    //if(team1 == nullptr || team2 == nullptr){
+    //    return StatusType::FAILURE;
+    //}
     //if (!(team1->get_isValid()) || !(team2->get_isValid())) {
    //     return StatusType::FAILURE;
     //}
