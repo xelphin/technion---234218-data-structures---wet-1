@@ -425,6 +425,7 @@ bool team_create() {
 
 bool createAVL_byMerge()
 {
+
     // Create trees 1 and 2
     AVL_tree<Player*> tree1(false); // sort by ID
     AVL_tree<Player*> tree2(false); // sort by ID
