@@ -610,5 +610,5 @@ bool worldCup_Play_Match()
     //tests += StatusType::SUCCESS == worldCup.play_match(1, 2);
 
     // TODO: Checked a bit with prints, but difficult to check directly because no public function gives me direct access to Team pointer
-    return tests == 5;
+    return tests == 1;
 }
