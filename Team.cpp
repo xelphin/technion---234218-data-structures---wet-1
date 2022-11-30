@@ -8,15 +8,15 @@ Team::Team(int id, int points)
 {}
 
 // C'tor used for merging two different teams
-//
 
 Team::Team(int id, int points, int total_players, int total_goals, int total_cards, int total_goalKeepers, Player* top_scorer,
      AVL_tree<std::shared_ptr<Player>>* team1_players, AVL_tree<std::shared_ptr<Player>>* team2_players,
      AVL_tree<std::shared_ptr<Player>>* team1_players_scores, AVL_tree<std::shared_ptr<Player>>* team2_players_scores)
      : id(id), total_players(total_players), total_points(points), total_goals(total_goals),
        total_cards(total_cards), total_goalKeepers(total_goalKeepers), gamesPlayed(0), top_scorer(top_scorer),
-       team_players(*team1_players, *team2_players, SORT_BY_ID), // Calls: c'tor of AVL_tree and creates new tree with all players from team1 and team2
+       team_players(*team1_players, *team2_players, SORT_BY_ID),
        team_players_scores(*team1_players_scores, *team2_players_scores, SORT_BY_SCORE)
+       // Each Calls: c'tor of AVL_tree and creates new tree with all players from team1 and team2
 {
 
 }
@@ -44,7 +44,7 @@ void Team::add_player(const std::shared_ptr<Player>& player) {
         return;
     team_players.add(player);
     team_players_scores.add(player);
-    // TODO: Matan fix this lol
+    // TODO M: Matan fix this lol
 //    if (top_scorer == nullptr ||
 //        (top_scorer->get_score() < player->get_score()) ||
 //        (top_scorer->get_score() == player->get_score() && top_scorer->get_id() == player->get_id()))
@@ -57,7 +57,7 @@ void Team::add_player(const std::shared_ptr<Player>& player) {
 std::shared_ptr<Player> Team::find_player(int id)
 {
     // O(log(n))
-    // TODO: make sure this does not need to return a pointer to the shared pointer.
+    // TODO M: make sure this does not need to return a pointer to the shared pointer.
     return team_players.get_content(id);
 }
 
@@ -70,7 +70,7 @@ bool Team::remove_player(int player_id)
         total_players--;
     }
     return success;
-    // TODO: top_scorer mechanism when you have remove. possibly use inorder_traversal() for that, since we just need O(n), not log.
+    // TODO M: top_scorer mechanism when you have remove. possibly use inorder_traversal() for that, since we just need O(n), not log.
 }
 
 AVL_tree<std::shared_ptr<Player>>* Team::get_AVL_tree_id()
@@ -91,7 +91,7 @@ std::ostream& operator<<(std::ostream& os, const Team& toPrint)
 
 int Team::compare(const Team& team2, bool sort_by_score) const
 {
-    //TODO: make sure int is right return type.
+    //TODO M: make sure int is right return type.
     if (sort_by_score == SORT_BY_SCORE){
         int score_diff = Team::get_points() - team2.get_points();
         if (score_diff != 0)

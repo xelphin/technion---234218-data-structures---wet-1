@@ -3,7 +3,7 @@
 Player::Player(int playerId, int teamId, int gamesPlayed, int goals, int cards, bool goalKeeper) 
 : playerId(playerId), teamId(teamId), gamesPlayed(gamesPlayed), goals(goals), cards(cards), goalKeeper(goalKeeper), team(nullptr)
 {
-    // TODO: find Team using TeamId and connect our Team* to it (if team doesn't exist -> throw error)
+    // TODO M: find Team using TeamId and connect our Team* to it (if team doesn't exist -> throw error)
 }
 
 int Player::get_score() const {
@@ -45,7 +45,7 @@ std::ostream& operator<<(std::ostream& os, const Player& toPrint)
 
 int Player::compare(const Player& player2, bool sort_by_score) const
 {
-    //TODO: should maybe return bool instead of int?
+    //TODO M: should maybe return bool instead of int?
     if (this->get_id() == player2.get_id()){
         throw IDENTICAL_IDS();
     }

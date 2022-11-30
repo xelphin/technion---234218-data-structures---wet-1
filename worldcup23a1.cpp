@@ -17,7 +17,7 @@ StatusType world_cup_t::add_team(int teamId, int points)
         return StatusType::INVALID_INPUT;
     try {
         std::shared_ptr<Team> team(new Team(teamId, points));
-        // valid_teams_AVL.add(team); TODO: Implement properly when needed later
+        // valid_teams_AVL.add(team); TODO M: Implement properly when needed later
         teams_AVL.add(team); // CHECK:
     } catch (std::bad_alloc const&){
         return StatusType::ALLOCATION_ERROR;
@@ -114,7 +114,7 @@ StatusType world_cup_t::remove_player(int playerId)
                 // REMOVE from PLAYER_TEAM
                 success1 = (*playerTeam).remove_player(playerId); // we know: playerTeam != nullptr
                 // UPDATE PLAYER_TEAM
-                playerTeam->update_cardsReceived(-(player->get_cards())); // TODO: check if needed
+                playerTeam->update_cardsReceived(-(player->get_cards()));
                 playerTeam->update_scoredGoals(-(player->get_score()));
                 playerTeam->update_removeAGoalKeeper(player->get_isGoalKeeper());
             } else {
@@ -267,7 +267,7 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
     int total_goals = team1->get_goals() + team2->get_goals();
     int total_cards = team1->get_cards() + team2->get_cards();
     int total_goalKeepers = team1->get_totalGoalKeepers() + team2->get_totalGoalKeepers();
-    // TODO: top_scorer, get pointer to the higher scorer between the two (replace nullptr in c'tor)
+    // TODO M: top_scorer, get pointer to the higher scorer between the two (replace nullptr in c'tor)
 
     // CREATE TEAM - O(log(n[team1] + n[team2]))
     try {
@@ -276,8 +276,8 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
                          total_goalKeepers, nullptr,
                          team1_players, team2_players, team1_players_scores, team2_players_scores));
 
-        // TODO: Change the players team* to point now to our new Team instead of the old one (in order traversal)
-        // TODO: Matan, in function make_AVL_tree_from_array() in AVL_tree class, I update the playedGames of player (which depends on their oldTeam), so before you change the Players to point to our newTeam, make sure to wait after this (line 166 there)
+        // TODO M: Change the players team* to point now to our new Team instead of the old one (in order traversal)
+        // TODO M: Matan, in function make_AVL_tree_from_array() in AVL_tree class, I update the playedGames of player (which depends on their oldTeam), so before you change the Players to point to our newTeam, make sure to wait after this (line 166 there)
         //teams_AVL.remove(teamId1);
         //valid_teams_AVL.remove(teamId1);
         //teams_AVL.remove(teamId2);
@@ -287,20 +287,20 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
         std::cout << "amount of players in team1: " << (team1->get_total_players()) << std::endl;
 
         //teams_AVL.add(team);
-        // TODO: Add to valid_teams_AVL per requirements
+        // TODO M: Add to valid_teams_AVL per requirements
 
     } catch (std::bad_alloc const&){
         return StatusType::ALLOCATION_ERROR;
     }
 
 
-    // TODO: Each player needs to get playedGames updated to correct value, itself_playedGames+team_playedGames (implement inside of AVL merge)
+    // TODO M: Each player needs to get playedGames updated to correct value, itself_playedGames+team_playedGames (implement inside of AVL merge)
 	return StatusType::SUCCESS;
 }
 
 output_t<int> world_cup_t::get_top_scorer(int teamId)
 {
-	// TODO: Your code goes here
+	// TODO M: Your code goes here
 	return 2008;
 }
 
@@ -322,24 +322,37 @@ output_t<int> world_cup_t::get_all_players_count(int teamId)
 
     return team->get_AVL_tree_id()->get_amount();
 }
-/*
-StatusType world_cup_t::get_all_players(int teamId, int *const output)
-{
-	// TODO: Your code goes here
-    output[0] = 4001;
-    output[1] = 4002;
-	return StatusType::SUCCESS;
-}
 
+//StatusType world_cup_t::get_all_players(int teamId, int *const output)
+//{
+//
+//    // CHECK INVALID - O(1)
+//    if (teamId == 0 || output == NULL)
+//        return StatusType::INVALID_INPUT;
+//    int amountPlayers = 0; // uncomment
+//    // FOR teamId>0
+//    if (teamId<0) {
+//        amountPlayers = all_players_AVL.get_amount(); // uncomment
+//        // TODO M: in_order_traversal
+//        //all_players_score_AVL.in_order_traversal_wrapper(output, amountPlayers);
+//    }
+//
+//
+//	// TODO M: Your code goes here
+//    output[0] = 4001;
+//    output[1] = 4002;
+//	return StatusType::SUCCESS;
+//}
+/*
 output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
 {
-	// TODO: Your code goes here
+	// TODO M: Your code goes here
 	return 1006;
 }
 
 output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
 {
-	// TODO: Your code goes here
+	// TODO M: Your code goes here
 	return 2;
 }
 */

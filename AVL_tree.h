@@ -163,7 +163,7 @@ typename AVL_tree<T>::Node *AVL_tree<T>::make_AVL_tree_from_array(T arr[], int s
 
     Node *node = new Node(arr[midIndex]); //in case of bad_alloc, memory is freed from the tree destructor.
     node->tree = this;
-    if (node->content != nullptr) { // TODO: Notice that you SHOULDN'T stop pointing at old team before you get here
+    if (node->content != nullptr) { // TODO M: Notice that you SHOULDN'T stop pointing at old team before you get here
         node->content->set_gamesPlayed(node->content->get_gamesPlayed());
     }
     node->left = this->AVL_tree<T>::make_AVL_tree_from_array(arr,start,midIndex-1);
@@ -520,11 +520,12 @@ int AVL_tree<T>::Node::get_comparison(const Node &other) {
     }
     if (tree->sort_by_score == SORT_BY_SCORE){
         int score = SCORE(*(this->content)) - SCORE(*other.content);
+        int cardDiff = this->content->get_cards() - this->content->get_cards();
         if (score != 0)
             return score;
-        // TODO: Compare cards (check implementation necessities)
-        else
-            return ID(*(this->content)) - ID(*other.content);
+        if (cardDiff != 0)
+            return -cardDiff; // TODO M: negative right?
+        return ID(*(this->content)) - ID(*other.content);
     }
     else
     {

@@ -672,7 +672,7 @@ bool worldCup_Unite_Teams()
     worldCup.add_player(11, 1, 5, 6, 4, false);
     worldCup.add_player(12, 1, 5, 6, 4, false);
     worldCup.add_player(21, 2, 5, 6, 4, false);
-    // TODO: more tests after finish implementation
+    // TODO M: more tests after finish implementation
     worldCup.unite_teams(1,2,3);
     return tests == 0;
 }
