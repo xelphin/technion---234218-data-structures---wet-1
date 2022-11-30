@@ -185,9 +185,9 @@ StatusType world_cup_t::play_match(int teamId1, int teamId2) // O(log(k))
     if(team1 == nullptr || team2 == nullptr){
         return StatusType::FAILURE;
     }
-    if (!(team1->get_isValid()) || !(team2->get_isValid())) {
-        return StatusType::FAILURE;
-    }
+    //if (!(team1->get_isValid()) || !(team2->get_isValid())) {
+   //     return StatusType::FAILURE;
+    //}
     // GET SCORES O(1)
     /*
     int score1 = team1->get_match_score();
