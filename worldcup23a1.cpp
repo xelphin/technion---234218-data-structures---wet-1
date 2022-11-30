@@ -204,8 +204,8 @@ StatusType world_cup_t::play_match(int teamId1, int teamId2) // O(log(k))
         std::cout << "Team: " << (teamId1) << "won" << std::endl;;
     }
     // UPDATE GAMES PLAYED O(1)
-    team1->update_gamesPlayed();
-    team2->update_gamesPlayed();
+    //team1->update_gamesPlayed();
+    //team2->update_gamesPlayed();
     // NOTE: Player->get_gamesPlayed() : takes into account Teams gamesPlayed
 	return StatusType::SUCCESS;
 }
