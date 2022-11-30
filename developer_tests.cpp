@@ -602,7 +602,7 @@ bool worldCup_Play_Match()
     worldCup.add_player(41, 4, 5, 6, 4, false);
     //
     tests += StatusType::SUCCESS == worldCup.play_match(1, 2);
-    //tests += StatusType::FAILURE == worldCup.play_match(1, 4);
+    tests += StatusType::FAILURE == worldCup.play_match(1, 4);
     //tests += StatusType::FAILURE == worldCup.play_match(1, 5);
     //worldCup.remove_player(21);
     //tests += StatusType::FAILURE == worldCup.play_match(1, 2);
@@ -610,5 +610,5 @@ bool worldCup_Play_Match()
     //tests += StatusType::SUCCESS == worldCup.play_match(1, 2);
 
     // TODO: Checked a bit with prints, but difficult to check directly because no public function gives me direct access to Team pointer
-    return tests == 1;
+    return tests == 2;
 }
