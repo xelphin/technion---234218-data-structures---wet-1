@@ -34,6 +34,7 @@ bool run_all_tests() {
     run_test(worldCup_Update_Player_Stats, "worldCup_Update_Player_Stats", success_string, success);
     run_test(worldCup_Play_Match, "worldCup_Play_Match", success_string, success);
     run_test(worldCup_Get_Num_Played_Games, "worldCup_Get_Num_Played_Games", success_string, success);
+    run_test(worldCup_Unite_Teams, "worldCup_Unite_Teams", success_string, success);
 
     std::cout << success_string << std::endl;
     return success;
@@ -658,4 +659,18 @@ bool worldCup_Get_Num_Played_Games()
     tests += (4 == (worldCup.get_num_played_games(21)).ans());
 
     return tests == 4;
+}
+
+bool worldCup_Unite_Teams()
+{
+    int tests = 0;
+    world_cup_t worldCup;
+    worldCup.add_team(1,1);
+    worldCup.add_team(2,3);
+    worldCup.add_player(11, 1, 5, 6, 4, false);
+    worldCup.add_player(12, 1, 5, 6, 4, false);
+    worldCup.add_player(21, 2, 5, 6, 4, false);
+    //
+    worldCup.unite_teams(1,2,3);
+    return tests == 0;
 }

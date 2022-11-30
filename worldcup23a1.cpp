@@ -240,14 +240,34 @@ output_t<int> world_cup_t::get_team_points(int teamId)
     }
 	return team->get_total_points();
 }
-/*
+
 StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
 {
+    // CHECK INVALID - O(1)
+    if (newTeamId <= 0 || teamId1 <= 0 || teamId2 <= 0 || teamId1 == teamId2)
+        return StatusType::INVALID_INPUT;
+    // FIND TEAMS - O(log(k))
+    Team* team1 = &(*(teams_AVL.get_content(teamId1)));
+    Team* team2 = &(*(teams_AVL.get_content(teamId2)));
+    if (team1 == nullptr || team2 == nullptr)
+        return StatusType::FAILURE;
+    AVL_tree<std::shared_ptr<Player>>* team1_player_id = team1->get_AVL_tree_id();
+    AVL_tree<std::shared_ptr<Player>>* team2_player_id = team2->get_AVL_tree_id();
+    if (team1_player_id == nullptr || team2_player_id == nullptr)
+        return StatusType::FAILURE;
+    // CREATE TEAM
+    try {
+        //std::shared_ptr<Team> team(new Team(newTeamId, points));
+    } catch (std::bad_alloc const&){
+        return StatusType::ALLOCATION_ERROR;
+    }
+
+
 	// TODO: Your code goes here
     // Make sure to put update the values of played_games in each team before you unite log(n), and whatever else
 	return StatusType::SUCCESS;
 }
-
+/*
 output_t<int> world_cup_t::get_top_scorer(int teamId)
 {
 	// TODO: Your code goes here

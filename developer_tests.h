@@ -47,7 +47,8 @@ bool worldCup_Remove_Player();
 bool worldCup_Remove_Team();
 bool worldCup_Update_Player_Stats();
 bool worldCup_Play_Match();
-bool worldCup_Get_Num_Played_Games(); // TODO: Don't understand the ouptut<int>, not sure how to compare results
+bool worldCup_Get_Num_Played_Games();
+bool worldCup_Unite_Teams();
 
 
 #endif
