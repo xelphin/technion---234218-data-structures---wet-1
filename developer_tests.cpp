@@ -33,6 +33,7 @@ bool run_all_tests() {
     run_test(worldCup_Remove_Team, "worldCup_Remove_Team", success_string, success);
     run_test(worldCup_Update_Player_Stats, "worldCup_Update_Player_Stats", success_string, success);
     run_test(worldCup_Play_Match, "worldCup_Play_Match", success_string, success);
+    run_test(worldCup_Get_Num_Played_Games, "worldCup_Get_Num_Played_Games", success_string, success);
 
     std::cout << success_string << std::endl;
     return success;
@@ -611,4 +612,45 @@ bool worldCup_Play_Match()
 
     // TODO: Checked a bit with prints, but difficult to check directly because no public function gives me direct access to Team pointer
     return tests == 5;
+}
+
+bool worldCup_Get_Num_Played_Games()
+{
+    int tests = 0;
+    world_cup_t worldCup;
+    worldCup.add_team(1,1);
+    worldCup.add_team(2,3);
+    worldCup.add_player(2, 1, 5, 6, 4, false);
+    worldCup.add_player(3, 1, 5, 6, 4, false);
+    worldCup.add_player(4, 1, 5, 6, 4, false);
+    worldCup.add_player(5, 1, 5, 6, 4, false);
+    worldCup.add_player(6, 1, 5, 6, 4, false);
+    worldCup.add_player(7, 1, 5, 6, 4, false);
+    worldCup.add_player(8, 1, 5, 6, 4, false);
+    worldCup.add_player(9, 1, 5, 6, 4, false);
+    worldCup.add_player(10, 1, 5, 6, 4, false);
+    worldCup.add_player(11, 1, 5, 6, 4, false);
+    worldCup.add_player(22, 2, 5, 6, 4, false);
+    worldCup.add_player(23, 2, 5, 6, 4, false);
+    worldCup.add_player(24, 2, 5, 6, 4, false);
+    worldCup.add_player(25, 2, 5, 6, 4, false);
+    worldCup.add_player(26, 2, 5, 6, 4, false);
+    worldCup.add_player(27, 2, 5, 6, 4, false);
+    worldCup.add_player(28, 2, 5, 6, 4, false);
+    worldCup.add_player(29, 2, 5, 6, 4, false);
+    worldCup.add_player(30, 2, 5, 6, 4, false);
+    worldCup.add_player(31, 2, 5, 6, 4, false);
+    worldCup.add_player(32, 2, 0, 0, 0, false);
+    //
+    worldCup.add_player(1, 1, 2, 6, 4, true);
+    worldCup.add_player(21, 2, 3, 6, 4, true);
+    //
+    tests += (2 == (worldCup.get_num_played_games(1)).ans());
+    tests += (3 == (worldCup.get_num_played_games(21)).ans());
+    //
+    worldCup.play_match(1, 2);
+    tests += (3 == (worldCup.get_num_played_games(1)).ans());
+    tests += (4 == (worldCup.get_num_played_games(21)).ans());
+
+    return tests == 4;
 }

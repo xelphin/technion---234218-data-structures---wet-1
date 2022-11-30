@@ -212,7 +212,7 @@ StatusType world_cup_t::play_match(int teamId1, int teamId2) // O(log(k))
     // NOTE: Player->get_gamesPlayed() : takes into account Teams gamesPlayed
 	return StatusType::SUCCESS;
 }
-/*
+
 output_t<int> world_cup_t::get_num_played_games(int playerId)
 {
     // CHECK INVALID INPUT
@@ -226,7 +226,7 @@ output_t<int> world_cup_t::get_num_played_games(int playerId)
     // RETURN
     return player->get_gamesPlayed();
 }
-
+/*
 output_t<int> world_cup_t::get_team_points(int teamId)
 {
 
