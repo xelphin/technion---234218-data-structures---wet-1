@@ -599,9 +599,9 @@ bool worldCup_Play_Match()
     worldCup.add_player(31, 2, 5, 6, 4, false);
     worldCup.add_player(32, 2, 0, 0, 0, false);
     //
-    /*
     worldCup.add_player(41, 4, 5, 6, 4, false);
     //
+    /*
     //tests += StatusType::SUCCESS == worldCup.play_match(1, 2);
     //tests += StatusType::FAILURE == worldCup.play_match(1, 4);
     //tests += StatusType::FAILURE == worldCup.play_match(1, 5);
