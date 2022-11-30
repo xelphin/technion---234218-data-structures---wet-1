@@ -49,6 +49,7 @@ bool worldCup_Update_Player_Stats();
 bool worldCup_Play_Match();
 bool worldCup_Get_Num_Played_Games();
 bool worldCup_Unite_Teams();
+bool worldCup_Get_All_Players_Count();
 
 
 #endif

@@ -297,7 +297,7 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
     // TODO: Each player needs to get playedGames updated to correct value, itself_playedGames+team_playedGames (implement inside of AVL merge)
 	return StatusType::SUCCESS;
 }
-/*
+
 output_t<int> world_cup_t::get_top_scorer(int teamId)
 {
 	// TODO: Your code goes here
@@ -306,11 +306,23 @@ output_t<int> world_cup_t::get_top_scorer(int teamId)
 
 output_t<int> world_cup_t::get_all_players_count(int teamId)
 {
-	// TODO: Your code goes here
-    static int i = 0;
-    return (i++==0) ? 11 : 2;
-}
+    // CHECK INVALID - O(1)
+    if (teamId == 0)
+        return StatusType::INVALID_INPUT;
+    // RETURN AMOUNT ALL PLAYERS - O(1)
+    if (teamId < 0) {
+        std::cout << teams_AVL.debugging_printTree();
+        return all_players_AVL.get_amount();
+    }
+    // FIND TEAM - O(log(k))
+    Team* team = &(*(teams_AVL.get_content(teamId)));
+    if (team == nullptr )
+        return StatusType::FAILURE;
+    // RETURN AMOUNT PLAYERS IN TEAM - O(1)
 
+    return team->get_AVL_tree_id()->get_amount();
+}
+/*
 StatusType world_cup_t::get_all_players(int teamId, int *const output)
 {
 	// TODO: Your code goes here
