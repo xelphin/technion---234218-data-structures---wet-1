@@ -567,6 +567,7 @@ bool worldCup_Play_Match()
 {
 
     int tests = 0;
+
     world_cup_t worldCup;
     worldCup.add_team(1,1);
     worldCup.add_team(2,1);
@@ -583,6 +584,7 @@ bool worldCup_Play_Match()
     worldCup.add_player(9, 1, 5, 6, 4, false);
     worldCup.add_player(10, 1, 5, 6, 4, false);
     worldCup.add_player(11, 1, 5, 6, 4, false);
+    /*
     //
     worldCup.add_player(21, 2, 5, 6, 4, true);
     worldCup.add_player(22, 2, 5, 6, 4, false);
@@ -606,8 +608,7 @@ bool worldCup_Play_Match()
     //tests += StatusType::FAILURE == worldCup.play_match(1, 2);
     //worldCup.add_player(33, 2, 5, 6, 0, true);
     //tests += StatusType::SUCCESS == worldCup.play_match(1, 2);
-
+    */
     // TODO: Checked a bit with prints, but difficult to check directly because no public function gives me direct access to Team pointer
     return tests == 5;
-
 }
