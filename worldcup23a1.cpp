@@ -189,6 +189,7 @@ StatusType world_cup_t::play_match(int teamId1, int teamId2) // O(log(k))
         return StatusType::FAILURE;
     }
     // GET SCORES O(1)
+    /*
     int score1 = team1->get_match_score();
     int score2 = team2->get_match_score();
     // APPLY POINTS O(1)
@@ -203,9 +204,10 @@ StatusType world_cup_t::play_match(int teamId1, int teamId2) // O(log(k))
         //team1->update_totalPoints(3);
         std::cout << "Team: " << (teamId1) << "won" << std::endl;;
     }
+     */
     // UPDATE GAMES PLAYED O(1)
-    team1->update_gamesPlayed();
-    team2->update_gamesPlayed();
+    //team1->update_gamesPlayed();
+    //team2->update_gamesPlayed();
     // NOTE: Player->get_gamesPlayed() : takes into account Teams gamesPlayed
 	return StatusType::SUCCESS;
 }
