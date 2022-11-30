@@ -570,9 +570,9 @@ bool worldCup_Play_Match()
     int tests = 0;
 
     world_cup_t worldCup;
-    worldCup.add_team(1,1);
-    worldCup.add_team(2,1);
-    worldCup.add_team(4,2);
+    worldCup.add_team(1,0);
+    worldCup.add_team(2,0);
+    worldCup.add_team(4,0);
     //
     worldCup.add_player(1, 1, 5, 6, 4, true);
     worldCup.add_player(2, 1, 5, 6, 4, false);
@@ -585,7 +585,6 @@ bool worldCup_Play_Match()
     worldCup.add_player(9, 1, 5, 6, 4, false);
     worldCup.add_player(10, 1, 5, 6, 4, false);
     worldCup.add_player(11, 1, 5, 6, 4, false);
-
     //
     worldCup.add_player(21, 2, 5, 6, 4, true);
     worldCup.add_player(22, 2, 5, 6, 4, false);
@@ -603,15 +602,21 @@ bool worldCup_Play_Match()
     worldCup.add_player(41, 4, 5, 6, 4, false);
     //
     tests += StatusType::SUCCESS == worldCup.play_match(1, 2);
+    tests += (1 == (worldCup.get_team_points(1)).ans());
+    tests += (1 == (worldCup.get_team_points(2)).ans());
     tests += StatusType::FAILURE == worldCup.play_match(1, 4);
     tests += StatusType::FAILURE == worldCup.play_match(1, 5);
     worldCup.remove_player(21);
     tests += StatusType::FAILURE == worldCup.play_match(1, 2);
     worldCup.add_player(33, 2, 5, 6, 0, true); // ERROR CODE
     tests += StatusType::SUCCESS == worldCup.play_match(1, 2);
+    tests += (1 == (worldCup.get_team_points(1)).ans());
+    tests += (4 == (worldCup.get_team_points(2)).ans());
+    tests += (StatusType::FAILURE == (worldCup.get_team_points(3)).status());
+    //
 
     // TODO: Checked a bit with prints, but difficult to check directly because no public function gives me direct access to Team pointer
-    return tests == 5;
+    return tests == 10;
 }
 
 bool worldCup_Get_Num_Played_Games()

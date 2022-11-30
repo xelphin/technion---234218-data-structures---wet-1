@@ -215,25 +215,32 @@ StatusType world_cup_t::play_match(int teamId1, int teamId2) // O(log(k))
 
 output_t<int> world_cup_t::get_num_played_games(int playerId)
 {
-    // CHECK INVALID INPUT
+    // CHECK INVALID INPUT - O(1)
     if (playerId <= 0)
         return StatusType::INVALID_INPUT;
-    // FIND PLAYER
-    Player* player = &(*(all_players_AVL.get_content(playerId))); // O(log(n))
-    // CHECK PLAYER
+    // FIND PLAYER - O(log(n))
+    Player* player = &(*(all_players_AVL.get_content(playerId)));
+    // CHECK PLAYER - O(1)
     if (player == nullptr)
         return StatusType::FAILURE;
-    // RETURN
+    // RETURN - O(1)
     return player->get_gamesPlayed();
 }
-/*
+
 output_t<int> world_cup_t::get_team_points(int teamId)
 {
-
-	// TODO: Your code goes here
-	return 30003;
+    // CHECK INVALID - O(1)
+    if(teamId <= 0)
+        return StatusType::INVALID_INPUT;
+    // FIND TEAM - O(log(k))
+    Team* team = &(*(teams_AVL.get_content(teamId)));
+    // GET TEAM POINTS - O(1)
+    if (team == nullptr) {
+        return StatusType::FAILURE;
+    }
+	return team->get_total_points();
 }
-
+/*
 StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
 {
 	// TODO: Your code goes here
