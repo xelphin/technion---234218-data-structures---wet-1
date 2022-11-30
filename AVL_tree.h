@@ -519,6 +519,7 @@ int AVL_tree<T>::Node::get_comparison(const Node &other) {
         int score = SCORE(*(this->content)) - SCORE(*other.content);
         if (score != 0)
             return score;
+        // TODO: Compare cards (check implementation necessities)
         else
             return ID(*(this->content)) - ID(*other.content);
     }
@@ -606,7 +607,7 @@ template<class T>
 void AVL_tree<T>::Node::choose_roll() {
     //if this function is called, it means the BF of this node is ±2, and it should roll.
     //the numbers are according to the chart in the slides.
-    std::cout << "the tree is unbalanced -> do roll" << std::endl;
+    // std::cout << "the tree is unbalanced -> do roll" << std::endl;
     
     if (balance_factor == 2){
         if (left->balance_factor >= 0){

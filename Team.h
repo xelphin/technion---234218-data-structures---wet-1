@@ -22,7 +22,9 @@ public:
     int get_total_points() const;
     int get_match_score() const;
     int get_gamesPlayed() const;
+    int get_totalGoalKeepers() const;
     int compare(const Team& team2, bool sort_by_score) const;
+    bool get_isValid() const;
     int operator ID() const;
     int operator SCORE() const;
 

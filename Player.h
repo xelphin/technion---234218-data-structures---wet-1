@@ -32,12 +32,13 @@ public:
 private:
     int playerId;
     int teamId;
-    Team *team;
+
 
     int gamesPlayed;
     int goals;
     int cards;
     bool goalKeeper;
+    Team *team;
 };
 
 #endif //TECHNION_234218_DATA_STRUCTURES_WET_1_PLAYER_H

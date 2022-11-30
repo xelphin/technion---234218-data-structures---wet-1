@@ -32,6 +32,7 @@ bool run_all_tests() {
     run_test(worldCup_Remove_Player, "worldCup_Remove_Player", success_string, success);
     run_test(worldCup_Remove_Team, "worldCup_Remove_Team", success_string, success);
     run_test(worldCup_Update_Player_Stats, "worldCup_Update_Player_Stats", success_string, success);
+    run_test(worldCup_Play_Match, "worldCup_Play_Match", success_string, success);
 
     std::cout << success_string << std::endl;
     return success;
@@ -560,4 +561,51 @@ bool worldCup_Update_Player_Stats()
     tests += StatusType::FAILURE == worldCup.update_player_stats(4, 2, 3, 0);
     tests += StatusType::INVALID_INPUT == worldCup.update_player_stats(2, -1, 3, 0);
     return tests == 3;
+}
+
+bool worldCup_Play_Match()
+{
+    int tests = 0;
+    world_cup_t worldCup;
+    worldCup.add_team(1,1);
+    worldCup.add_team(2,1);
+    worldCup.add_team(4,2);
+    //
+    worldCup.add_player(1, 1, 5, 6, 4, true);
+    worldCup.add_player(2, 1, 5, 6, 4, false);
+    worldCup.add_player(3, 1, 5, 6, 4, false);
+    worldCup.add_player(4, 1, 5, 6, 4, false);
+    worldCup.add_player(5, 1, 5, 6, 4, false);
+    worldCup.add_player(6, 1, 5, 6, 4, false);
+    worldCup.add_player(7, 1, 5, 6, 4, false);
+    worldCup.add_player(8, 1, 5, 6, 4, false);
+    worldCup.add_player(9, 1, 5, 6, 4, false);
+    worldCup.add_player(10, 1, 5, 6, 4, false);
+    worldCup.add_player(11, 1, 5, 6, 4, false);
+    //
+    worldCup.add_player(21, 2, 5, 6, 4, true);
+    worldCup.add_player(22, 2, 5, 6, 4, false);
+    worldCup.add_player(23, 2, 5, 6, 4, false);
+    worldCup.add_player(24, 2, 5, 6, 4, false);
+    worldCup.add_player(25, 2, 5, 6, 4, false);
+    worldCup.add_player(26, 2, 5, 6, 4, false);
+    worldCup.add_player(27, 2, 5, 6, 4, false);
+    worldCup.add_player(28, 2, 5, 6, 4, false);
+    worldCup.add_player(29, 2, 5, 6, 4, false);
+    worldCup.add_player(30, 2, 5, 6, 4, false);
+    worldCup.add_player(31, 2, 5, 6, 4, false);
+    worldCup.add_player(32, 2, 0, 0, 0, false);
+    //
+    worldCup.add_player(41, 4, 5, 6, 4, false);
+    //
+    tests += StatusType::SUCCESS == worldCup.play_match(1, 2);
+    tests += StatusType::FAILURE == worldCup.play_match(1, 4);
+    tests += StatusType::FAILURE == worldCup.play_match(1, 5);
+    worldCup.remove_player(21);
+    tests += StatusType::FAILURE == worldCup.play_match(1, 2);
+    worldCup.add_player(33, 2, 5, 6, 0, true);
+    tests += StatusType::SUCCESS == worldCup.play_match(1, 2);
+
+    // TODO: Checked a bit with prints, but difficult to check directly because no public function gives me direct access to Team pointer
+    return tests == 5;
 }

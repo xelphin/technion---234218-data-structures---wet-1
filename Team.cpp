@@ -151,3 +151,16 @@ int Team::get_gamesPlayed() const
 {
     return gamesPlayed;
 }
+
+int Team::get_totalGoalKeepers() const
+{
+    return total_goalKeepers;
+}
+
+bool Team::get_isValid() const
+{
+    if (total_goalKeepers > 0 && total_players > 10) {
+        return true;
+    }
+    return false;
+}
