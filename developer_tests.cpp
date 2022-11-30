@@ -604,8 +604,8 @@ bool worldCup_Play_Match()
     tests += StatusType::SUCCESS == worldCup.play_match(1, 2);
     tests += StatusType::FAILURE == worldCup.play_match(1, 4);
     tests += StatusType::FAILURE == worldCup.play_match(1, 5);
-    //worldCup.remove_player(21);
-    //tests += StatusType::FAILURE == worldCup.play_match(1, 2);
+    worldCup.remove_player(21); //
+    tests += StatusType::FAILURE == worldCup.play_match(1, 2); //
     //worldCup.add_player(33, 2, 5, 6, 0, true);
     //tests += StatusType::SUCCESS == worldCup.play_match(1, 2);
 
