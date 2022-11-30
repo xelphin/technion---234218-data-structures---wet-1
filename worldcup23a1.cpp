@@ -246,18 +246,27 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
     // CHECK INVALID - O(1)
     if (newTeamId <= 0 || teamId1 <= 0 || teamId2 <= 0 || teamId1 == teamId2)
         return StatusType::INVALID_INPUT;
+
     // FIND TEAMS - O(log(k))
     Team* team1 = &(*(teams_AVL.get_content(teamId1)));
     Team* team2 = &(*(teams_AVL.get_content(teamId2)));
     if (team1 == nullptr || team2 == nullptr)
         return StatusType::FAILURE;
-    AVL_tree<std::shared_ptr<Player>>* team1_player_id = team1->get_AVL_tree_id();
-    AVL_tree<std::shared_ptr<Player>>* team2_player_id = team2->get_AVL_tree_id();
-    if (team1_player_id == nullptr || team2_player_id == nullptr)
+    AVL_tree<std::shared_ptr<Player>>* team1_players = team1->get_AVL_tree_id();
+    AVL_tree<std::shared_ptr<Player>>* team2_players = team2->get_AVL_tree_id();
+    AVL_tree<std::shared_ptr<Player>>* team1_players_scores = team1->get_AVL_tree_score();
+    AVL_tree<std::shared_ptr<Player>>* team2_players_scores = team2->get_AVL_tree_score();
+    if (team1_players == nullptr || team2_players == nullptr ||
+        team1_players_scores == nullptr || team2_players_scores == nullptr) {
         return StatusType::FAILURE;
+    }
+    //int points1 = team1->get_total_points();
+    //int points2 = team2->get_total_points();
+
     // CREATE TEAM
     try {
         //std::shared_ptr<Team> team(new Team(newTeamId, points));
+        AVL_tree<std::shared_ptr<Player>> team_player_id(*team1_players, *team2_players, SORT_BY_ID);
     } catch (std::bad_alloc const&){
         return StatusType::ALLOCATION_ERROR;
     }
