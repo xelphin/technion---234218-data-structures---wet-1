@@ -260,13 +260,14 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
         team1_players_scores == nullptr || team2_players_scores == nullptr) {
         return StatusType::FAILURE;
     }
+    //AVL_tree<std::shared_ptr<Player>> team_players_id(*team1_players, *team2_players, SORT_BY_ID);
+    //AVL_tree<std::shared_ptr<Player>> team_players_score(*team1_players_scores, *team2_players_scores, SORT_BY_SCORE);
     int total_points = team1->get_total_points() + team2->get_total_points();
     int total_players = team1->get_total_players() + team2->get_total_players();
     int total_goals = team1->get_goals() + team2->get_goals();
     int total_cards = team1->get_cards() + team2->get_cards();
     int total_goalKeepers = team1->get_totalGoalKeepers() + team2->get_totalGoalKeepers();
-    // TODO: top_scorer, get pointer to the higher scorer between the two
-
+    // TODO: top_scorer, get pointer to the higher scorer between the two (replace nullptr in c'tor)
 
     // CREATE TEAM - O(log(n[team1] + n[team2]))
     try {
@@ -275,17 +276,24 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
                          total_goalKeepers, nullptr,
                          team1_players, team2_players, team1_players_scores, team2_players_scores));
 
-        //AVL_tree<std::shared_ptr<Player>> team_players_id(*team1_players, *team2_players, SORT_BY_ID);
-        //AVL_tree<std::shared_ptr<Player>> team_players_score(*team1_players_scores, *team2_players_scores, SORT_BY_SCORE);
-        // TODO: remove the older two teams
+
+        //teams_AVL.remove(teamId1);
+        //valid_teams_AVL.remove(teamId1);
+        //teams_AVL.remove(teamId2);
+        //valid_teams_AVL.remove(teamId2);
+
+        std::cout << (team->get_AVL_tree_id())->debugging_printTree();
+        std::cout << "amount of players in team1: " << (team1->get_total_players()) << std::endl;
+
         //teams_AVL.add(team);
+        // TODO: Add to valid_teams_AVL per requirements
 
     } catch (std::bad_alloc const&){
         return StatusType::ALLOCATION_ERROR;
     }
 
 
-    // TODO: Each player needs to get playedGames updated to correct value (implement inside of AVL merge)
+    // TODO: Each player needs to get playedGames updated to correct value, itself_playedGames+team_playedGames (implement inside of AVL merge)
 	return StatusType::SUCCESS;
 }
 /*

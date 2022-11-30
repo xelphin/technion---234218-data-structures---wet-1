@@ -163,6 +163,8 @@ typename AVL_tree<T>::Node *AVL_tree<T>::make_AVL_tree_from_array(T arr[], int s
 
     Node *node = new Node(arr[midIndex]); //in case of bad_alloc, memory is freed from the tree destructor.
     node->tree = this;
+//    if (node->content != nullptr)
+//        node->content->team = newTeam; // TODO: bring newTeam pointer to function
     node->left = this->AVL_tree<T>::make_AVL_tree_from_array(arr,start,midIndex-1);
     node->right = this->AVL_tree<T>::make_AVL_tree_from_array(arr,midIndex+1,end);
     if (node->left != nullptr)
