@@ -70,14 +70,19 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
         // TRY to Create PLAYER and ADD to TEAM and AVLs
         try {
             std::shared_ptr<Player> player(new Player(playerId, teamId, gamesPlayed, goals, cards, goalKeeper));
+            std::cout << "here0" << std::endl;
             team->add_player(player);
+            std::cout << "here1" << std::endl;
             team->update_cardsReceived(cards);
             team->update_scoredGoals(goals);
             team->update_addAGoalKeeper(goalKeeper);
 
+            std::cout << "here2" << std::endl;
             player->set_team(team);
+            std::cout << "here3" << std::endl;
             all_players_AVL.add(player);
             all_players_score_AVL.add(player);
+            std::cout << "here4" << std::endl;
         } catch (std::bad_alloc const&) { // EXCEPTION: Bad Alloc
             all_players_AVL.remove(playerId);
             all_players_score_AVL.remove(playerId);
