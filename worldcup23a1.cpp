@@ -260,21 +260,32 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
         team1_players_scores == nullptr || team2_players_scores == nullptr) {
         return StatusType::FAILURE;
     }
-    //int points1 = team1->get_total_points();
-    //int points2 = team2->get_total_points();
+    int total_points = team1->get_total_points() + team2->get_total_points();
+    int total_players = team1->get_total_players() + team2->get_total_players();
+    int total_goals = team1->get_goals() + team2->get_goals();
+    int total_cards = team1->get_cards() + team2->get_cards();
+    int total_goalKeepers = team1->get_totalGoalKeepers() + team2->get_totalGoalKeepers();
+    // TODO: top_scorer, get pointer to the higher scorer between the two
 
-    // CREATE TEAM - O(log(n[team1] + n[team2])
+
+    // CREATE TEAM - O(log(n[team1] + n[team2]))
     try {
-        //std::shared_ptr<Team> team(new Team(newTeamId, points));
-        AVL_tree<std::shared_ptr<Player>> team_players_id(*team1_players, *team2_players, SORT_BY_ID);
-        AVL_tree<std::shared_ptr<Player>> team_players_score(*team1_players_scores, *team2_players_scores, SORT_BY_SCORE);
+        std::shared_ptr<Team> team(
+                new Team(newTeamId, total_points, total_players, total_goals, total_cards,
+                         total_goalKeepers, nullptr,
+                         team1_players, team2_players, team1_players_scores, team2_players_scores));
+
+        //AVL_tree<std::shared_ptr<Player>> team_players_id(*team1_players, *team2_players, SORT_BY_ID);
+        //AVL_tree<std::shared_ptr<Player>> team_players_score(*team1_players_scores, *team2_players_scores, SORT_BY_SCORE);
+        // TODO: remove the older two teams
+        //teams_AVL.add(team);
+
     } catch (std::bad_alloc const&){
         return StatusType::ALLOCATION_ERROR;
     }
 
 
-	// TODO: Your code goes here
-    // Make sure to put update the values of played_games in each team before you unite log(n), and whatever else
+    // TODO: Each player needs to get playedGames updated to correct value (implement inside of AVL merge)
 	return StatusType::SUCCESS;
 }
 /*

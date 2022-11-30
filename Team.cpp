@@ -4,14 +4,14 @@
 
 Team::Team(int id, int points)
 : id(id),total_players(0),total_points(points), total_goals(0), total_cards(0), total_goalKeepers(0),
-wins(0), gamesPlayed(0), top_scorer(nullptr), team_players(SORT_BY_ID),team_players_scores(SORT_BY_SCORE)
+ gamesPlayed(0), top_scorer(nullptr), team_players(SORT_BY_ID),team_players_scores(SORT_BY_SCORE)
 {}
 
-Team::Team(int id, int points, int total_players, int total_goals, int total_cards, int total_goalKeepers, int wins, int gamesPlayed, Player* top_scorer,
+Team::Team(int id, int points, int total_players, int total_goals, int total_cards, int total_goalKeepers, Player* top_scorer,
      AVL_tree<std::shared_ptr<Player>>* team1_players, AVL_tree<std::shared_ptr<Player>>* team2_players,
      AVL_tree<std::shared_ptr<Player>>* team1_players_scores, AVL_tree<std::shared_ptr<Player>>* team2_players_scores)
      : id(id), total_players(total_players), total_points(points), total_goals(total_goals),
-       total_cards(total_cards), total_goalKeepers(total_goalKeepers), wins(wins), gamesPlayed(gamesPlayed), top_scorer(top_scorer),
+       total_cards(total_cards), total_goalKeepers(total_goalKeepers), gamesPlayed(0), top_scorer(top_scorer),
        team_players(*team1_players, *team2_players, SORT_BY_ID),
        team_players_scores(*team1_players_scores, *team2_players_scores, SORT_BY_SCORE)
 {
@@ -125,11 +125,6 @@ void Team::update_removeAGoalKeeper(bool remove)
 void Team::update_totalPoints(int toAdd)
 {
     this->total_points += toAdd;
-}
-
-void Team::update_wins()
-{
-    this->wins++;
 }
 
 void Team::update_gamesPlayed()

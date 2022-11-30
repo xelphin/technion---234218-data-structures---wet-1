@@ -10,7 +10,7 @@ class Player;
 class Team{
 public:
     Team(int id, int points);
-    Team(int id, int points, int total_players, int total_goals, int total_cards, int total_goalKeepers, int wins, int gamesPlayed, Player* top_scorer,
+    Team(int id, int points, int total_players, int total_goals, int total_cards, int total_goalKeepers, Player* top_scorer,
          AVL_tree<std::shared_ptr<Player>>* team1_players, AVL_tree<std::shared_ptr<Player>>* team2_players,
          AVL_tree<std::shared_ptr<Player>>* team1_players_scores, AVL_tree<std::shared_ptr<Player>>* team2_players_scores);
 
@@ -36,7 +36,6 @@ public:
     void update_addAGoalKeeper(bool add);
     void update_removeAGoalKeeper(bool remove);
     void update_totalPoints(int toAdd);
-    void update_wins();
     void update_gamesPlayed();
 
     // PRINTING AND DEBUGGING
@@ -51,7 +50,6 @@ private:
     int total_goals;
     int total_cards;
     int total_goalKeepers;
-    int wins;
     int gamesPlayed;
     Player *top_scorer; //may be changed to a different type of pointer later on.
     AVL_tree<std::shared_ptr<Player>> team_players;
