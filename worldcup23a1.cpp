@@ -195,13 +195,13 @@ StatusType world_cup_t::play_match(int teamId1, int teamId2) // O(log(k))
     // APPLY POINTS O(1)
     if (score1 == score2) {
         team1->update_totalPoints(1);
-        //team2->update_totalPoints(1);
+        team2->update_totalPoints(1);
         std::cout << "Tie" << std::endl;
     } else if (score1 < score2) {
-        //team2->update_totalPoints(3);
+        team2->update_totalPoints(3);
         std::cout << "Team: " << (teamId2) << "won" << std::endl;
     } else {
-        //team1->update_totalPoints(3);
+        team1->update_totalPoints(3);
         std::cout << "Team: " << (teamId1) << "won" << std::endl;;
     }
 
