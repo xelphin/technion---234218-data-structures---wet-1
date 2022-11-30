@@ -25,6 +25,8 @@ int Team::get_points() const{
 
 void Team::add_player(const std::shared_ptr<Player>& player) { //TODO: clang tidy: make player a const reference?
     // TODO: check that the argument is valid
+    if (player == nullptr)
+        return;
     team_players.add(player);
     team_players_scores.add(player);
     if (top_scorer == nullptr ||
