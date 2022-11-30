@@ -29,11 +29,11 @@ bool Player::get_isGoalKeeper() const
 {
     return goalKeeper;
 }
-int Player::operator ID() const {
+int Player::operator ~() const {
     return get_id();
 }
 
-int Player::operator SCORE() const {
+int Player::operator !() const {
     return get_score();
 }
 

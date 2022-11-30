@@ -18,8 +18,8 @@ public:
     bool get_isGoalKeeper() const;
     Team* get_team() const;
     int compare(const Player& player2, bool sort_by_score) const;
-    int operator SCORE() const;
-    int operator ID() const;
+    int operator !() const;
+    int operator ~() const;
 
     void set_team(Team* playerTeam);
     void update_gamesPlayed(int toAdd);
