@@ -263,10 +263,11 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
     //int points1 = team1->get_total_points();
     //int points2 = team2->get_total_points();
 
-    // CREATE TEAM
+    // CREATE TEAM - O(log(n[team1] + n[team2])
     try {
         //std::shared_ptr<Team> team(new Team(newTeamId, points));
-        AVL_tree<std::shared_ptr<Player>> team_player_id(*team1_players, *team2_players, SORT_BY_ID);
+        AVL_tree<std::shared_ptr<Player>> team_players_id(*team1_players, *team2_players, SORT_BY_ID);
+        AVL_tree<std::shared_ptr<Player>> team_players_score(*team1_players_scores, *team2_players_scores, SORT_BY_SCORE);
     } catch (std::bad_alloc const&){
         return StatusType::ALLOCATION_ERROR;
     }

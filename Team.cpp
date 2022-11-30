@@ -7,6 +7,19 @@ Team::Team(int id, int points)
 wins(0), gamesPlayed(0), top_scorer(nullptr), team_players(SORT_BY_ID),team_players_scores(SORT_BY_SCORE)
 {}
 
+Team::Team(int id, int points, int total_players, int total_goals, int total_cards, int total_goalKeepers, int wins, int gamesPlayed, Player* top_scorer,
+     AVL_tree<std::shared_ptr<Player>>* team1_players, AVL_tree<std::shared_ptr<Player>>* team2_players,
+     AVL_tree<std::shared_ptr<Player>>* team1_players_scores, AVL_tree<std::shared_ptr<Player>>* team2_players_scores)
+     : id(id), total_players(total_players), total_points(points), total_goals(total_goals),
+       total_cards(total_cards), total_goalKeepers(total_goalKeepers), wins(wins), gamesPlayed(gamesPlayed), top_scorer(top_scorer),
+       team_players(*team1_players, *team2_players, SORT_BY_ID),
+       team_players_scores(*team1_players_scores, *team2_players_scores, SORT_BY_SCORE)
+{
+
+}
+
+
+
 int Team::get_id() const{
     return id;
 }

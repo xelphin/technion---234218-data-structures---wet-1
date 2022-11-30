@@ -10,6 +10,9 @@ class Player;
 class Team{
 public:
     Team(int id, int points);
+    Team(int id, int points, int total_players, int total_goals, int total_cards, int total_goalKeepers, int wins, int gamesPlayed, Player* top_scorer,
+         AVL_tree<std::shared_ptr<Player>>* team1_players, AVL_tree<std::shared_ptr<Player>>* team2_players,
+         AVL_tree<std::shared_ptr<Player>>* team1_players_scores, AVL_tree<std::shared_ptr<Player>>* team2_players_scores);
 
     void add_player(const std::shared_ptr<Player>& player);
     std::shared_ptr<Player> find_player(int id);
