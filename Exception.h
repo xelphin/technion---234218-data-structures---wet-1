@@ -22,4 +22,11 @@ public:
     }
 };
 
+class IDENTICAL_IDS : public std::exception {
+public:
+    const char* what() const noexcept override {
+        return "both IDs where identical. excepted two different objects and received the same one.";
+    }
+};
+
 #endif //AVL_TREE_H_EXCEPTION_H

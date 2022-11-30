@@ -42,7 +42,12 @@ public:
 
     Node* add(T item);
     bool remove(int id);
+
     Node* find_id(int id);
+
+    T get_content(int id);
+
+
     void merge(AVL_tree<T> &other); //merge 2 trees together
     int get_amount();
     Node* make_AVL_tree_from_array(T arr[], int start, int end);
@@ -303,6 +308,19 @@ typename AVL_tree<T>::Node *AVL_tree<T>::find_id(int id) {
                 return nullptr;
             }
         }
+    }
+}
+
+
+template<class T>
+T AVL_tree<T>::get_content(int id) {
+    Node* node = find_id(id);
+    if (node){
+        return node->content;
+    }
+    else
+    {
+        return nullptr;
     }
 }
 
@@ -703,7 +721,6 @@ template<class T>
 void AVL_tree<T>::find_test_wrapper(int id) {
     print_node(find_id(id));
 }
-
 
 template<class T>
 void AVL_tree<T>::print_node(Node* node){
