@@ -12,12 +12,73 @@
 #include <fstream>
 #include <cstring>
 #include <functional>
+#include <cmath>
 
 #include "./AVL_tree.h"
 #include "./Player.h"
 #include "./Team.h"
 #include "./worldcup23a1.h"
 #include "./wet1util.h"
+
+template<class T>
+class AVL_testing{
+public:
+    static bool run_tests_on_tree(AVL_tree<T>* tree);
+    static bool height_test(AVL_tree<T>* tree);
+    static bool parent_child_relationship_test(AVL_tree<T>* tree);
+    static bool node_relationship_test(typename AVL_tree<T>::Node* node);
+};
+
+template<class T>
+bool AVL_testing<T>::run_tests_on_tree(AVL_tree<T> *tree) {
+    return ( //all tests should be true
+            height_test(tree) &&
+            parent_child_relationship_test(tree)
+
+            );
+}
+
+template<class T>
+bool AVL_testing<T>::height_test(AVL_tree<T>* tree) {
+    int N = tree->get_amount();
+    int H = tree->root->height;
+    int min_height = floor(log2(N));
+    int max_height = floor(1.44 * log2(N + 2) - 0.3277);
+    return (min_height <= H && H <= max_height);
+    //numbers taken from wikipedia AVL tree height, and log base conversion.
+}
+
+template<class T>
+bool AVL_testing<T>::parent_child_relationship_test(AVL_tree<T> *tree) {
+    return node_relationship_test(tree->root);
+}
+
+template<class T>
+bool AVL_testing<T>::node_relationship_test(typename AVL_tree<T>::Node *node) {
+    if (node == nullptr){
+        return true;
+    }
+    if (node->tree->root != node){
+        if (node->parent == nullptr || //not root but no parent
+        not (node->parent->left == node || node->parent->right == node)//not parent's child
+        )
+        {
+            return false;
+        }
+    }
+    else{ //root
+        if (node->parent != nullptr) //has parent even when root. this bad.
+        {
+            return false;
+        }
+    }
+    if (node->left != nullptr && node->left == node->right){ // both children are the same node.
+        return false;
+    }
+    return node_relationship_test(node->left) && node_relationship_test(node->right); //continues testing all nodes.
+}
+
+
 
 bool run_all_tests();
 void run_test(std::function<bool()> test, std::string test_name, std::string& success_string, bool& success);

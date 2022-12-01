@@ -104,6 +104,10 @@ bool createAVL()
     std::cout << "amount of nodes " << std::to_string(tree1.get_amount()) << std::endl;
     tests += (tree1.get_amount() == 4);
 
+    if (not AVL_testing<Player*>::run_tests_on_tree(&tree1))
+    {
+        return false;
+    }
     return tests == 2;
 }
 
@@ -124,6 +128,10 @@ bool balanceAVL_LL()
     std::string finalTree = tree1.debugging_printTree();
     std::cout << finalTree;
     std::string wantedTree = "└──5\n    ├──2\n    │   ├──1\n    │   └──3\n    └──8\n";
+    if (not AVL_testing<Player*>::run_tests_on_tree(&tree1))
+    {
+        return false;
+    }
     return treeCompare(finalTree,wantedTree);
 }
 
@@ -148,6 +156,10 @@ bool balanceAVL_RR()
     std::string finalTree = tree1.debugging_printTree();
     std::cout << finalTree;
     std::string wantedTree = "└──4\n    ├──2\n    │   ├──1\n    │   └──3\n    └──6\n        ├──5\n        └──7\n";
+    if (not AVL_testing<Player*>::run_tests_on_tree(&tree1))
+    {
+        return false;
+    }
     return treeCompare(finalTree,wantedTree);
 }
 
@@ -181,6 +193,10 @@ bool balanceAVL_LR()
     std::cout << finalTree;
     std::string wantedTree = "└──7\n    ├──4\n    │   ├──3\n    │   │   ├──2\n    │   └──6";
     wantedTree += "\n    │       ├──5\n    └──10\n        ├──8\n        └──20\n            └──21\n";
+    if (not AVL_testing<Player*>::run_tests_on_tree(&tree1))
+    {
+        return false;
+    }
     return treeCompare(finalTree,wantedTree);
 }
 
@@ -220,6 +236,10 @@ bool balanceAVL_RL()
     std::cout << finalTree;
     std::string wantedTree = "└──15\n    ├──10\n    │   ├──5\n    │   │   ├──4\n    │   │   └──6\n    │   └──12\n    └──20\n        ├──18";
     wantedTree += "\n        │   └──19\n        └──30\n            ├──25\n            └──40\n";
+    if (not AVL_testing<Player*>::run_tests_on_tree(&tree1))
+    {
+        return false;
+    }
     return treeCompare(finalTree,wantedTree);
 }
 
@@ -272,7 +292,10 @@ bool inorder_print(){
     std::cout << std::endl;
     delete[] arrTree;
     std::cout << tree1.debugging_printTree(); // TODO: make sure my tree isn't deleted
-
+    if (not AVL_testing<std::shared_ptr<Player>>::run_tests_on_tree(&tree1))
+    {
+        return false;
+    }
     return myOutput.compare( "4 5 6 10 12 15 18 19 20 25 30 40 ") == 0;
 
 
@@ -302,6 +325,10 @@ bool inorder_print_check2(){
     std::cout << myOutput << std::endl;
     delete[] arrTree;
 
+    if (not AVL_testing<std::shared_ptr<Player>>::run_tests_on_tree(&tree1))
+    {
+        return false;
+    }
     return true;
 }
 
@@ -341,6 +368,7 @@ bool find_test() {
     for (int id = 1; id <= 11; ++id) {
         tree1.find_test_wrapper(id);
     }
+
     return true;
 }
 
@@ -390,6 +418,10 @@ bool remove_test() {
     finalTree = tree1.debugging_printTree();
     std::cout << finalTree;
 
+    if (not AVL_testing<Player*>::run_tests_on_tree(&tree1))
+    {
+        return false;
+    }
     return tree1.get_amount() == 6;
 }
 
@@ -420,7 +452,6 @@ bool team_create() {
     wantedTree = "└──2\n    ├──3\n    │   ├──4\n    └──1\n";
     std::cout << wantedTree;
     tests += treeCompare(team_treeScore,wantedTree);
-
     return tests == 2;
 }
 
@@ -456,6 +487,14 @@ bool createAVL_byMerge()
     std::string finalTree = tree.debugging_printTree();
 
     std::string wantedTree = "└──4\n    ├──2\n    │   ├──1\n    │   └──3\n    └──6\n        ├──5\n        └──7\n            └──8\n";
+    if (not AVL_testing<std::shared_ptr<Player>>::run_tests_on_tree(&tree1))
+    {
+        return false;
+    }
+    if (not AVL_testing<std::shared_ptr<Player>>::run_tests_on_tree(&tree2))
+    {
+        return false;
+    }
     return treeCompare(finalTree,wantedTree);
 }
 

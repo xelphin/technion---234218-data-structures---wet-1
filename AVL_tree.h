@@ -26,6 +26,8 @@
 #define SCORE !
 #define ID ~
 
+template<class T>
+class AVL_testing;
 
 //-------------------------------AVL TREE CLASS---------------------------------------//
 
@@ -61,6 +63,9 @@ public:
     std::string debugging_printTree();
     static void print_node(Node* node);
     void find_test_wrapper(int id);
+    #ifndef NDEBUG
+        friend AVL_testing<T>;
+    #endif
 private:
     const bool sort_by_score;
     Node *root;
