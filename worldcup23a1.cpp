@@ -80,7 +80,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
             player->set_team(team);
             all_players_AVL.add(player);
             all_players_score_AVL.add(player);
- `       } catch (std::bad_alloc const&) { // EXCEPTION: Bad Alloc
+        } catch (std::bad_alloc const&) { // EXCEPTION: Bad Alloc
             all_players_AVL.remove(playerId);
             all_players_score_AVL.remove(playerId);
             return StatusType::ALLOCATION_ERROR;
@@ -270,10 +270,19 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
 
     // CREATE TEAM - O(log(n[team1] + n[team2]))
     try {
-        std::shared_ptr<Team> team(
-                new Team(newTeamId, total_points, total_players, total_goals, total_cards,
-                         total_goalKeepers, nullptr,
-                         team1_players, team2_players, team1_players_scores, team2_players_scores));
+        std::shared_ptr<Team> team0(new Team
+        (
+        //basic data:
+        newTeamId, total_points
+        ,total_players, total_goals, total_cards, total_goalKeepers, nullptr,
+
+        //new AVL trees:
+         team1_players, team2_players,
+         team1_players_scores, team2_players_scores
+         ));
+//        AVL_tree<std::shared_ptr<Player>>* team0_players = team0->get_AVL_tree_id();
+//        AVL_tree<std::shared_ptr<Player>>unite_trees(*team0_players, *team1_players, *team2_players, SORT_BY_ID, Functor(&(team0)));
+
 
         // TODO M: Change the players team* to point now to our new Team instead of the old one (in order traversal)
         // TODO M: Matan, in function make_AVL_tree_from_array() in AVL_tree class, I update the playedGames of player (which depends on their oldTeam), so before you change the Players to point to our newTeam, make sure to wait after this (line 166 there)
@@ -282,7 +291,7 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
         //teams_AVL.remove(teamId2);
         //valid_teams_AVL.remove(teamId2);
 
-        std::cout << (team->get_AVL_tree_id())->debugging_printTree();
+        std::cout << (team0->get_AVL_tree_id())->debugging_printTree();
         std::cout << "amount of players in team1: " << (team1->get_total_players()) << std::endl;
 
         //teams_AVL.add(team);
