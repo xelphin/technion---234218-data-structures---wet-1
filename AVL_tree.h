@@ -42,17 +42,12 @@ public:
     Node* add(T item);
     bool remove(int id);
 
+    int get_amount();
     Node* find_id(int id);
-
     T get_content(int id);
 
 
-    void merge(AVL_tree<T> &other); //merge 2 trees together
-    int get_amount();
     Node* make_AVL_tree_from_array(T arr[], int start, int end);
-    Node *make_AVL_tree_from_array_wrapper(T *arr, int start, int end);
-
-
     static void merge_sort(T newArr[], T arr1[], int size1, T arr2[], int size2, bool sort_by_score);
     static void fill_array(T newArr[], T oldArr[], int size, int& indexNew, int& indexOld);
 
@@ -61,10 +56,6 @@ public:
 
     template<class F>
     void in_order_traversal_wrapper(F functor); // used to iterate on all the nodes.
-
-    template<class F>
-    void unite_trees(AVL_tree<T> &new_tree, AVL_tree<T> &tree1, AVL_tree<T> &tree2, bool sort_by_score, F functor);
-
 
     // TESTS AND DEBUGGING FUNCTIONS
     std::string debugging_printTree();
@@ -274,6 +265,11 @@ typename AVL_tree<T>::Node *AVL_tree<T>::find_id(int id) {
     }
 }
 
+template<class T>
+template<class F>
+void AVL_tree<T>::in_order_traversal_wrapper(F functor) {
+    in_order_traversal(root, &functor);
+}
 
 template<class T>
 T AVL_tree<T>::get_content(int id) {
@@ -309,7 +305,7 @@ public:
     //typename AVL_tree<T>::Node* node, T arr[], int size, int& currIndex, F functor)
 };
 
-
+//this constructor is used to merge 2 trees together.
 template<class T>
 template <class F>
 AVL_tree<T>::AVL_tree(AVL_tree<T>& tree1, AVL_tree<T>& tree2, bool sort_by_score, F functor)
@@ -339,41 +335,6 @@ AVL_tree<T>::AVL_tree(AVL_tree<T>& tree1, AVL_tree<T>& tree2, bool sort_by_score
     delete[] arrTree;
 }
 
-
-template<class T>
-void AVL_tree<T>::merge(AVL_tree<T> &other) {
-
-}
-
-//template<class T>
-//template<class F>
-//void AVL_tree<T>::unite_trees(AVL_tree<T>& new_tree ,AVL_tree<T>& tree1, AVL_tree<T>& tree2, bool sort_by_score, F functor)
-//{
-//    // Complexity: O( sizeTree1 + sizeTree2)
-//    int sizeTree1 = tree1.get_amount();
-//    int sizeTree2 = tree2.get_amount();
-//    T *arrTree1 = new T [sizeTree1];
-//    T *arrTree2 = new T [sizeTree2];
-//
-//    // Fill an inorder array for each tree
-//    new_tree.in_order_traversal_wrapper( ArrayFillerFunctor<T, F>(arrTree1, sizeTree1, functor));
-//    new_tree.in_order_traversal_wrapper(ArrayFillerFunctor<T, F>(arrTree2, sizeTree2, functor));
-//
-//    // Create new array
-//    T *arrTree = new T [sizeTree1 + sizeTree2];
-//    AVL_tree<T>::merge_sort(arrTree, arrTree1, sizeTree1, arrTree2, sizeTree2, sort_by_score);
-//
-//    // Create tree
-//    new_tree.make_AVL_tree_from_array_wrapper(arrTree, 0, (sizeTree1 + sizeTree2) -1);
-//    //    new_tree.root = new_tree.AVL_tree<T>::make_AVL_tree_from_array(arrTree, 0, (sizeTree1 + sizeTree2) -1);
-//    //    new_tree.amount = sizeTree1 + sizeTree2;
-//
-//    // Free arrays
-//    delete[] arrTree1;
-//    delete[] arrTree2;
-//    delete[] arrTree;
-//}
-
 template<class T>
 typename AVL_tree<T>::Node *AVL_tree<T>::make_AVL_tree_from_array(T arr[], int start, int end)
 {
@@ -399,20 +360,6 @@ typename AVL_tree<T>::Node *AVL_tree<T>::make_AVL_tree_from_array(T arr[], int s
     return node;
 }
 
-template<class T>
-typename AVL_tree<T>::Node *AVL_tree<T>::make_AVL_tree_from_array_wrapper(T arr[], int start, int end){
-    root = make_AVL_tree_from_array(arr, start, end);
-    amount = start + 1;
-    //    new_tree.root = new_tree.AVL_tree<T>::make_AVL_tree_from_array(arrTree, 0, (sizeTree1 + sizeTree2) -1);
-    //    new_tree.amount = sizeTree1 + sizeTree2;
-
-}
-
-template<class T>
-template<class F>
-void AVL_tree<T>::in_order_traversal_wrapper(F functor) {
-    in_order_traversal(root, &functor);
-}
 template<class T>
 void AVL_tree<T>::merge_sort(T newArr[], T arr1[], int size1, T arr2[], int size2, bool sort_by_score)
 {
