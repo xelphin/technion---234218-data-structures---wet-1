@@ -433,7 +433,7 @@ void AVL_tree<T>::in_order_traversal(Node* node,T arr[], int size, int& currInde
 
     in_order_traversal(node->left, arr, size,currIndex);
     if (currIndex > size-1)
-        throw;
+        throw; //TODO: throw? not return?
     arr[currIndex] = node->content;
     currIndex++;
     in_order_traversal(node->right, arr, size,currIndex);

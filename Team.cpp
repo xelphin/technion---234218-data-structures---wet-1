@@ -54,11 +54,11 @@ void Team::add_player(const std::shared_ptr<Player>& player) {
     total_players++;
 }
 
-std::shared_ptr<Player> Team::find_player(int id)
+std::shared_ptr<Player> Team::find_player(int player_id)
 {
     // O(log(n))
     // TODO M: make sure this does not need to return a pointer to the shared pointer.
-    return team_players.get_content(id);
+    return team_players.get_content(player_id);
 }
 
 bool Team::remove_player(int player_id)

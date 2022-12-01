@@ -3,7 +3,6 @@
 Player::Player(int playerId, int teamId, int gamesPlayed, int goals, int cards, bool goalKeeper) 
 : playerId(playerId), teamId(teamId), gamesPlayed(gamesPlayed), goals(goals), cards(cards), goalKeeper(goalKeeper), team(nullptr)
 {
-    // TODO M: find Team using TeamId and connect our Team* to it (if team doesn't exist -> throw error)
 }
 
 int Player::get_score() const {

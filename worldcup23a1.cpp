@@ -70,6 +70,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
         // TRY to Create PLAYER and ADD to TEAM and AVLs
         try {
             std::shared_ptr<Player> player(new Player(playerId, teamId, gamesPlayed, goals, cards, goalKeeper));
+            player->set_team(team);
             team->add_player(player);
             team->update_cardsReceived(cards);
             team->update_scoredGoals(goals);
@@ -79,7 +80,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
             player->set_team(team);
             all_players_AVL.add(player);
             all_players_score_AVL.add(player);
-        } catch (std::bad_alloc const&) { // EXCEPTION: Bad Alloc
+ `       } catch (std::bad_alloc const&) { // EXCEPTION: Bad Alloc
             all_players_AVL.remove(playerId);
             all_players_score_AVL.remove(playerId);
             return StatusType::ALLOCATION_ERROR;
@@ -260,8 +261,6 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
         team1_players_scores == nullptr || team2_players_scores == nullptr) {
         return StatusType::FAILURE;
     }
-    //AVL_tree<std::shared_ptr<Player>> team_players_id(*team1_players, *team2_players, SORT_BY_ID);
-    //AVL_tree<std::shared_ptr<Player>> team_players_score(*team1_players_scores, *team2_players_scores, SORT_BY_SCORE);
     int total_points = team1->get_total_points() + team2->get_total_points();
     int total_players = team1->get_total_players() + team2->get_total_players();
     int total_goals = team1->get_goals() + team2->get_goals();
