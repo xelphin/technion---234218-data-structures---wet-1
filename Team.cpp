@@ -41,14 +41,13 @@ int Team::get_points() const{
     return total_points;
 }
 
-void Team::add_player(const std::shared_ptr<Player>& player) {
+void Team::add_player(std::shared_ptr<Player>& player) {
     if (player == nullptr)
         return;
     team_players.add(player);
     team_players_scores.add(player);
     if (top_scorer == nullptr){
-        top_scorer = &*player;
-
+        top_scorer = (player.get());
     }
     else if(top_scorer->get_score() < player->get_score() ||
         (top_scorer->get_score() == player->get_score() && top_scorer->get_id() == player->get_id()))

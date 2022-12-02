@@ -14,7 +14,7 @@ public:
          AVL_tree<std::shared_ptr<Player>>* team1_players, AVL_tree<std::shared_ptr<Player>>* team2_players,
          AVL_tree<std::shared_ptr<Player>>* team1_players_scores, AVL_tree<std::shared_ptr<Player>>* team2_players_scores);
 
-    void add_player(const std::shared_ptr<Player>& player);
+    void add_player(std::shared_ptr<Player>& player);
     std::shared_ptr<Player> find_player(int player_id);
     bool remove_player(int player_id);
 

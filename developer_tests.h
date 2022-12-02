@@ -42,8 +42,8 @@ template<class T>
 bool AVL_testing<T>::height_test(AVL_tree<T>* tree) {
     int N = tree->get_amount();
     int H = tree->root->height;
-    int min_height = floor(log2(N));
-    int max_height = floor(1.44 * log2(N + 2) - 0.3277);
+    int min_height = (int)log2(N);
+    int max_height = (int)(1.44 * log2(N + 2) - 0.3277);
     return (min_height <= H && H <= max_height);
     //numbers taken from wikipedia AVL tree height, and log base conversion.
 }

@@ -309,7 +309,7 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
 output_t<int> world_cup_t::get_top_scorer(int teamId)
 {
 	// TODO M: Your code goes here
-	return 2008;
+	return teamId;
 }
 
 output_t<int> world_cup_t::get_all_players_count(int teamId)
