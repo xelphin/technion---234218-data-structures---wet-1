@@ -27,7 +27,16 @@ public:
     static bool height_test(AVL_tree<T>* tree);
     static bool parent_child_relationship_test(AVL_tree<T>* tree);
     static bool node_relationship_test(typename AVL_tree<T>::Node* node);
+    static bool run_tests_on_worldCup(world_cup_t* cup);
 };
+
+template<class T>
+bool AVL_testing<T>::run_tests_on_worldCup(world_cup_t* cup) {
+    return AVL_testing<std::shared_ptr<Player>>::run_tests_on_tree(&cup->all_players_AVL) &&
+            AVL_testing<std::shared_ptr<Player>>::run_tests_on_tree(&cup->all_players_score_AVL) &&
+            AVL_testing<std::shared_ptr<Team>>::run_tests_on_tree(&cup->teams_AVL) &&
+            AVL_testing<std::shared_ptr<Team>>::run_tests_on_tree(&cup->valid_teams_AVL);
+}
 
 template<class T>
 bool AVL_testing<T>::run_tests_on_tree(AVL_tree<T> *tree) {

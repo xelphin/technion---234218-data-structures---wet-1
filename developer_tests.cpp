@@ -20,12 +20,12 @@ bool run_all_tests() {
     run_test(balanceAVL_RR, "balanceAVL_RR", success_string, success);
     run_test(balanceAVL_LR, "balanceAVL_LR", success_string, success);
     run_test(balanceAVL_RL, "balanceAVL_RL", success_string, success);
-    run_test(inorder_print, "inorder print", success_string, success); //TODO M: make tests online again
+    run_test(inorder_print, "inorder print", success_string, success);
     run_test(inorder_print_check2, "inorder_print_check2()", success_string, success);
     run_test(find_test, "find", success_string, success);
     run_test(remove_test, "remove", success_string, success);
     run_test(team_create, "team_create", success_string, success);
-    run_test(createAVL_byMerge, "createAVL_byMerge", success_string, success); //TODO
+    run_test(createAVL_byMerge, "createAVL_byMerge", success_string, success);
     run_test(worldCup_Constructor, "worldCup_Constructor", success_string, success);
     run_test(worldCup_Add, "worldCup_Add", success_string, success);
     run_test(worldCup_Add_Player, "worldCup_Add_Player", success_string, success);
@@ -704,16 +704,64 @@ bool worldCup_Get_Num_Played_Games()
 
 bool worldCup_Unite_Teams()
 {
-    int tests = 0;
     world_cup_t worldCup;
     worldCup.add_team(1,1);
     worldCup.add_team(2,3);
+    worldCup.add_team(4,5);
+
+
+    worldCup.add_player(1, 1, 5, 6, 4, true);
+    worldCup.add_player(2, 1, 5, 6, 4, false);
+    worldCup.add_player(3, 1, 5, 6, 4, false);
+    worldCup.add_player(4, 1, 5, 6, 4, false);
+    worldCup.add_player(5, 1, 5, 6, 4, false);
+    worldCup.add_player(6, 1, 5, 6, 4, false);
+    worldCup.add_player(7, 1, 5, 6, 4, false);
+    worldCup.add_player(8, 1, 5, 6, 4, false);
+    worldCup.add_player(9, 1, 5, 6, 4, false);
+    worldCup.add_player(10, 1, 5, 6, 4, false);
     worldCup.add_player(11, 1, 5, 6, 4, false);
-    worldCup.add_player(12, 1, 5, 6, 4, false);
-    worldCup.add_player(21, 2, 5, 6, 4, false);
-    // TODO M: more tests after finish implementation
+    //
+    worldCup.add_player(21, 2, 5, 6, 4, true);
+    worldCup.add_player(22, 2, 5, 6, 4, false);
+    worldCup.add_player(23, 2, 5, 6, 4, false);
+    worldCup.add_player(24, 2, 5, 6, 4, false);
+    worldCup.add_player(25, 2, 5, 6, 4, false);
+    worldCup.add_player(26, 2, 5, 6, 4, false);
+    worldCup.add_player(27, 2, 5, 6, 4, false);
+    worldCup.add_player(28, 2, 5, 6, 4, false);
+    worldCup.add_player(29, 2, 5, 6, 4, false);
+    worldCup.add_player(30, 2, 5, 6, 4, false);
+    worldCup.add_player(31, 2, 5, 6, 4, false);
+    worldCup.add_player(32, 2, 0, 0, 0, false);
+
+
     worldCup.unite_teams(1,2,3);
-    return tests == 0;
+    int team_points = worldCup.get_team_points(3).ans();
+    int players_count = worldCup.get_all_players_count(3).ans();
+
+    if (team_points != 1 + 3 || players_count != 11 + 12){
+        return false;
+    }
+    if (not AVL_testing<std::shared_ptr<int>>::run_tests_on_worldCup(&worldCup))
+        return false;
+
+
+    // second test is pretty much the same as the first. just checking if readding is a problem. also adding the same id.
+    // also adding a bit more points.
+    worldCup.unite_teams(4,3,3);
+
+    worldCup.unite_teams(1,2,3);
+    team_points = worldCup.get_team_points(3).ans();
+    players_count = worldCup.get_all_players_count(3).ans();
+
+    if (team_points != 1 + 3 + 5 || players_count != 11 + 12){
+        return false;
+    }
+    if (not AVL_testing<std::shared_ptr<int>>::run_tests_on_worldCup(&worldCup))
+        return false;
+
+    return true;
 }
 
 bool worldCup_Get_All_Players_Count()

@@ -46,7 +46,9 @@ public:
 
     int get_amount();
     Node* find_id(int id);
+    Node* find_rightmost(Node* node);
     T get_content(int id);
+    T get_biggest_in_tree();
 
 
     Node* make_AVL_tree_from_array(T arr[], int start, int end);
@@ -271,9 +273,23 @@ typename AVL_tree<T>::Node *AVL_tree<T>::find_id(int id) {
 }
 
 template<class T>
-template<class F>
-void AVL_tree<T>::in_order_traversal_wrapper(F functor) {
-    in_order_traversal(root, &functor);
+typename AVL_tree<T>::Node *AVL_tree<T>::find_rightmost(Node* node) {
+    if (node == nullptr){
+        return nullptr;
+    }
+    Node* current = node->right;
+    if (current == nullptr){ //no nodes to the right of this node
+        return nullptr;
+    }
+
+    while(true){ //while true loop ok because in every case we either return or go down tree.
+        if (current->right != nullptr){
+            current = current->right;
+        }
+        else{
+            return current; //returns when there is no right child
+        }
+    }
 }
 
 template<class T>
@@ -288,6 +304,27 @@ T AVL_tree<T>::get_content(int id) {
     }
 }
 
+template<class T>
+T AVL_tree<T>::get_biggest_in_tree() { //TODO: test get_top_scorer after the top scorer is removed from a team.
+    Node* node = find_rightmost(root);
+    if (node){
+        return node->content;
+    }
+    else if (root){
+        return root->content;
+    }
+    else{
+        return nullptr;
+    }
+}
+
+template<class T>
+template<class F>
+void AVL_tree<T>::in_order_traversal_wrapper(F functor) {
+    in_order_traversal(root, &functor);
+}
+
+
 template <class T, class F>
 class ArrayFillerFunctor{
 private:
@@ -300,8 +337,8 @@ public:
 
     // call is: functor(node->content);
     void operator() (T node_content) {
-        if (currIndex > size-1){
-            throw; //TODO: throw? not return?
+        if (currIndex > size - 1){
+            throw std::exception();
         }
         functor(node_content);
         arr[currIndex] = node_content;
@@ -351,7 +388,7 @@ typename AVL_tree<T>::Node *AVL_tree<T>::make_AVL_tree_from_array(T arr[], int s
         throw;
 
     Node *node = new Node(arr[midIndex]); //in case of bad_alloc, memory is freed from the tree destructor.
-    // how is this freed? this looks like very dangerous memory allocation TODO E.
+    // TODO E: how is this freed? this looks like very dangerous memory allocation.
     node->tree = this;
 //    if (node->content != nullptr) { // Notice that you SHOULDN'T stop pointing at old team before you get here
 //        node->content->set_gamesPlayed();
@@ -550,13 +587,13 @@ int AVL_tree<T>::Node::get_comparison(const Node &other) {
         //std::cout << "tree is a nullptr!" << std::endl;
         return 0;
     }
-    if (tree->sort_by_score == SORT_BY_SCORE){
-        int score = SCORE(*(this->content)) - SCORE(*other.content);
-        int cardDiff = this->content->get_cards() - this->content->get_cards();
-        if (score != 0)
-            return score;
-        if (cardDiff != 0)
-            return -cardDiff; // TODO M: negative right?
+    if (tree->sort_by_score == SORT_BY_SCORE){ //TODO E: this part breaks encapsulation. see trello for more details.
+        int scoreDiff = SCORE(*(this->content)) - SCORE(*other.content);
+        int cardDiff = this->content->get_cards() - this->content->get_cards(); //TODO E: this line is broken. cant change second "this" without compilation errors.
+        if (scoreDiff != 0)
+            return scoreDiff;
+        else if (cardDiff != 0)
+            return -cardDiff; // should be negative because more cards is bad.
         return ID(*(this->content)) - ID(*other.content);
     }
     else

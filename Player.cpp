@@ -44,7 +44,7 @@ std::ostream& operator<<(std::ostream& os, const Player& toPrint)
 
 int Player::compare(const Player& player2, bool sort_by_score) const
 {
-    //TODO M: should maybe return bool instead of int?
+    //TODO E: should maybe return bool instead of int?
     if (this->get_id() == player2.get_id()){
         throw IDENTICAL_IDS();
     }

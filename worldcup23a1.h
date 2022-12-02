@@ -34,8 +34,9 @@ private:
     AVL_tree<std::shared_ptr<Team>> teams_AVL;
     AVL_tree<std::shared_ptr<Team>> valid_teams_AVL;
 
-	// NOTICE: Still some discussion on whether to use Team* or std::shared_ptr<Team>
-	//		   (For example because we have Team inside of valid_TeamsAVL and in teams_AVL etc.)
+#ifndef NDEBUG
+    template <typename T> friend class AVL_testing;
+#endif
 
 	
 public:

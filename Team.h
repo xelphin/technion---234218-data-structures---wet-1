@@ -10,11 +10,11 @@ class Player;
 class Team{
 public:
     Team(int id, int points);
-    Team(int id, int points, int total_players, int total_goals, int total_cards, int total_goalKeepers, Player* top_scorer,
+    Team(int id, int points, int total_players, int total_goals, int total_cards, int total_goalKeepers, std::shared_ptr<Player> top_scorer,
          AVL_tree<std::shared_ptr<Player>>* team1_players, AVL_tree<std::shared_ptr<Player>>* team2_players,
          AVL_tree<std::shared_ptr<Player>>* team1_players_scores, AVL_tree<std::shared_ptr<Player>>* team2_players_scores);
 
-    void add_player(std::shared_ptr<Player>& player);
+    void add_player(const std::shared_ptr<Player>& player);
     std::shared_ptr<Player> find_player(int player_id);
     bool remove_player(int player_id);
 
@@ -30,6 +30,7 @@ public:
     bool get_isValid() const;
     int operator ID() const;
     int operator SCORE() const;
+    std::shared_ptr<Player> get_top_scorer();
 
     void update_scoredGoals(int toAdd);
     void update_cardsReceived(int toAdd);
@@ -51,11 +52,13 @@ private:
     int total_cards;
     int total_goalKeepers;
     int gamesPlayed;
-    Player *top_scorer; //may be changed to a different type of pointer later on.
+    std::shared_ptr<Player> top_scorer;
     AVL_tree<std::shared_ptr<Player>> team_players;
     AVL_tree<std::shared_ptr<Player>> team_players_scores;
 
     int get_points() const;
+
+    void compare_to_top_scorer(const std::shared_ptr<Player> &sharedPtr);
 };
 
 #endif //TECHNION_234218_DATA_STRUCTURES_WET_1_TEAM_H

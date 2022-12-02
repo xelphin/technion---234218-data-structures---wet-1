@@ -17,7 +17,9 @@ StatusType world_cup_t::add_team(int teamId, int points)
         return StatusType::INVALID_INPUT;
     try {
         std::shared_ptr<Team> team(new Team(teamId, points));
-        // valid_teams_AVL.add(team); TODO M: Implement properly when needed later
+        if(team->get_isValid()){
+            valid_teams_AVL.add(team);
+        }
         teams_AVL.add(team); // CHECK:
     } catch (std::bad_alloc const&){
         return StatusType::ALLOCATION_ERROR;
@@ -266,7 +268,9 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
     int total_goals = team1->get_goals() + team2->get_goals();
     int total_cards = team1->get_cards() + team2->get_cards();
     int total_goalKeepers = team1->get_totalGoalKeepers() + team2->get_totalGoalKeepers();
-    // TODO M: top_scorer, get pointer to the higher scorer between the two (replace nullptr in c'tor)
+    std::shared_ptr<Player> top_scorer =
+            SCORE(team1->get_top_scorer()) > SCORE(team2->get_top_scorer()) ?
+                  team1->get_top_scorer() : team2->get_top_scorer();
 
     // CREATE TEAM - O(log(n[team1] + n[team2]))
     try {
@@ -274,35 +278,32 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
         (
         //basic data:
         newTeamId, total_points
-        ,total_players, total_goals, total_cards, total_goalKeepers, nullptr,
+        ,total_players, total_goals, total_cards, total_goalKeepers,
+        top_scorer,
 
         //new AVL trees:
          team1_players, team2_players,
          team1_players_scores, team2_players_scores
          ));
-//        AVL_tree<std::shared_ptr<Player>>* team0_players = team0->get_AVL_tree_id();
-//        AVL_tree<std::shared_ptr<Player>>unite_trees(*team0_players, *team1_players, *team2_players, SORT_BY_ID, Functor(&(team0)));
 
+        teams_AVL.remove(teamId1);
+        valid_teams_AVL.remove(teamId1);
+        teams_AVL.remove(teamId2);
+        valid_teams_AVL.remove(teamId2);
 
-        // TODO M: Change the players team* to point now to our new Team instead of the old one (in order traversal)
-        // TODO M: Matan, in function make_AVL_tree_from_array() in AVL_tree class, I update the playedGames of player (which depends on their oldTeam), so before you change the Players to point to our newTeam, make sure to wait after this (line 166 there)
-        //teams_AVL.remove(teamId1);
-        //valid_teams_AVL.remove(teamId1);
-        //teams_AVL.remove(teamId2);
-        //valid_teams_AVL.remove(teamId2);
+        teams_AVL.add(team0);
+        if (team0->get_isValid()){
+            valid_teams_AVL.add(team0);
+        }
 
         std::cout << (team0->get_AVL_tree_id())->debugging_printTree();
         std::cout << "amount of players in team1: " << (team1->get_total_players()) << std::endl;
-
-        //teams_AVL.add(team);
-        // TODO M: Add to valid_teams_AVL per requirements
 
     } catch (std::bad_alloc const&){
         return StatusType::ALLOCATION_ERROR;
     }
 
 
-    // TODO M: Each player needs to get playedGames updated to correct value, itself_playedGames+team_playedGames (implement inside of AVL merge)
 	return StatusType::SUCCESS;
 }
 
@@ -360,7 +361,7 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
 
 output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
 {
-	// TODO M: Your code goes here
+	// TODO: OUR code goes here
 	return 2;
 }
 */
