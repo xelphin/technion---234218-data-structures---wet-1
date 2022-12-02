@@ -95,3 +95,45 @@ void Player::change_team(Team* new_team) {
     set_gamesPlayed();
     set_team(new_team);
 }
+
+bool Player::get_closest_from_pair(const std::shared_ptr<Player>& player1, const std::shared_ptr<Player>& player2) const {
+    //true for player 1 is closer, false for player 2 is closer.
+    //returns the closest of the two players, corresponding to get_closest_player instruction.
+
+    //comparing score:
+    if (abs(get_score() - player1->get_score()) > abs(get_score() - player2->get_score())){
+        return false; // score is closest.
+    }
+    else if (abs(get_score() - player1->get_score()) < abs(get_score() - player2->get_score())){
+        return true;
+    }
+
+    else{
+        // comparing cards
+        if (abs(get_cards() - player1->get_cards()) > abs(get_cards() - player2->get_cards())){
+            return false;
+        }
+        else if (abs(get_cards() - player1->get_cards()) < abs(get_cards() - player2->get_cards())){
+            return true;
+        }
+
+        else{
+            // comparing IDs
+            if (abs(get_id() - player1->get_id()) > abs(get_id() - player2->get_id())){
+                return false;
+            }
+            else if (abs(get_id() - player1->get_id()) < abs(get_id() - player2->get_id())){
+                return true;
+            }
+
+            else{
+                // return bigger id
+                if (player1->get_id() > player2->get_id())
+                {
+                    return true; // true == player 1
+                }
+            }
+        }
+    }
+    throw;
+}

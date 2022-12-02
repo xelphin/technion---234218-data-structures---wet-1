@@ -333,36 +333,38 @@ output_t<int> world_cup_t::get_all_players_count(int teamId)
     return team->get_AVL_tree_id()->get_amount();
 }
 
-//StatusType world_cup_t::get_all_players(int teamId, int *const output)
-//{
-//
-//    // CHECK INVALID - O(1)
-//    if (teamId == 0 || output == NULL)
-//        return StatusType::INVALID_INPUT;
-//    int amountPlayers = 0; // uncomment
-//    // FOR teamId>0
-//    if (teamId<0) {
-//        amountPlayers = all_players_AVL.get_amount(); // uncomment
-//        // TODO M: in_order_traversal
-//        //all_players_score_AVL.in_order_traversal_wrapper(output, amountPlayers);
-//    }
-//
-//
-//	// TODO M: Your code goes here
-//    output[0] = 4001;
-//    output[1] = 4002;
-//	return StatusType::SUCCESS;
-//}
-/*
-output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
+StatusType world_cup_t::get_all_players(int teamId, int *const output)
 {
-	// TODO M: Your code goes here
-	return 1006;
+
+    // CHECK INVALID - O(1)
+    if (teamId == 0 || output == nullptr)
+        return StatusType::INVALID_INPUT;
+    int arr_size;
+
+    //inorder traversal with the right functor fills the target array with IDs of the players inside the tree.
+    if (teamId < 0) {
+        arr_size = all_players_score_AVL.get_amount();
+        all_players_score_AVL.in_order_traversal_wrapper(ArrayFillerFunctor_ID<std::shared_ptr<Player>>(output, arr_size));
+    }
+    else{ //team id > 0. not >= 0.
+        std::shared_ptr<Team> team = teams_AVL.get_content(teamId);
+        arr_size = team->get_total_players();
+        team->get_AVL_tree_score()->in_order_traversal_wrapper(ArrayFillerFunctor_ID<std::shared_ptr<Player>>(output, arr_size));
+    }
+
+    return StatusType::SUCCESS;
 }
 
-output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
+
+output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
 {
-	// TODO: OUR code goes here
-	return 2;
+
+//	return 1006;
 }
-*/
+
+//output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
+//{
+//	// TODO: OUR code goes here
+//	return 2;
+//}
+

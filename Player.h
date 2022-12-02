@@ -20,6 +20,7 @@ public:
     bool get_isGoalKeeper() const;
     Team* get_team() const;
     int compare(const Player& player2, bool sort_by_score) const;
+    bool get_closest_from_pair(const std::shared_ptr<Player>& player1, const std::shared_ptr<Player>& player2) const;
     int operator !() const;
     int operator ~() const;
 

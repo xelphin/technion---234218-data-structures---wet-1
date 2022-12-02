@@ -116,6 +116,15 @@ public:
 
     void update_parent(Node* replacement);
 
+    //closest player stuff:
+    Node* straight_line_ancestor;
+    Node* leftmost_descendant;
+    Node* rightmost_descendant;
+
+    //get_closest_player
+    void update_descendants();
+    T get_closest_node();
+
 private:
     void roll_right();
     void roll_left();
@@ -345,6 +354,25 @@ public:
         currIndex++;
     }
     //typename AVL_tree<T>::Node* node, T arr[], int size, int& currIndex, F functor)
+};
+
+template <class T>
+class ArrayFillerFunctor_ID{
+private:
+    int size;
+    int currIndex;
+    int* arr;
+public:
+    ArrayFillerFunctor_ID(int* arr, int size) : size(size), currIndex(0), arr(arr) {}
+
+    // call is: functor(node->content);
+    void operator() (T node_content) {
+        if (currIndex > size - 1){
+            throw std::exception();
+        }
+        arr[currIndex] = node_content.get()->get_id();
+        currIndex++;
+    }
 };
 
 //this constructor is used to merge 2 trees together.
@@ -652,6 +680,8 @@ void AVL_tree<T>::climb_up_and_rebalance_tree(AVL_tree::Node *leaf) {
             current->choose_roll(); //because roll switches parent and child, we will still get to the new parent.
         }
         current->set_height();
+
+        current->update_descendants();
         current = current->parent;
     }
     
@@ -718,6 +748,7 @@ void AVL_tree<T>::Node::roll_left() {
     original_right->left = this;
     update_parent(original_right);
     set_balance_factor();
+    update_descendants();
 }
 
 template<class T>
@@ -730,6 +761,7 @@ void AVL_tree<T>::Node::roll_right() {
     original_left->right = this;
     update_parent(original_left);
     set_balance_factor();
+    update_descendants();
 }
 
 template<class T>
@@ -756,6 +788,130 @@ void AVL_tree<T>::Node::RL_roll() {
 
 
 
+//------------------------------------------"CLOSEST" NODES--------------------------------------//
+
+//this section is used only for get_closest_player.
+
+template<class T>
+void AVL_tree<T>::Node::update_descendants() {
+    //update descendants
+    if (left){
+        leftmost_descendant = left->leftmost_descendant;
+        if (leftmost_descendant->straight_line_ancestor == left){
+            //update descendant to point at self because self is now above prev ancestor
+            leftmost_descendant->straight_line_ancestor = this;
+        }
+    }
+    else
+    {
+        leftmost_descendant = this; // for the recursion to work, the last node has to point on itself.
+    }
+
+    if (right){
+        rightmost_descendant = right->rightmost_descendant;
+        if (rightmost_descendant->straight_line_ancestor == right){
+            //update descendant to point at self because self is now above prev ancestor
+            rightmost_descendant->straight_line_ancestor = this;
+        }
+    }
+    else
+    {
+        rightmost_descendant = this; // for the recursion to work, the last node has to point on itself.
+    }
+
+    //update ancestor
+    if (parent){
+        if (parent->left == this){ // this is a left child
+            straight_line_ancestor = left->straight_line_ancestor; // ask the leftmost who is daddy is, then go there.
+        }
+        else if (parent->right == this){
+            straight_line_ancestor = right->straight_line_ancestor;
+        }
+        else throw;
+    }
+    else{
+        straight_line_ancestor = this; //TODO decide on this or nullptr
+    }
+}
+
+template<class T>
+T AVL_tree<T>::Node::get_closest_node() {
+    /*
+     * this is the algorithm to find the nodes that contain the closest players,
+     * and then compare those players to get the closest one.
+     * note: if there is only 1 child, it means that child does not have children of its own, because of AVL invariant.
+     */
+    Node* zig_zag_ancestor = straight_line_ancestor->parent; // straight line ancestor is never null, but its parent may be. TODO: decide if its null for the root.
+    Node* closest1 = nullptr;
+    Node* closest2 = nullptr;
+    if (left && right) //2 children
+    {
+        closest1 = left->rightmost_descendant;
+        closest2 = right->leftmost_descendant;
+    }
+    else if (left == nullptr && right == nullptr){ //no children
+        closest1 = parent;
+        closest2 = zig_zag_ancestor;
+    }
+    else if (left == nullptr){ //only right child
+        if (parent){
+            if (parent->left == this){ // right child, this is left child
+                closest1 = zig_zag_ancestor;
+                closest2 = right;
+            }
+            else if (parent->right == this){ // right child, this is right child
+                closest1 = parent;
+                closest2 = right;
+            }
+            else throw;
+        }
+        else // only 1 child, no parent.
+        {
+            return right->content;
+        }
+    }
+    else if (right == nullptr){
+        //only left child
+        if (parent){
+            if (parent->right == this){ // left child, this is right child
+                closest1 = zig_zag_ancestor;
+                closest2 = left;
+            }
+            else if (parent->left == this){ // left child, this is left child
+                closest1 = parent;
+                closest2 = left;
+            }
+            else throw;
+        }
+        else // only 1 child, no parent.
+        {
+            return left->content;
+        }
+    }
+    else throw;
+
+
+    if (closest1 == closest2){
+        if (closest1 == nullptr){ //no closest. alone in tree.
+            return nullptr;
+        }
+        else{
+            return closest1->content; //both are the same and not null
+        }
+    }
+    else if (closest1 == nullptr){ //if only closest2 is valid
+        return closest2->content;
+    }
+    else if (closest2 == nullptr){ //if only closest1 is valid
+        return closest1->content;
+    }
+    else{ //both are valid. need to compare them.
+        //calls a Player function.
+        return (*content)->get_closest_from_pair(closest1->content, closest2->content) ? closest1->content : closest2->content;
+    }
+}
+
+//-------------------------------------------DEBUGGING-------------------------------------------//
 // ONLY FOR DEBUGGING - ERASE LATER
 // TODO: Erase before submission
 template<class T>
