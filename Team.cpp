@@ -46,13 +46,15 @@ void Team::add_player(const std::shared_ptr<Player>& player) {
         return;
     team_players.add(player);
     team_players_scores.add(player);
-    // TODO M: Matan fix this lol
-//    if (top_scorer == nullptr ||
-//        (top_scorer->get_score() < player->get_score()) ||
-//        (top_scorer->get_score() == player->get_score() && top_scorer->get_id() == player->get_id()))
-//    {
-//        top_scorer = &*player;
-//    }
+    if (top_scorer == nullptr){
+        top_scorer = &*player;
+
+    }
+    else if(top_scorer->get_score() < player->get_score() ||
+        (top_scorer->get_score() == player->get_score() && top_scorer->get_id() == player->get_id()))
+    {
+        top_scorer = &*player;
+    }
     total_players++;
 }
 
