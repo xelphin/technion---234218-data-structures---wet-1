@@ -152,7 +152,7 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
     // ATTEMPT UPDATE
     try {
         // FIND PLAYER
-        Player* player = &(*(all_players_AVL.get_content(playerId))); // O(log(players))
+        std::shared_ptr<Player> player = all_players_AVL.get_content(playerId); // O(log(players))
         if (player != nullptr) {
             // PLAYER FOUND
             Team* playerTeam = (*player).get_team();
@@ -165,6 +165,7 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
             // UPDATE TEAM
             playerTeam->update_cardsReceived(cardsReceived);
             playerTeam->update_scoredGoals(scoredGoals);
+            playerTeam->compare_to_top_scorer(player);
             // TODO: Check player/team really gets updated (not just from looking at prints)
         } else {
             return StatusType::FAILURE;

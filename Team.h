@@ -38,6 +38,8 @@ public:
     void update_removeAGoalKeeper(bool remove);
     void update_totalPoints(int toAdd);
     void update_gamesPlayed();
+    void compare_to_top_scorer(const std::shared_ptr<Player> &sharedPtr);
+
 
     // PRINTING AND DEBUGGING
     friend std::ostream& operator<<(std::ostream& os, const Team& team);
@@ -52,13 +54,11 @@ private:
     int total_cards;
     int total_goalKeepers;
     int gamesPlayed;
-    std::shared_ptr<Player> top_scorer;
+    std::shared_ptr<Player> top_scorer; //should get updated when a player is added or removed
     AVL_tree<std::shared_ptr<Player>> team_players;
     AVL_tree<std::shared_ptr<Player>> team_players_scores;
 
     int get_points() const;
-
-    void compare_to_top_scorer(const std::shared_ptr<Player> &sharedPtr);
 };
 
 #endif //TECHNION_234218_DATA_STRUCTURES_WET_1_TEAM_H
