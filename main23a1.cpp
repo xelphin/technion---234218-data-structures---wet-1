@@ -124,25 +124,23 @@ void print(string cmd, output_t<int> res)
     }
 }
 
-void query_get_all_players(string cmd, world_cup_t *obj, int teamID)
-{
-    /*
-	output_t<int> count = obj->get_all_players_count(teamID);
-    // Allocate if okay
-    int *out_mem = nullptr;
-	if (count.status() == StatusType::SUCCESS && (count.ans() > 0)) {
-        out_mem = new int[count.ans()];
-        for (int i = 0; i < count.ans(); ++i) out_mem[i] = -1;
-    }
-    // Call function
-    StatusType status = obj->get_all_players(teamID, out_mem);
-    print(cmd, status);
-    if (status == StatusType::SUCCESS) {
-	    for (int i = 0; i < count.ans(); ++i)
-        {
-		    cout << out_mem[i] << endl;
-	    }
-    }
-    delete[] out_mem;
-    */
-}
+//void query_get_all_players(string cmd, world_cup_t *obj, int teamID)
+//{
+//	output_t<int> count = obj->get_all_players_count(teamID);
+//    // Allocate if okay
+//    int *out_mem = nullptr;
+//	if (count.status() == StatusType::SUCCESS && (count.ans() > 0)) {
+//        out_mem = new int[count.ans()];
+//        for (int i = 0; i < count.ans(); ++i) out_mem[i] = -1;
+//    }
+//    // Call function
+//    StatusType status = obj->get_all_players(teamID, out_mem);
+//    print(cmd, status);
+//    if (status == StatusType::SUCCESS) {
+//	    for (int i = 0; i < count.ans(); ++i)
+//        {
+//		    cout << out_mem[i] << endl;
+//	    }
+//    }
+//    delete[] out_mem;
+//}

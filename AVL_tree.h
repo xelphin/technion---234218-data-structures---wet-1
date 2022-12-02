@@ -296,7 +296,7 @@ private:
     F functor;
     T* arr;
 public:
-    ArrayFillerFunctor(T* arr, int size, F func) : size(size), functor(func), arr(arr), currIndex(0){}
+    ArrayFillerFunctor(T* arr, int size, F func) : size(size), currIndex(0), functor(func), arr(arr) {}
 
     // call is: functor(node->content);
     void operator() (T node_content) {
