@@ -33,9 +33,10 @@ class AVL_testing;
 
 template <class T>
 class AVL_tree {
+public:
     class Node;
 
-public:
+
     explicit AVL_tree(bool sort_by_score); // O(1)
     ~AVL_tree(); // O(n[amount nodes])
     AVL_tree(const AVL_tree &) = delete; //cant copy trees
@@ -123,7 +124,7 @@ public:
 
     //get_closest_player
     void update_descendants();
-    T get_closest_node();
+    T get_closest_node_content();
 
 private:
     void roll_right();
@@ -174,6 +175,7 @@ typename AVL_tree<T>::Node* AVL_tree<T>::add(T item) {
             root = leaf;
             leaf->tree = this;
             this->amount++;
+            leaf->update_descendants();
             return leaf;
         } 
         //std::cout << "Parent id: " << ((*(*parent).content)) << std::endl;
@@ -286,19 +288,20 @@ typename AVL_tree<T>::Node *AVL_tree<T>::find_rightmost(Node* node) {
     if (node == nullptr){
         return nullptr;
     }
-    Node* current = node->right;
-    if (current == nullptr){ //no nodes to the right of this node
-        return nullptr;
-    }
-
-    while(true){ //while true loop ok because in every case we either return or go down tree.
-        if (current->right != nullptr){
-            current = current->right;
-        }
-        else{
-            return current; //returns when there is no right child
-        }
-    }
+    return node->rightmost_descendant;
+//    Node* current = node->right;
+//    if (current == nullptr){ //no nodes to the right of this node
+//        return nullptr;
+//    }
+//
+//    while(true){ //while true loop ok because in every case we either return or go down tree.
+//        if (current->right != nullptr){
+//            current = current->right;
+//        }
+//        else{
+//            return current; //returns when there is no right child
+//        }
+//    }
 }
 
 template<class T>
@@ -316,8 +319,9 @@ T AVL_tree<T>::get_content(int id) {
 template<class T>
 T AVL_tree<T>::get_biggest_in_tree() { //TODO: test get_top_scorer after the top scorer is removed from a team.
     Node* node = find_rightmost(root);
-    if (node){
-        return node->content;
+    if (node != nullptr){
+        T value = node->content;
+        return value;
     }
     else if (root){
         return root->content;
@@ -822,10 +826,21 @@ void AVL_tree<T>::Node::update_descendants() {
     //update ancestor
     if (parent){
         if (parent->left == this){ // this is a left child
-            straight_line_ancestor = left->straight_line_ancestor; // ask the leftmost who is daddy is, then go there.
+            if (left)
+            {
+                straight_line_ancestor = left->straight_line_ancestor; // ask the leftmost who is daddy is, then go there.
+            }
+            else{ // no left child, ancestry will update upwards in future recursive calls.
+                straight_line_ancestor = parent;
+            }
         }
         else if (parent->right == this){
-            straight_line_ancestor = right->straight_line_ancestor;
+            if (right){
+                straight_line_ancestor = right->straight_line_ancestor;
+            }
+            else{ // no right child, ancestry will update upwards in future recursive calls.
+                straight_line_ancestor = parent;
+            }
         }
         else throw;
     }
@@ -835,7 +850,7 @@ void AVL_tree<T>::Node::update_descendants() {
 }
 
 template<class T>
-T AVL_tree<T>::Node::get_closest_node() {
+T AVL_tree<T>::Node::get_closest_node_content() {
     /*
      * this is the algorithm to find the nodes that contain the closest players,
      * and then compare those players to get the closest one.
@@ -907,7 +922,7 @@ T AVL_tree<T>::Node::get_closest_node() {
     }
     else{ //both are valid. need to compare them.
         //calls a Player function.
-        return (*content)->get_closest_from_pair(closest1->content, closest2->content) ? closest1->content : closest2->content;
+        return content->get_closest_from_pair(closest1->content, closest2->content) ? closest1->content : closest2->content;
     }
 }
 

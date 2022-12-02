@@ -36,6 +36,7 @@ bool run_all_tests() {
     run_test(worldCup_Get_Num_Played_Games, "worldCup_Get_Num_Played_Games", success_string, success);
     run_test(worldCup_Unite_Teams, "worldCup_Unite_Teams", success_string, success);
     run_test(worldCup_Get_All_Players_Count, "worldCup_Get_All_Players_Count", success_string, success);
+    run_test(closest_player_test, "closest_player_test", success_string, success);
 
     std::cout << success_string << std::endl;
     return success;
@@ -781,4 +782,54 @@ bool worldCup_Get_All_Players_Count()
     tests += (1 == (worldCup.get_all_players_count(1)).ans());
     tests += (2 == (worldCup.get_all_players_count(-1)).ans());
     return tests == 5;
+}
+
+bool closest_player_test() {
+    world_cup_t worldCup;
+    worldCup.add_team(1,1);
+    worldCup.add_team(2,3);
+    worldCup.add_team(4,5);
+
+
+    worldCup.add_player(1, 1, 5, 6, 4, true);
+    worldCup.add_player(2, 1, 5, 6, 4, false);
+    worldCup.add_player(3, 1, 5, 6, 4, false);
+    worldCup.add_player(4, 1, 5, 6, 4, false);
+    worldCup.add_player(5, 1, 5, 6, 4, false);
+    worldCup.add_player(6, 1, 5, 6, 4, false);
+    worldCup.add_player(7, 1, 5, 6, 4, false);
+    worldCup.add_player(8, 1, 5, 6, 4, false);
+    worldCup.add_player(9, 1, 5, 6, 4, false);
+    worldCup.add_player(10, 1, 5, 6, 4, false);
+    worldCup.add_player(11, 1, 5, 6, 4, false);
+    //
+    worldCup.add_player(21, 2, 5, 6, 4, true);
+    worldCup.add_player(22, 2, 5, 6, 4, false);
+    worldCup.add_player(23, 2, 5, 6, 4, false);
+
+    worldCup.add_player(50, 2, 5, 5, 3, false); //25, //32
+    worldCup.add_player(25, 2, 5, 5, 4, false);
+    worldCup.add_player(51, 2, 5, 5, 4, false);
+
+    worldCup.add_player(27, 2, 5, 6, 4, false);
+    worldCup.add_player(28, 2, 5, 6, 4, false);
+    worldCup.add_player(29, 2, 5, 6, 4, false);
+    worldCup.add_player(30, 2, 5, 6, 4, false);
+    worldCup.add_player(31, 2, 5, 6, 4, false);
+    worldCup.add_player(32, 2, 0, 0, 0, false);
+
+
+    output_t<int> close5 = worldCup.get_closest_player(5,1);
+    output_t<int> close32 = worldCup.get_closest_player(32,2);
+    //TODO: bug found. problem is that 32 has only 1 closest node and that is 25.
+    // potentially has to do with wrong counting of cards
+    output_t<int> close25 = worldCup.get_closest_player(25,2);
+    output_t<int> false_id = worldCup.get_closest_player(15,1);
+    output_t<int> false_team = worldCup.get_closest_player(5,2);
+
+    return (close5.ans() == 6 && close32.ans() == 31 && close25.ans() == 50 &&
+
+    close5.status() == StatusType::SUCCESS && close32.status() == StatusType::SUCCESS &&
+    close25.status() == StatusType::SUCCESS && false_id.status() == StatusType::FAILURE &&
+    false_team.status() == StatusType::FAILURE);
 }

@@ -81,7 +81,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
 
             player->set_team(team);
             all_players_AVL.add(player);
-            all_players_score_AVL.add(player);
+            player->set_score_node(all_players_score_AVL.add(player));
         } catch (std::bad_alloc const&) { // EXCEPTION: Bad Alloc
             all_players_AVL.remove(playerId);
             all_players_score_AVL.remove(playerId);
@@ -95,6 +95,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
         return StatusType::FAILURE;
     }
     // SUCCESS
+    amount_players++;
 	return StatusType::SUCCESS;
 }
 
@@ -136,6 +137,7 @@ StatusType world_cup_t::remove_player(int playerId)
     }
 
     if (success1 && success2) {
+        amount_players--;
         return StatusType::SUCCESS;
     }
     // DON'T DELETE TILL FINISHED ALL DEBUGGING
@@ -358,8 +360,20 @@ StatusType world_cup_t::get_all_players(int teamId, int *const output)
 
 output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
 {
+    if (playerId <= 0 || teamId <= 0){
+        return StatusType::INVALID_INPUT;
+    }
 
-//	return 1006;
+    std::shared_ptr<Team> team = teams_AVL.get_content(teamId);
+    if (team == nullptr || amount_players <= 2){
+        return StatusType::FAILURE;
+    }
+    std::shared_ptr<Player> player = team->find_player(playerId);
+    if (player == nullptr){
+        return StatusType::FAILURE;
+    }
+    int closest_id = player->get_score_tree_node()->get_closest_node_content()->get_id();
+    return closest_id;
 }
 
 //output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
