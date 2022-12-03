@@ -3,8 +3,8 @@
 
 
 Team::Team(int id, int points)
-: id(id),total_players(0),total_points(points), total_goals(0), total_cards(0), total_goalKeepers(0),
- gamesPlayed(0), top_scorer(nullptr), team_players(SORT_BY_ID),team_players_scores(SORT_BY_SCORE)
+: id(id), total_players(0), total_points(points), total_goals(0), total_cards(0), total_goalKeepers(0),
+ gamesPlayed(0), top_scorer(nullptr), team_players(SORT_BY_ID), team_players_scores(SORT_BY_SCORE)
 {}
 
 

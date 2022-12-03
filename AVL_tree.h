@@ -102,21 +102,22 @@ private:
 template <class T>
 class AVL_tree<T>::Node{
 public:
-    AVL_tree *tree;
-    Node *parent;
-    Node *left;
-    Node *right;
+    AVL_tree<T> *tree;
+    AVL_tree<T>::Node *parent;
+    AVL_tree<T>::Node *left;
+    AVL_tree<T>::Node *right;
     T content; //T is always a type of pointer.
     int balance_factor; //to manage the sorting of the AVL tree.
     int height;
     //closest player stuff:
-    Node* straight_line_ancestor;
-    Node* leftmost_descendant;
-    Node* rightmost_descendant;
+    AVL_tree<T>::Node* straight_line_ancestor;
+    AVL_tree<T>::Node* leftmost_descendant;
+    AVL_tree<T>::Node* rightmost_descendant;
 
     explicit Node(T);
     Node(const AVL_tree &) = delete; //cant copy nodes. make new ones.
     Node &operator=(AVL_tree &other) = delete;
+    ~Node() = default;
 
     int get_comparison(const Node &other); 
 
@@ -183,9 +184,9 @@ typename AVL_tree<T>::Node* AVL_tree<T>::add(T item) {
     //the object is deleted.
     //
 
-    //TODO: debug segfault at this line.
-    Node *leaf = new Node(item);
-
+    Node attempt(item);
+//TODO: debug segfault at this line.
+    Node* leaf(new Node(item));
     try {
         leaf->tree = this;
         Node *parent = find_designated_parent(leaf);
