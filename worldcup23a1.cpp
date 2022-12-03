@@ -2,7 +2,7 @@
 
 
 world_cup_t::world_cup_t()
-: amount_players(0), global_top_scorer_team(new Team(0,0)), all_players_AVL(SORT_BY_ID), all_players_score_AVL(SORT_BY_SCORE),
+: amount_players(0), global_top_scorer_team(0,0), all_players_AVL(SORT_BY_ID), all_players_score_AVL(SORT_BY_SCORE),
   teams_AVL(SORT_BY_ID), valid_teams_AVL(SORT_BY_ID)
 {}
 
@@ -168,7 +168,7 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
             playerTeam->update_cardsReceived(cardsReceived);
             playerTeam->update_scoredGoals(scoredGoals);
             playerTeam->compare_to_top_scorer(player);
-            global_top_scorer_team->compare_to_top_scorer(player);
+            global_top_scorer_team.compare_to_top_scorer(player);
             // TODO: Check player/team really gets updated (not just from looking at prints)
         } else {
             return StatusType::FAILURE;
@@ -325,9 +325,9 @@ output_t<int> world_cup_t::get_top_scorer(int teamId)
     }
     if (teamId < 0) // get from global tree
     {
-        if (global_top_scorer_team->get_top_scorer())
+        if (global_top_scorer_team.get_top_scorer())
         {
-            return global_top_scorer_team->get_top_scorer()->get_id();
+            return global_top_scorer_team.get_top_scorer()->get_id();
         }
         else{ //no players
             return StatusType::FAILURE;
