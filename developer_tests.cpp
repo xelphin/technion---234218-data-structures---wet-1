@@ -652,7 +652,7 @@ bool worldCup_Play_Match()
 
     std::cout << "running tests on play_match worldcup line 655 before removing player 21: \n"
               << AVL_testing<Player*>::run_tests_on_worldCup(&worldCup);
-//    worldCup.remove_player(21); //TODO: fix segfault
+    worldCup.remove_player(21); //TODO: fix segfault
     tests += StatusType::FAILURE == worldCup.play_match(1, 2);
 
     std::cout << "running tests on play_match worldcup line 661 before adding player 33: \n"
