@@ -280,17 +280,27 @@ bool inorder_print(){
 
     // TODO: Check function actually works
     int arrSize = tree1.get_amount();
-    auto *arrTree = new std::shared_ptr<Player>[arrSize];
-    std::cout << tree1.debugging_printTree_new();
-    tree1.in_order_traversal_wrapper(ArrayFillerFunctor<std::shared_ptr<Player>, Functor>(arrTree, arrSize, Functor(nullptr)));
-    std::cout << "CHECKING INORDER --------------------------------------------------------------------------" << std::endl;
     std::string myOutput = "";
-    for(int i=0; i< arrSize; i++) {
-        if (arrTree[i]!=nullptr) {
-            myOutput += std::to_string(arrTree[i]->get_id()) + " ";
+    auto *arrTree = new std::shared_ptr<Player>[arrSize];
+    try {
+        std::cout << tree1.debugging_printTree_new();
+        tree1.in_order_traversal_wrapper(
+                ArrayFillerFunctor<std::shared_ptr<Player>, Functor>(arrTree, arrSize,
+                                                                     Functor(nullptr)));
+        std::cout
+                << "CHECKING INORDER --------------------------------------------------------------------------"
+                << std::endl;
+        for (int i = 0; i < arrSize; i++) {
+            if (arrTree[i] != nullptr) {
+                myOutput += std::to_string(arrTree[i]->get_id()) + " ";
+            }
         }
+        std::cout << std::endl;
     }
-    std::cout << std::endl;
+    catch (...){
+        delete[] arrTree;
+        throw;
+    }
     delete[] arrTree;
     std::cout << tree1.debugging_printTree_new(); // TODO: make sure my tree isn't deleted
     if (not AVL_testing<std::shared_ptr<Player>>::run_tests_on_tree(&tree1))
@@ -313,17 +323,27 @@ bool inorder_print_check2(){
     tree1.add(player6);
 
     int arrSize = tree1.get_amount();
-    auto *arrTree = new std::shared_ptr<Player>[arrSize];
-    tree1.debugging_printTree_new();
-    tree1.in_order_traversal_wrapper(ArrayFillerFunctor<std::shared_ptr<Player>, Functor>(arrTree, arrSize, Functor(nullptr)));
-    std::cout << "CHECKING INORDER --------------------------------------------------------------------------" << std::endl;
     std::string myOutput = "";
-    for(int i=0; i< arrSize; i++) {
-        if (arrTree[i]!=nullptr) {
-            myOutput += std::to_string(arrTree[i]->get_id()) + " ";
+
+    auto *arrTree = new std::shared_ptr<Player>[arrSize];
+    try {
+        tree1.debugging_printTree_new();
+        tree1.in_order_traversal_wrapper(
+                ArrayFillerFunctor<std::shared_ptr<Player>, Functor>(arrTree, arrSize,
+                                                                     Functor(nullptr)));
+        std::cout
+                << "CHECKING INORDER --------------------------------------------------------------------------"
+                << std::endl;
+        for (int i = 0; i < arrSize; i++) {
+            if (arrTree[i] != nullptr) {
+                myOutput += std::to_string(arrTree[i]->get_id()) + " ";
+            }
         }
+        std::cout << myOutput << std::endl;
     }
-    std::cout << myOutput << std::endl;
+    catch (...){
+        delete[] arrTree;
+    }
     delete[] arrTree;
 
     if (not AVL_testing<std::shared_ptr<Player>>::run_tests_on_tree(&tree1))

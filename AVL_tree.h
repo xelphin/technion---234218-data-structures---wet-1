@@ -173,11 +173,9 @@ typename AVL_tree<T>::Node* AVL_tree<T>::add(T item) {
     //
 
     Node *leaf = new Node(item); //in case of bad_alloc, memory is freed from the tree destructor.
-    leaf->tree = this;
-
-    //std::cout << "Entering: " << ((*(*leaf).content)) << std::endl;
 
     try {
+        leaf->tree = this;
         Node *parent = find_designated_parent(leaf);
         if (parent == nullptr) {
             root = leaf;
@@ -186,7 +184,7 @@ typename AVL_tree<T>::Node* AVL_tree<T>::add(T item) {
             leaf->update_descendants();
             return leaf;
         } 
-        //std::cout << "Parent id: " << ((*(*parent).content)) << std::endl;
+
         if ((*leaf).get_comparison(*parent) > 0) {
             parent->right = leaf;
         } else if ((*leaf).get_comparison(*parent) < 0) {
@@ -468,13 +466,28 @@ AVL_tree<T>::AVL_tree(AVL_tree<T>& tree1, AVL_tree<T>& tree2, bool sort_by_score
     T *arrTree1 = new T [sizeTree1];
     T *arrTree2 = new T [sizeTree2];
 
-    // Fill an inorder array for each tree
-    tree1.in_order_traversal_wrapper(ArrayFillerFunctor<T, F>(arrTree1, sizeTree1, functor));
-    tree2.in_order_traversal_wrapper(ArrayFillerFunctor<T, F>(arrTree2, sizeTree2, functor));
-
+    try {
+        // Fill an inorder array for each tree
+        tree1.in_order_traversal_wrapper(ArrayFillerFunctor<T, F>(arrTree1, sizeTree1, functor));
+        tree2.in_order_traversal_wrapper(ArrayFillerFunctor<T, F>(arrTree2, sizeTree2, functor));
+    }
+    catch (...){
+        delete[] arrTree1;
+        delete[] arrTree2;
+        throw;
+    }
     // Create new array
     T *arrTree = new T [sizeTree1 + sizeTree2];
-    AVL_tree<T>::merge_sort(arrTree, arrTree1, sizeTree1, arrTree2, sizeTree2, sort_by_score);
+
+    try{
+        AVL_tree<T>::merge_sort(arrTree, arrTree1, sizeTree1, arrTree2, sizeTree2, sort_by_score);
+    }
+    catch (...){
+        delete[] arrTree1;
+        delete[] arrTree2;
+        delete[] arrTree;
+        throw;
+    }
 
     // Create tree
     this->root = this->AVL_tree<T>::make_AVL_tree_from_array(arrTree, 0, (sizeTree1 + sizeTree2) -1);
@@ -496,14 +509,18 @@ typename AVL_tree<T>::Node *AVL_tree<T>::make_AVL_tree_from_array(T arr[], int s
     if (arr[midIndex] == nullptr)
         throw;
 
+
     Node *node = new Node(arr[midIndex]); //in case of bad_alloc, memory is freed from the tree destructor.
-    // TODO E: how is this freed? this looks like very dangerous memory allocation.
-    node->tree = this;
-//    if (node->content != nullptr) { // Notice that you SHOULDN'T stop pointing at old team before you get here
-//        node->content->set_gamesPlayed();
-//    }
-    node->left = this->AVL_tree<T>::make_AVL_tree_from_array(arr,start,midIndex-1);
-    node->right = this->AVL_tree<T>::make_AVL_tree_from_array(arr,midIndex+1,end);
+
+    try {
+        node->tree = this;
+        node->left = this->AVL_tree<T>::make_AVL_tree_from_array(arr, start, midIndex - 1);
+        node->right = this->AVL_tree<T>::make_AVL_tree_from_array(arr, midIndex + 1, end);
+    }
+    catch (...){
+        delete node;
+        throw;
+    }
     if (node->left != nullptr)
         node->left->parent = node;
     if (node->right != nullptr)
