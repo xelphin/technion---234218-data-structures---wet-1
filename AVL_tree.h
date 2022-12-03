@@ -158,7 +158,7 @@ AVL_tree<T>::~AVL_tree() {
 
 template<class T>
 AVL_tree<T>::Node::Node(T new_item) 
-: tree(nullptr), parent(nullptr), left(nullptr), right(nullptr), content(new_item), balance_factor(0), height(0),
+: tree(nullptr), parent(nullptr), left(nullptr), right(nullptr),content(new_item), balance_factor(0), height(0),
   straight_line_ancestor(this), leftmost_descendant(this),  rightmost_descendant(this)
 { 
     // may be changed once we move to pointers.
@@ -173,9 +173,6 @@ typename AVL_tree<T>::Node* AVL_tree<T>::add(T item) {
     //
 
     Node *leaf = new Node(item); //in case of bad_alloc, memory is freed from the tree destructor.
-    if (leaf == nullptr){
-        throw std::bad_alloc();
-    }
     leaf->tree = this;
 
     //std::cout << "Entering: " << ((*(*leaf).content)) << std::endl;
@@ -305,6 +302,7 @@ bool AVL_tree<T>::remove_internal(Node* node) {
         //update replacement to point to right places
         replacement->rightmost_descendant = node->rightmost_descendant;
         replacement->leftmost_descendant = node->leftmost_descendant;
+
         //update descendants to point to replacement if needed
         if (node->leftmost_descendant->straight_line_ancestor == node){
             node->leftmost_descendant->straight_line_ancestor = replacement;
@@ -499,15 +497,13 @@ typename AVL_tree<T>::Node *AVL_tree<T>::make_AVL_tree_from_array(T arr[], int s
         throw;
 
     Node *node = new Node(arr[midIndex]); //in case of bad_alloc, memory is freed from the tree destructor.
+    // TODO E: how is this freed? this looks like very dangerous memory allocation.
     node->tree = this;
-    try {
-        node->left = this->AVL_tree<T>::make_AVL_tree_from_array(arr, start, midIndex - 1);
-        node->right = this->AVL_tree<T>::make_AVL_tree_from_array(arr, midIndex + 1, end);
-    }
-    catch(...) {
-        delete node;
-        throw;
-    }
+//    if (node->content != nullptr) { // Notice that you SHOULDN'T stop pointing at old team before you get here
+//        node->content->set_gamesPlayed();
+//    }
+    node->left = this->AVL_tree<T>::make_AVL_tree_from_array(arr,start,midIndex-1);
+    node->right = this->AVL_tree<T>::make_AVL_tree_from_array(arr,midIndex+1,end);
     if (node->left != nullptr)
         node->left->parent = node;
     if (node->right != nullptr)

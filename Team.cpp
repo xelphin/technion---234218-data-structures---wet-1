@@ -17,8 +17,8 @@ Team::Team(int id, int points, int total_players, int total_goals, int total_car
      total_cards(total_cards), total_goalKeepers(total_goalKeepers), gamesPlayed(0), top_scorer(top_scorer),
 
      // Each Calls: c'tor of AVL_tree and creates new tree with all players from team1 and team2
-     team_players(*team1_players, *team2_players, SORT_BY_ID, Functor(std::shared_ptr<Team>(this))),
-     team_players_scores(*team1_players_scores, *team2_players_scores, SORT_BY_SCORE, Functor(std::shared_ptr<Team>(this)))
+     team_players(*team1_players, *team2_players, SORT_BY_ID, Functor(this)),
+     team_players_scores(*team1_players_scores, *team2_players_scores, SORT_BY_SCORE, Functor(this))
 {
 
 }
