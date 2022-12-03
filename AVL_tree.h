@@ -64,6 +64,7 @@ public:
 
     // TESTS AND DEBUGGING FUNCTIONS
     std::string debugging_printTree();
+    std::string debugging_printTree_new();
     static void print_node(Node* node);
     void find_test_wrapper(int id);
     #ifndef NDEBUG
@@ -84,8 +85,11 @@ private:
     void in_order_traversal(Node* node, F* functor);
 
 
+    // TESTS AND DEBUGGING FUNCTIONS
     void debugging_printTree(const std::string& prefix, const AVL_tree::Node* node, bool isLeft, std::string& str);
     void debugging_printTree(const AVL_tree::Node* node, std::string& str);
+    void debugging_printTree_new(const std::string& prefix, const AVL_tree::Node* node, bool isLeft, std::string& str);
+    void debugging_printTree_new(const AVL_tree::Node* node, std::string& str);
 };
 
 
@@ -923,6 +927,41 @@ T AVL_tree<T>::Node::get_closest_node_content() {
 // ONLY FOR DEBUGGING - ERASE LATER
 // TODO: Erase before submission
 template<class T>
+void AVL_tree<T>::debugging_printTree_new(const std::string& prefix, const AVL_tree::Node* node, bool isLeft, std::string& str)
+{
+    if( node != nullptr )
+    {
+        str += prefix;
+
+        str += (isLeft ? "└──" : "├──" );
+
+        // print the value of the node
+        str += std::to_string((*(node->content)).get_id());
+        str += "\n";
+
+        // enter the next tree level - left and right branch
+        AVL_tree<T>::debugging_printTree( prefix + (isLeft ? "    " : "│   "), node->right, false, str);
+        AVL_tree<T>::debugging_printTree( prefix + (isLeft ? "    " : "│   "), node->left, true, str);
+    }
+}
+
+template<class T>
+void AVL_tree<T>::debugging_printTree_new(const AVL_tree::Node* node, std::string& str)
+{
+    debugging_printTree("", node, false, str);
+}
+
+template<class T>
+std::string AVL_tree<T>::debugging_printTree_new()
+{
+    std::string tree = "";
+    debugging_printTree_new(root, tree);
+    return tree;
+}
+
+//------------------------------------------OLD DEBUG FUNCTIONS FOR TESTS TO WORK-----------------//
+
+template<class T>
 void AVL_tree<T>::debugging_printTree(const std::string& prefix, const AVL_tree::Node* node, bool isLeft, std::string& str)
 {
     if( node != nullptr )
@@ -954,6 +993,8 @@ std::string AVL_tree<T>::debugging_printTree()
     debugging_printTree(root, tree);
     return tree;
 }
+
+
 
 template<class T>
 void AVL_tree<T>::find_test_wrapper(int id) {

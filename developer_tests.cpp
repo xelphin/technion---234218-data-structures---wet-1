@@ -90,11 +90,11 @@ bool createAVL()
     Player player3(7, 2, 3, 3, 4, false); // id: 7
     Player player4(3, 2, 3, 3, 4, false); // id: 3
     tree1.add(&player1);
-    std::cout << tree1.debugging_printTree();
+    std::cout << tree1.debugging_printTree_new();
     tree1.add(&player2);
-    std::cout << tree1.debugging_printTree();
+    std::cout << tree1.debugging_printTree_new();
     tree1.add(&player3);
-    std::cout << tree1.debugging_printTree();
+    std::cout << tree1.debugging_printTree_new();
     tree1.add(&player4);
 
     std::string finalTree = tree1.debugging_printTree();
@@ -186,7 +186,7 @@ bool balanceAVL_LR()
     tree1.add(&player2);
     tree1.add(&player6);
     tree1.add(&player8);
-    std::cout << tree1.debugging_printTree();
+    std::cout << tree1.debugging_printTree_new();
     //
     tree1.add(&player5);
     //
@@ -229,7 +229,7 @@ bool balanceAVL_RL()
     tree1.add(&player18);
     tree1.add(&player25);
     tree1.add(&player40);
-    std::cout << tree1.debugging_printTree();
+    std::cout << tree1.debugging_printTree_new();
     //
     tree1.add(&player19);
     //
@@ -272,7 +272,7 @@ bool inorder_print(){
     tree1.add(std::make_shared<Player>(player18));
     tree1.add(std::make_shared<Player>(player25));
     tree1.add(std::make_shared<Player>(player40));
-    tree1.debugging_printTree();
+    std::cout << tree1.debugging_printTree_new();
     //
     tree1.add(std::make_shared<Player>(player19));
 
@@ -281,7 +281,7 @@ bool inorder_print(){
     // TODO: Check function actually works
     int arrSize = tree1.get_amount();
     auto *arrTree = new std::shared_ptr<Player>[arrSize];
-    tree1.debugging_printTree();
+    std::cout << tree1.debugging_printTree_new();
     tree1.in_order_traversal_wrapper(ArrayFillerFunctor<std::shared_ptr<Player>, Functor>(arrTree, arrSize, Functor(nullptr)));
     std::cout << "CHECKING INORDER --------------------------------------------------------------------------" << std::endl;
     std::string myOutput = "";
@@ -292,7 +292,7 @@ bool inorder_print(){
     }
     std::cout << std::endl;
     delete[] arrTree;
-    std::cout << tree1.debugging_printTree(); // TODO: make sure my tree isn't deleted
+    std::cout << tree1.debugging_printTree_new(); // TODO: make sure my tree isn't deleted
     if (not AVL_testing<std::shared_ptr<Player>>::run_tests_on_tree(&tree1))
     {
         return false;
@@ -314,7 +314,7 @@ bool inorder_print_check2(){
 
     int arrSize = tree1.get_amount();
     auto *arrTree = new std::shared_ptr<Player>[arrSize];
-    tree1.debugging_printTree();
+    tree1.debugging_printTree_new();
     tree1.in_order_traversal_wrapper(ArrayFillerFunctor<std::shared_ptr<Player>, Functor>(arrTree, arrSize, Functor(nullptr)));
     std::cout << "CHECKING INORDER --------------------------------------------------------------------------" << std::endl;
     std::string myOutput = "";
@@ -480,11 +480,11 @@ bool createAVL_byMerge()
     tree2.add(player5);
     tree2.add(player6);
     tree2.add(player8);
-    std::cout << tree1.debugging_printTree();
-    std::cout << tree2.debugging_printTree();
+    std::cout << tree1.debugging_printTree_new();
+    std::cout << tree2.debugging_printTree_new();
     //
     AVL_tree<std::shared_ptr<Player>> tree(tree1, tree2, false, Functor(nullptr));
-    std::cout << tree.debugging_printTree();
+    std::cout << tree.debugging_printTree_new();
     std::string finalTree = tree.debugging_printTree();
 
     std::string wantedTree = "└──4\n    ├──2\n    │   ├──1\n    │   └──3\n    └──6\n        ├──5\n        └──7\n            └──8\n";

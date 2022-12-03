@@ -40,7 +40,7 @@ bool AVL_testing<T>::run_tests_on_worldCup(world_cup_t* cup) {
 
 template<class T>
 bool AVL_testing<T>::run_tests_on_tree(AVL_tree<T> *tree) {
-    std::cout << tree->debugging_printTree();
+    std::cout << tree->debugging_printTree_new();
     return ( //all tests should be true
             height_test(tree) &&
             parent_child_relationship_test(tree)
