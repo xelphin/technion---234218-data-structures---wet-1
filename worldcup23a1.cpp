@@ -181,8 +181,8 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
 	return StatusType::SUCCESS;
 }
 
-StatusType world_cup_t::play_match(int teamId1, int teamId2) // O(log(k))
-{
+StatusType world_cup_t::play_match(int teamId1, int teamId2){
+    // O(log(k))
     // TODO: Check team really gets updated where necessary and properly -> Check from play_match test
     if (teamId1 <= 0 || teamId2 <= 0 || teamId1 == teamId2) {
         return StatusType::INVALID_INPUT;
@@ -406,9 +406,9 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
     return closest_id;
 }
 
-//output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
-//{
-//	// TODO: OUR code goes here
-//	return 2;
-//}
+output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
+{
+	// TODO: OUR code goes here
+	return 2;
+}
 

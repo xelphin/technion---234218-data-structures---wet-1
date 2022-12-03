@@ -230,14 +230,27 @@ bool AVL_tree<T>::remove(int id) {
     }
     else { // 2 children
         Node* replacement = find_next_in_order(node->right); // replacement does not have a left child this way.
+
+        //update replacement to point to right places
+        node->update_descendants();
+        replacement->rightmost_descendant = node->rightmost_descendant;
+        replacement->leftmost_descendant = node->leftmost_descendant;
+        replacement->straight_line_ancestor = node->straight_line_ancestor;
+
+        //update descendants to point to replacement if needed
+        if (node->leftmost_descendant->straight_line_ancestor == node){
+            node->leftmost_descendant->straight_line_ancestor = replacement;
+        }
+        if (node->rightmost_descendant->straight_line_ancestor == node){
+            node->rightmost_descendant->straight_line_ancestor = replacement;
+        }
+
         if (replacement != node->right){
-            //std::cout << "SWAP1\n";
             next_unbalanced_node = replacement->parent;
             replacement->update_parent(replacement->right); // update parent should work even on nullptr
         }
         else{ // replacement is the right child of the removed node.
             next_unbalanced_node = replacement;
-            //std::cout << "SWAP2\n";
         }
         replace_nodes(node, replacement);
     }
@@ -321,7 +334,7 @@ T AVL_tree<T>::get_content(int id) {
 }
 
 template<class T>
-T AVL_tree<T>::get_biggest_in_tree() { //TODO: test get_top_scorer after the top scorer is removed from a team.
+T AVL_tree<T>::get_biggest_in_tree() {
     Node* node = find_rightmost(root);
     if (node != nullptr){
         T value = node->content;
