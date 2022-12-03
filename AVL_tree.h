@@ -23,7 +23,7 @@
 #define SORT_BY_SCORE true
 #define SORT_BY_ID false
 #define UNBALANCED 2
-#define SCORE !
+#define SCORE >>=
 #define ID ~
 
 template<class T>
@@ -581,27 +581,19 @@ typename AVL_tree<T>::Node* AVL_tree<T>::find_designated_parent(AVL_tree::Node* 
     
     while(true){ //while true loop ok because in every case we either return or go down tree.
 
-        if (new_leaf->get_comparison(*current)>0)  { //proceed to left branch.
-            //std::cout << "id: " << (*new_leaf->content)
-            //<< " is bigger than: " << (*current->content) << std::endl;
+        if (new_leaf->get_comparison(*current)>0)  { //proceed to right branch.
             if (current->right != nullptr){
-                //std::cout << "check right" << std::endl;
                 current = current->right;
             }
             else{ //no right child
-                //std::cout << (*current->content) <<  " has no right child so: " << std::endl;
                 return current;
             }
         }
         else{ //proceed to right branch
-            //std::cout << "id: " << (*new_leaf->content)
-            //<< " is smaller than: " << (*current->content) << std::endl;
             if (current->left != nullptr){
-                //std::cout << "check left" << std::endl;
                 current = current->left;
             }
             else{
-                //std::cout << (*current->content) << " has no left child so: " << std::endl;
                 return current;
             }
         }
@@ -620,13 +612,14 @@ int AVL_tree<T>::Node::get_comparison(const Node &other) {
         return 0;
     }
     if (tree->sort_by_score == SORT_BY_SCORE){ //TODO E: this part breaks encapsulation. see trello for more details.
-        int scoreDiff = SCORE(*(this->content)) - SCORE(*other.content);
-        int cardDiff = this->content->get_cards() - this->content->get_cards(); //TODO E: this line is broken. cant change second "this" without compilation errors.
-        if (scoreDiff != 0)
-            return scoreDiff;
-        else if (cardDiff != 0)
-            return -cardDiff; // should be negative because more cards is bad.
-        return ID(*(this->content)) - ID(*other.content);
+        return *(this->content) SCORE *(other.content);
+//        int scoreDiff = SCORE(*(this->content)) - SCORE(*other.content);
+//        int cardDiff = this->content->get_cards() - this->content->get_cards(); //TODO E: this line is broken. cant change second "this" without compilation errors.
+//        if (scoreDiff != 0)
+//            return scoreDiff;
+//        else if (cardDiff != 0)
+//            return -cardDiff; // should be negative because more cards is bad.
+//        return ID(*(this->content)) - ID(*other.content);
     }
     else
     {

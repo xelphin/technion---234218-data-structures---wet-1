@@ -73,7 +73,7 @@ bool playerCompare()
     Player player1(1, 2, 5, 6, 4, false); // goals == 6
     Player player2(2, 2, 5, 4, 4, false); // goals == 4
 
-    if (!(player1) - !(player2) > 0)
+    if ((player1 SCORE player2) > 0)
         count++;
     if (~(player1) - ~(player2) < 0)
         count++;
@@ -819,6 +819,7 @@ bool closest_player_test() {
     worldCup.add_player(32, 2, 0, 0, 0, false);
 
 
+    std::cout << "running tests on closest_player worldcup: \n" << AVL_testing<Player*>::run_tests_on_worldCup(&worldCup);
     output_t<int> close5 = worldCup.get_closest_player(5,1);
     output_t<int> close32 = worldCup.get_closest_player(32,2);
     //TODO: bug found. problem is that 32 has only 1 closest node and that is 25.

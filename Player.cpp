@@ -28,12 +28,18 @@ bool Player::get_isGoalKeeper() const
 {
     return goalKeeper;
 }
-int Player::operator ~() const {
+int Player::operator ID() const {
     return get_id();
 }
 
-int Player::operator !() const {
-    return get_score();
+int Player::operator SCORE(const Player& other) const {
+    int scoreDiff = get_score() - other.get_score();
+        int cardDiff = get_cards() - other.get_cards();
+        if (scoreDiff != 0)
+            return scoreDiff;
+        else if (cardDiff != 0)
+            return -cardDiff; // should be negative because more cards is bad.
+        return get_id() - other.get_id();
 }
 
 std::ostream& operator<<(std::ostream& os, const Player& toPrint)

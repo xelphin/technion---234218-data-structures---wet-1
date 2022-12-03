@@ -33,8 +33,8 @@ int Team::operator ID() const {
     return get_id();
 }
 
-int Team::operator SCORE() const {
-    return get_points();
+int Team::operator SCORE(const Team& other) const {
+    return get_points() - other.get_points(); //TODO: may need to be more complicated for play_match or knockout_winner.
 }
 
 int Team::get_points() const{

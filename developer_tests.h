@@ -40,15 +40,18 @@ bool AVL_testing<T>::run_tests_on_worldCup(world_cup_t* cup) {
 
 template<class T>
 bool AVL_testing<T>::run_tests_on_tree(AVL_tree<T> *tree) {
+    std::cout << tree->debugging_printTree();
     return ( //all tests should be true
             height_test(tree) &&
             parent_child_relationship_test(tree)
-
             );
 }
 
 template<class T>
 bool AVL_testing<T>::height_test(AVL_tree<T>* tree) {
+    if (tree->root == nullptr){
+        return true; //if no tree, it has the right hieght.
+    }
     int N = tree->get_amount();
     int H = tree->root->height;
     int min_height = (int)log2(N);

@@ -271,9 +271,14 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
     int total_goals = team1->get_goals() + team2->get_goals();
     int total_cards = team1->get_cards() + team2->get_cards();
     int total_goalKeepers = team1->get_totalGoalKeepers() + team2->get_totalGoalKeepers();
-    std::shared_ptr<Player> top_scorer =
-            SCORE(team1->get_top_scorer()) > SCORE(team2->get_top_scorer()) ?
+
+    std::shared_ptr<Player> top_scorer;
+    if (team1->get_top_scorer() == nullptr){ top_scorer = team2->get_top_scorer();}
+    else if (team2->get_top_scorer() == nullptr){ top_scorer = team1->get_top_scorer();}
+    else{top_scorer =
+            (*(team1->get_top_scorer()) SCORE *(team2->get_top_scorer())) > 0 ?
                   team1->get_top_scorer() : team2->get_top_scorer();
+    }
 
     // CREATE TEAM - O(log(n[team1] + n[team2]))
     try {
@@ -300,7 +305,7 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
         }
 
         std::cout << (team0->get_AVL_tree_id())->debugging_printTree();
-        std::cout << "amount of players in team1: " << (team1->get_total_players()) << std::endl;
+        std::cout << "amount of players in team0: " << (team0->get_total_players()) << std::endl;
 
     } catch (std::bad_alloc const&){
         return StatusType::ALLOCATION_ERROR;

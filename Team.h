@@ -29,7 +29,7 @@ public:
     int compare(const Team& team2, bool sort_by_score) const;
     bool get_isValid() const;
     int operator ID() const;
-    int operator SCORE() const;
+    int operator SCORE(const Team& other) const;
     std::shared_ptr<Player> get_top_scorer();
 
     void update_scoredGoals(int toAdd);
