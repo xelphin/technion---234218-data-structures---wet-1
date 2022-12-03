@@ -232,17 +232,17 @@ bool AVL_tree<T>::remove(int id) {
         Node* replacement = find_next_in_order(node->right); // replacement does not have a left child this way.
 
         //update replacement to point to right places
-        node->update_descendants();
         replacement->rightmost_descendant = node->rightmost_descendant;
         replacement->leftmost_descendant = node->leftmost_descendant;
-        replacement->straight_line_ancestor = node->straight_line_ancestor;
 
         //update descendants to point to replacement if needed
         if (node->leftmost_descendant->straight_line_ancestor == node){
             node->leftmost_descendant->straight_line_ancestor = replacement;
+            replacement->straight_line_ancestor = node->rightmost_descendant->straight_line_ancestor;
         }
         if (node->rightmost_descendant->straight_line_ancestor == node){
             node->rightmost_descendant->straight_line_ancestor = replacement;
+            replacement->straight_line_ancestor = node->leftmost_descendant->straight_line_ancestor;
         }
 
         if (replacement != node->right){
@@ -860,6 +860,17 @@ T AVL_tree<T>::Node::get_closest_node_content() {
      * and then compare those players to get the closest one.
      * note: if there is only 1 child, it means that child does not have children of its own, because of AVL invariant.
      */
+
+    //first update who the real ancestor is
+    if (parent){
+        if (parent->left == this){ // this is a left child
+            straight_line_ancestor = leftmost_descendant->straight_line_ancestor;
+        }
+        else if (parent->right == this){ // this is a right child
+            straight_line_ancestor = rightmost_descendant->straight_line_ancestor;
+        }
+        else throw;
+    }
     Node* zig_zag_ancestor = straight_line_ancestor->parent;
     Node* closest1 = nullptr;
     Node* closest2 = nullptr;
