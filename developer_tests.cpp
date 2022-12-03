@@ -650,10 +650,8 @@ bool worldCup_Play_Match()
     tests += StatusType::FAILURE == worldCup.play_match(1, 4);
     tests += StatusType::FAILURE == worldCup.play_match(1, 5);
 
-//    std::cout << "running tests on play_match worldcup line 655 before removing player 21: \n"
-//              << AVL_testing<Player*>::run_tests_on_worldCup(&worldCup);
-    std::cout << "running tests on play_match team2 line 655 before removing player 21: \n"
-            << AVL_testing<Player*>::run_tests_on_worldCup(&worldCup);
+    std::cout << "running tests on play_match worldcup line 655 before removing player 21: \n"
+              << AVL_testing<Player*>::run_tests_on_worldCup(&worldCup);
     worldCup.remove_player(21);
     tests += StatusType::FAILURE == worldCup.play_match(1, 2);
 
