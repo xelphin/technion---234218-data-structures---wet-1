@@ -32,16 +32,21 @@ public:
 
 template<class T>
 bool AVL_testing<T>::run_tests_on_worldCup(world_cup_t* cup) {
-    return AVL_testing<std::shared_ptr<Player>>::run_tests_on_tree(&cup->all_players_AVL) &&
-            AVL_testing<std::shared_ptr<Player>>::run_tests_on_tree(&cup->all_players_score_AVL) &&
-            AVL_testing<std::shared_ptr<Team>>::run_tests_on_tree(&cup->teams_AVL) &&
-            AVL_testing<std::shared_ptr<Team>>::run_tests_on_tree(&cup->valid_teams_AVL);
+    std::cout << "all players avl: \n";
+    bool a = AVL_testing<std::shared_ptr<Player>>::run_tests_on_tree(&cup->all_players_AVL);
+    std::cout << "all players scores avl: \n";
+    bool b = AVL_testing<std::shared_ptr<Player>>::run_tests_on_tree(&cup->all_players_score_AVL);
+    std::cout << "all teams avl: \n";
+    bool c = AVL_testing<std::shared_ptr<Team>>::run_tests_on_tree(&cup->teams_AVL);
+    std::cout << "all valid teams avl: \n";
+    bool d = AVL_testing<std::shared_ptr<Team>>::run_tests_on_tree(&cup->valid_teams_AVL);
+    return (a && b && c && d);
 }
 
 template<class T>
 bool AVL_testing<T>::run_tests_on_tree(AVL_tree<T> *tree) {
     std::cout << tree->debugging_printTree_new();
-    std::cout<< "old debug: \n" << tree->debugging_printTree();
+//    std::cout<< "old debug: \n" << tree->debugging_printTree();
     return ( //all tests should be true
             height_test(tree) &&
             parent_child_relationship_test(tree)

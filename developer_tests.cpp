@@ -807,8 +807,8 @@ bool closest_player_test() {
     worldCup.add_player(22, 2, 5, 6, 4, false);
     worldCup.add_player(23, 2, 5, 6, 4, false);
 
-    worldCup.add_player(50, 2, 5, 5, 3, false); //25, //32
-    worldCup.add_player(25, 2, 5, 5, 4, false);
+    worldCup.add_player(50, 2, 5, 5, 3, false); //25,
+    worldCup.add_player(25, 2, 5, 5, 4, false); //32
     worldCup.add_player(51, 2, 5, 5, 4, false);
 
     worldCup.add_player(27, 2, 5, 6, 4, false);
@@ -822,13 +822,11 @@ bool closest_player_test() {
     std::cout << "running tests on closest_player worldcup: \n" << AVL_testing<Player*>::run_tests_on_worldCup(&worldCup);
     output_t<int> close5 = worldCup.get_closest_player(5,1);
     output_t<int> close32 = worldCup.get_closest_player(32,2);
-    //TODO: bug found. problem is that 32 has only 1 closest node and that is 25.
-    // potentially has to do with wrong counting of cards
     output_t<int> close25 = worldCup.get_closest_player(25,2);
     output_t<int> false_id = worldCup.get_closest_player(15,1);
     output_t<int> false_team = worldCup.get_closest_player(5,2);
 
-    return (close5.ans() == 6 && close32.ans() == 25 && close25.ans() == 50 &&
+    return (close5.ans() == 6 && close32.ans() == 25 && close25.ans() == 51 &&
 
     close5.status() == StatusType::SUCCESS && close32.status() == StatusType::SUCCESS &&
     close25.status() == StatusType::SUCCESS && false_id.status() == StatusType::FAILURE &&
