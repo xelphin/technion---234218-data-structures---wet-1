@@ -23,7 +23,7 @@ public:
     bool get_closest_from_pair(const std::shared_ptr<Player>& player1, const std::shared_ptr<Player>& player2) const;
     int operator SCORE(const Player&) const;
     int operator ID() const;
-    AVL_tree<std::shared_ptr<Player>>::Node* get_score_tree_node();
+    AVL_tree<std::shared_ptr<Player>>::Node* get_global_score_node();
 
     void change_team(Team* new_team);
     void set_team(Team* playerTeam);
@@ -31,7 +31,7 @@ public:
     void set_gamesPlayed();
     void update_scoredGoals(int toAdd);
     void update_cardsReceived(int toAdd);
-    void set_score_node(AVL_tree<std::shared_ptr<Player>>::Node* node);
+    void set_global_score_node(AVL_tree<std::shared_ptr<Player>>::Node* node);
 
 
     friend std::ostream& operator<<(std::ostream& os, const Player& player);

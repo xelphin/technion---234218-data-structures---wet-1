@@ -81,10 +81,10 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
 
             player->set_team(team);
             all_players_AVL.add(player);
-            player->set_score_node(all_players_score_AVL.add(player));
+            player->set_global_score_node(all_players_score_AVL.add(player));
         } catch (std::bad_alloc const&) { // EXCEPTION: Bad Alloc
-            all_players_AVL.remove(playerId);
-            all_players_score_AVL.remove(playerId);
+//            all_players_AVL.remove(playerId); //no need to free memory since we are using a shared pointer and tree d'tor.
+//            all_players_score_AVL.remove_by_item(player);
             return StatusType::ALLOCATION_ERROR;
         } catch (const ID_ALREADY_EXISTS& e) { // EXCEPTION: ID already exists
             return StatusType::FAILURE;
@@ -110,7 +110,7 @@ StatusType world_cup_t::remove_player(int playerId)
     // ATTEMPT REMOVE
     try {
         // FIND PLAYER
-        Player* player = &(*(all_players_AVL.get_content(playerId))); // O(log(n))
+        std::shared_ptr<Player> player = all_players_AVL.get_content(playerId); // O(log(n))
         if (player != nullptr) {
             // PLAYER FOUND
             Team* playerTeam = (*player).get_team();
@@ -126,7 +126,7 @@ StatusType world_cup_t::remove_player(int playerId)
             }
             // REMOVE from WORLD_CUP AVLs (even if player does not have a team)
             success2 = all_players_AVL.remove(playerId);
-            all_players_score_AVL.remove(playerId);
+            all_players_score_AVL.remove_by_item(player);
         } else {
             // PLAYER NOT FOUND
             return StatusType::FAILURE;
@@ -402,7 +402,7 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
     if (player == nullptr){
         return StatusType::FAILURE;
     }
-    int closest_id = player->get_score_tree_node()->get_closest_node_content()->get_id();
+    int closest_id = player->get_global_score_node()->get_closest_node_content()->get_id();
     return closest_id;
 }
 

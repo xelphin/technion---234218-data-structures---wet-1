@@ -68,9 +68,8 @@ bool Team::remove_player(int player_id)
             top_scorer = team_players_scores.get_biggest_in_tree();
         }
     }
-
+    team_players_scores.remove_by_item(find_player(player_id));
     bool success = team_players.remove(player_id);
-    team_players_scores.remove(player_id);
     if (success) {
         total_players--;
     }

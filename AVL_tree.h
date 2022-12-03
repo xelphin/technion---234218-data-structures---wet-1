@@ -44,8 +44,11 @@ public:
 
     Node* add(T item);
     bool remove(int id);
+    bool remove_by_item(const T& item);
+    bool remove_internal(Node* node);
 
     int get_amount();
+    Node* find(const T& item);
     Node* find_id(int id);
     Node* find_rightmost(Node* node);
     T get_content(int id);
@@ -207,6 +210,62 @@ typename AVL_tree<T>::Node* AVL_tree<T>::add(T item) {
 
 
 template<class T>
+bool AVL_tree<T>::remove_by_item(const T& item) {
+    // true if the node was removed. false otherwise.
+    // time complexity: O(log(nodes))
+    Node* node = find(item);
+    if (node == nullptr){
+        return false;
+    }
+    else{
+        return remove_internal(node);
+    }
+}
+
+template<class T>
+typename AVL_tree<T>::Node *AVL_tree<T>::find(const T& item) {
+    //item acts like "this->content"
+    Node* current = root;
+    if (!current){
+        return nullptr;
+    }
+
+    while(true){ //while true loop ok because in every case we either return or go down tree.
+        int difference = ((*current->content).get_id()) - item->get_id();
+        if (difference == 0){
+            return current;
+        }
+
+        if (sort_by_score == SORT_BY_SCORE){
+            difference = *(current->content) SCORE (*(item));
+
+        }
+        else
+        {
+            difference = ID(*(current->content)) - ID(*(item));
+        }
+        if ( difference < 0)  { //proceed to right branch. current id smaller than wanted id.
+            if (current->right != nullptr){
+                //std::cout << "check right" << std::endl;
+                current = current->right;
+            }
+            else{ //no right child
+                return nullptr; //search failed
+            }
+        }
+        else{ //proceed to left branch
+            if (current->left != nullptr){
+                current = current->left;
+            }
+            else{
+                return nullptr;
+            }
+        }
+    }
+}
+
+
+template<class T>
 bool AVL_tree<T>::remove(int id) {
     // true if the node was removed. false otherwise.
     // time complexity: O(log(nodes))
@@ -214,6 +273,14 @@ bool AVL_tree<T>::remove(int id) {
     if (node == nullptr){
         return false;
     }
+    else{
+        return remove_internal(node);
+    }
+
+}
+
+template<class T>
+bool AVL_tree<T>::remove_internal(Node* node) {
     Node* next_unbalanced_node;
     // updates parent and children before deletion
     if (node->left == nullptr && node->right == nullptr) //if leaf
@@ -261,7 +328,6 @@ bool AVL_tree<T>::remove(int id) {
     return true;
 }
 
-
 template<class T>
 typename AVL_tree<T>::Node *AVL_tree<T>::find_id(int id) {
     Node* current = root;
@@ -274,27 +340,20 @@ typename AVL_tree<T>::Node *AVL_tree<T>::find_id(int id) {
         if (difference == 0){
             return current;
         }
-        else if ( difference < 0)  { //proceed to right(?) branch. current id smaller than wanted id.
-            //std::cout << "id: " << id
-            //          << " is bigger than: " << *current->content << std::endl;
+        else if ( difference < 0)  { //proceed to right branch. current id smaller than wanted id.
             if (current->right != nullptr){
                 //std::cout << "check right" << std::endl;
                 current = current->right;
             }
             else{ //no right child
-                //std::cout << (*current->content) <<  " has no right child so: " << std::endl;
                 return nullptr; //search failed
             }
         }
-        else{ //proceed to right branch
-            //std::cout << "id: " << id
-            //          << " is smaller than: " << *current->content << std::endl;
+        else{ //proceed to left branch
             if (current->left != nullptr){
-                //std::cout << "check left" << std::endl;
                 current = current->left;
             }
             else{
-                //std::cout << *current->content << " has no left child so: " << std::endl;
                 return nullptr;
             }
         }
@@ -629,7 +688,7 @@ int AVL_tree<T>::Node::get_comparison(const Node &other) {
         //std::cout << "tree is a nullptr!" << std::endl;
         return 0;
     }
-    if (tree->sort_by_score == SORT_BY_SCORE){ //TODO E: this part breaks encapsulation. see trello for more details.
+    if (tree->sort_by_score == SORT_BY_SCORE){
         return *(this->content) SCORE *(other.content);
 
     }

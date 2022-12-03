@@ -143,10 +143,10 @@ bool Player::get_closest_from_pair(const std::shared_ptr<Player>& player1, const
     throw;
 }
 
-void Player::set_score_node(AVL_tree<std::shared_ptr<Player>>::Node* node) {
+void Player::set_global_score_node(AVL_tree<std::shared_ptr<Player>>::Node* node) {
     global_scorers_tree_node = node;
 }
 
-AVL_tree<std::shared_ptr<Player>>::Node *Player::get_score_tree_node() {
+AVL_tree<std::shared_ptr<Player>>::Node *Player::get_global_score_node() {
     return global_scorers_tree_node;
 }

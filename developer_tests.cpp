@@ -649,14 +649,17 @@ bool worldCup_Play_Match()
     tests += (1 == (worldCup.get_team_points(2)).ans());
     tests += StatusType::FAILURE == worldCup.play_match(1, 4);
     tests += StatusType::FAILURE == worldCup.play_match(1, 5);
+
+    std::cout << "running tests on play_match worldcup line 655 before removing player 21: \n"
+              << AVL_testing<Player*>::run_tests_on_worldCup(&worldCup);
     worldCup.remove_player(21);
     tests += StatusType::FAILURE == worldCup.play_match(1, 2);
 
-    std::cout << "running tests on play_match worldcup line 655 before adding another player: \n"
+    std::cout << "running tests on play_match worldcup line 661 before adding player 33: \n"
     << AVL_testing<Player*>::run_tests_on_worldCup(&worldCup);
 
     worldCup.add_player(33, 2, 5, 6, 0, true); // ERROR CODE
-    std::cout << "running tests on play_match worldcup line 655 before adding another player: \n"
+    std::cout << "running tests on play_match worldcup line 655 before adding player 33: \n"
               << AVL_testing<Player*>::run_tests_on_worldCup(&worldCup);
     tests += StatusType::SUCCESS == worldCup.play_match(1, 2);
     tests += (1 == (worldCup.get_team_points(1)).ans());
