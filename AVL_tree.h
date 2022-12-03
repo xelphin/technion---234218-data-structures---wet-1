@@ -109,6 +109,10 @@ public:
     T content; //T is always a type of pointer.
     int balance_factor; //to manage the sorting of the AVL tree.
     int height;
+    //closest player stuff:
+    Node* straight_line_ancestor;
+    Node* leftmost_descendant;
+    Node* rightmost_descendant;
 
     explicit Node(T);
     Node(const AVL_tree &) = delete; //cant copy nodes. make new ones.
@@ -124,10 +128,6 @@ public:
 
     void update_parent(Node* replacement);
 
-    //closest player stuff:
-    Node* straight_line_ancestor;
-    Node* leftmost_descendant;
-    Node* rightmost_descendant;
 
     //get_closest_player
     void update_descendants();
@@ -162,7 +162,7 @@ AVL_tree<T>::Node::Node(T new_item)
 parent(nullptr),
 left(nullptr),
 right(nullptr),
-content(new_item),
+content(nullptr),
 balance_factor(0),
 height(0),
   straight_line_ancestor(nullptr),
@@ -172,6 +172,7 @@ height(0),
     straight_line_ancestor = this;
     leftmost_descendant = this;
     rightmost_descendant = this;
+    content = new_item;
 }
 
 
@@ -182,7 +183,8 @@ typename AVL_tree<T>::Node* AVL_tree<T>::add(T item) {
     //the object is deleted.
     //
 
-    Node *leaf = new Node(item); //in case of bad_alloc, memory is freed from the tree destructor.
+    //TODO: debug segfault at this line.
+    Node *leaf = new Node(item);
 
     try {
         leaf->tree = this;
