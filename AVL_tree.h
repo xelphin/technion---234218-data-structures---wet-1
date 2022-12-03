@@ -158,10 +158,20 @@ AVL_tree<T>::~AVL_tree() {
 
 template<class T>
 AVL_tree<T>::Node::Node(T new_item) 
-: tree(nullptr), parent(nullptr), left(nullptr), right(nullptr),content(new_item), balance_factor(0), height(0),
-  straight_line_ancestor(this), leftmost_descendant(this),  rightmost_descendant(this)
-{ 
-    // may be changed once we move to pointers.
+: tree(nullptr),
+parent(nullptr),
+left(nullptr),
+right(nullptr),
+content(new_item),
+balance_factor(0),
+height(0),
+  straight_line_ancestor(nullptr),
+  leftmost_descendant(nullptr),
+  rightmost_descendant(nullptr)
+{
+    straight_line_ancestor = this;
+    leftmost_descendant = this;
+    rightmost_descendant = this;
 }
 
 
@@ -947,6 +957,9 @@ T AVL_tree<T>::Node::get_closest_node_content() {
             straight_line_ancestor = rightmost_descendant->straight_line_ancestor;
         }
         else throw;
+    }
+    else{
+        straight_line_ancestor = this;
     }
     Node* zig_zag_ancestor = straight_line_ancestor->parent;
     Node* closest1 = nullptr;

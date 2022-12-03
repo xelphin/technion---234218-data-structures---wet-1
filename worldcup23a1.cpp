@@ -406,9 +406,9 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
     return closest_id;
 }
 
-output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
-{
-	// TODO: OUR code goes here
-	return 2;
-}
+//output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
+//{
+//	// TODO: OUR code goes here
+//	return 2;
+//}
 
