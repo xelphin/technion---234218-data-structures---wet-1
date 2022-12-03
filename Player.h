@@ -18,15 +18,15 @@ public:
     int get_gamesPlayed() const;
     int get_cards() const;
     bool get_isGoalKeeper() const;
-    Team* get_team() const;
+    std::shared_ptr<Team> get_team() const;
     int compare(const Player& player2, bool sort_by_score) const;
     bool get_closest_from_pair(const std::shared_ptr<Player>& player1, const std::shared_ptr<Player>& player2) const;
     int operator SCORE(const Player&) const;
     int operator ID() const;
     AVL_tree<std::shared_ptr<Player>>::Node* get_global_score_node();
 
-    void change_team(Team* new_team);
-    void set_team(Team* playerTeam);
+    void change_team(std::shared_ptr<Team> new_team);
+    void set_team(std::shared_ptr<Team> playerTeam);
     void update_gamesPlayed(int toAdd);
     void set_gamesPlayed();
     void update_scoredGoals(int toAdd);
@@ -44,16 +44,16 @@ private:
     int goals;
     int cards;
     bool goalKeeper;
-    Team* team;
+    std::shared_ptr<Team> team;
     AVL_tree<std::shared_ptr<Player>>::Node* global_scorers_tree_node;
 };
 
 // used to iterate on inorder_traversal and add all players to a new array.
 class Functor{
 private:
-    Team* new_team;
+    std::shared_ptr<Team> new_team;
 public:
-    explicit Functor(Team* team): new_team(team){}
+    explicit Functor(std::shared_ptr<Team> team): new_team(team){}
 
     // call is: functor(node->content);
     void operator() (std::shared_ptr<Player>& player) {

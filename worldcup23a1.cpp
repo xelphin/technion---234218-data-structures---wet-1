@@ -36,7 +36,7 @@ StatusType world_cup_t::remove_team(int teamId)
         return StatusType::INVALID_INPUT;
     }
 	try {
-        Team* team = &(*(teams_AVL.get_content(teamId))); // O(log(k))
+        std::shared_ptr<Team> team =teams_AVL.get_content(teamId); // O(log(k))
         if (team != nullptr) {
             if (team->get_total_players() > 0)
                 return StatusType::FAILURE;
@@ -66,7 +66,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
     if (gamesPlayed==0 && (goals>0 || cards>0) )
         return StatusType::INVALID_INPUT;
 
-    Team* team = &(*(teams_AVL.get_content(teamId))); // O(log(k))
+    std::shared_ptr<Team> team = teams_AVL.get_content(teamId); // O(log(k))
     if (team != nullptr && all_players_AVL.find_id(playerId) == nullptr) { // O(log(k) + log(n))
         // TEAM exists and PLAYER doesn't exist
         // TRY to Create PLAYER and ADD to TEAM and AVLs
@@ -113,10 +113,10 @@ StatusType world_cup_t::remove_player(int playerId)
         std::shared_ptr<Player> player = all_players_AVL.get_content(playerId); // O(log(n))
         if (player != nullptr) {
             // PLAYER FOUND
-            Team* playerTeam = (*player).get_team();
+            std::shared_ptr<Team> playerTeam = player->get_team();
             if (playerTeam != nullptr) {
                 // REMOVE from PLAYER_TEAM
-                success1 = (*playerTeam).remove_player(playerId); // we know: playerTeam != nullptr
+                success1 = playerTeam->remove_player(playerId); // we know: playerTeam != nullptr
                 // UPDATE PLAYER_TEAM
                 playerTeam->update_cardsReceived(-(player->get_cards()));
                 playerTeam->update_scoredGoals(-(player->get_score()));
@@ -157,7 +157,7 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
         std::shared_ptr<Player> player = all_players_AVL.get_content(playerId); // O(log(players))
         if (player != nullptr) {
             // PLAYER FOUND
-            Team* playerTeam = (*player).get_team();
+            std::shared_ptr<Team> playerTeam = (*player).get_team();
             if (playerTeam == nullptr)
                 return StatusType::FAILURE;
             // UPDATE PLAYER
@@ -188,8 +188,8 @@ StatusType world_cup_t::play_match(int teamId1, int teamId2){
         return StatusType::INVALID_INPUT;
     }
     //GET Team Content: O(log(k))
-    Team* team1 = &(*teams_AVL.get_content(teamId1));
-    Team* team2 = &(*teams_AVL.get_content(teamId2));
+    std::shared_ptr<Team> team1 = teams_AVL.get_content(teamId1);
+    std::shared_ptr<Team> team2 = teams_AVL.get_content(teamId2);
     if(team1 == nullptr || team2 == nullptr){
         return StatusType::FAILURE;
     }
@@ -240,7 +240,7 @@ output_t<int> world_cup_t::get_team_points(int teamId)
     if(teamId <= 0)
         return StatusType::INVALID_INPUT;
     // FIND TEAM - O(log(k))
-    Team* team = &(*(teams_AVL.get_content(teamId)));
+    std::shared_ptr<Team> team = teams_AVL.get_content(teamId);
     // GET TEAM POINTS - O(1)
     if (team == nullptr) {
         return StatusType::FAILURE;
@@ -255,8 +255,8 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
         return StatusType::INVALID_INPUT;
 
     // FIND TEAMS - O(log(k))
-    Team* team1 = &(*(teams_AVL.get_content(teamId1)));
-    Team* team2 = &(*(teams_AVL.get_content(teamId2)));
+    std::shared_ptr<Team> team1 = teams_AVL.get_content(teamId1);
+    std::shared_ptr<Team> team2 = teams_AVL.get_content(teamId2);
     if (team1 == nullptr || team2 == nullptr)
         return StatusType::FAILURE;
     AVL_tree<std::shared_ptr<Player>>* team1_players = team1->get_AVL_tree_id();
@@ -357,7 +357,7 @@ output_t<int> world_cup_t::get_all_players_count(int teamId)
         return all_players_AVL.get_amount();
     }
     // FIND TEAM - O(log(k))
-    Team* team = &(*(teams_AVL.get_content(teamId)));
+    std::shared_ptr<Team> team = teams_AVL.get_content(teamId);
     if (team == nullptr )
         return StatusType::FAILURE;
     // RETURN AMOUNT PLAYERS IN TEAM - O(1)

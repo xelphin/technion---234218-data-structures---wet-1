@@ -66,12 +66,12 @@ int Player::compare(const Player& player2, bool sort_by_score) const
     }
 }
 
-void Player::set_team(Team* playerTeam)
+void Player::set_team(std::shared_ptr<Team> playerTeam)
 {
    this->team = playerTeam;
 }
 
-Team* Player::get_team() const
+std::shared_ptr<Team> Player::get_team() const
 {
     return this->team;
 }
@@ -96,7 +96,7 @@ void Player::update_cardsReceived(int toAdd)
     this->cards += toAdd;
 }
 
-void Player::change_team(Team* new_team) {
+void Player::change_team(std::shared_ptr<Team> new_team) {
     set_gamesPlayed();
     set_team(new_team);
 }

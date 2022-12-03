@@ -617,17 +617,17 @@ bool worldCup_Play_Match()
     worldCup.add_team(2,0);
     worldCup.add_team(4,0);
     //
-    worldCup.add_player(1, 1, 5, 6, 4, true);
-    worldCup.add_player(2, 1, 5, 6, 4, false);
-    worldCup.add_player(3, 1, 5, 6, 4, false);
-    worldCup.add_player(4, 1, 5, 6, 4, false);
-    worldCup.add_player(5, 1, 5, 6, 4, false);
-    worldCup.add_player(6, 1, 5, 6, 4, false);
-    worldCup.add_player(7, 1, 5, 6, 4, false);
-    worldCup.add_player(8, 1, 5, 6, 4, false);
-    worldCup.add_player(9, 1, 5, 6, 4, false);
-    worldCup.add_player(10, 1, 5, 6, 4, false);
-    worldCup.add_player(11, 1, 5, 6, 4, false);
+//    worldCup.add_player(1, 1, 5, 6, 4, true);
+//    worldCup.add_player(2, 1, 5, 6, 4, false);
+//    worldCup.add_player(3, 1, 5, 6, 4, false);
+//    worldCup.add_player(4, 1, 5, 6, 4, false);
+//    worldCup.add_player(5, 1, 5, 6, 4, false);
+//    worldCup.add_player(6, 1, 5, 6, 4, false);
+//    worldCup.add_player(7, 1, 5, 6, 4, false);
+//    worldCup.add_player(8, 1, 5, 6, 4, false);
+//    worldCup.add_player(9, 1, 5, 6, 4, false);
+//    worldCup.add_player(10, 1, 5, 6, 4, false);
+//    worldCup.add_player(11, 1, 5, 6, 4, false);
     //
     worldCup.add_player(21, 2, 5, 6, 4, true);
     worldCup.add_player(22, 2, 5, 6, 4, false);
@@ -650,17 +650,19 @@ bool worldCup_Play_Match()
     tests += StatusType::FAILURE == worldCup.play_match(1, 4);
     tests += StatusType::FAILURE == worldCup.play_match(1, 5);
 
-    std::cout << "running tests on play_match worldcup line 655 before removing player 21: \n"
-              << AVL_testing<Player*>::run_tests_on_worldCup(&worldCup);
-//    worldCup.remove_player(21);
+//    std::cout << "running tests on play_match worldcup line 655 before removing player 21: \n"
+//              << AVL_testing<Player*>::run_tests_on_worldCup(&worldCup);
+    std::cout << "running tests on play_match team2 line 655 before removing player 21: \n"
+            << AVL_testing<Player*>::run_tests_on_worldCup(&worldCup);
+    worldCup.remove_player(21);
     tests += StatusType::FAILURE == worldCup.play_match(1, 2);
 
-    std::cout << "running tests on play_match worldcup line 661 before adding player 33: \n"
-    << AVL_testing<Player*>::run_tests_on_worldCup(&worldCup);
+//    std::cout << "running tests on play_match worldcup line 661 before adding player 33: \n"
+//    << AVL_testing<Player*>::run_tests_on_worldCup(&worldCup);
 
     worldCup.add_player(33, 2, 5, 6, 0, true); // ERROR CODE
-    std::cout << "running tests on play_match worldcup line 655 before adding player 33: \n"
-              << AVL_testing<Player*>::run_tests_on_worldCup(&worldCup);
+//    std::cout << "running tests on play_match worldcup AFTER adding player 33: \n"
+//              << AVL_testing<Player*>::run_tests_on_worldCup(&worldCup);
     tests += StatusType::SUCCESS == worldCup.play_match(1, 2);
     tests += (1 == (worldCup.get_team_points(1)).ans());
     tests += (4 == (worldCup.get_team_points(2)).ans());
