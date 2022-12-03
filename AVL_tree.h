@@ -593,7 +593,7 @@ typename AVL_tree<T>::Node* AVL_tree<T>::find_designated_parent(AVL_tree::Node* 
                 return current;
             }
         }
-        else{ //proceed to right branch
+        else{ //proceed to left branch
             if (current->left != nullptr){
                 current = current->left;
             }
@@ -940,15 +940,15 @@ void AVL_tree<T>::debugging_printTree_new(const std::string& prefix, const AVL_t
         str += "\n";
 
         // enter the next tree level - left and right branch
-        AVL_tree<T>::debugging_printTree( prefix + (isLeft ? "    " : "│   "), node->right, false, str);
-        AVL_tree<T>::debugging_printTree( prefix + (isLeft ? "    " : "│   "), node->left, true, str);
+        AVL_tree<T>::debugging_printTree_new( prefix + (isLeft ? "    " : "│   "), node->right, false, str);
+        AVL_tree<T>::debugging_printTree_new( prefix + (isLeft ? "    " : "│   "), node->left, true, str);
     }
 }
 
 template<class T>
 void AVL_tree<T>::debugging_printTree_new(const AVL_tree::Node* node, std::string& str)
 {
-    debugging_printTree("", node, false, str);
+    debugging_printTree_new("", node, true, str);
 }
 
 template<class T>

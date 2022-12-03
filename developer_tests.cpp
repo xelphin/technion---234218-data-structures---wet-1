@@ -828,7 +828,7 @@ bool closest_player_test() {
     output_t<int> false_id = worldCup.get_closest_player(15,1);
     output_t<int> false_team = worldCup.get_closest_player(5,2);
 
-    return (close5.ans() == 6 && close32.ans() == 31 && close25.ans() == 50 &&
+    return (close5.ans() == 6 && close32.ans() == 25 && close25.ans() == 50 &&
 
     close5.status() == StatusType::SUCCESS && close32.status() == StatusType::SUCCESS &&
     close25.status() == StatusType::SUCCESS && false_id.status() == StatusType::FAILURE &&
