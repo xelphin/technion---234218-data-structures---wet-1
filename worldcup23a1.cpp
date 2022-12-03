@@ -2,7 +2,7 @@
 
 
 world_cup_t::world_cup_t()
-: amount_players(0), all_players_AVL(SORT_BY_ID), all_players_score_AVL(SORT_BY_SCORE),
+: amount_players(0), global_top_scorer_team(new Team(0,0)), all_players_AVL(SORT_BY_ID), all_players_score_AVL(SORT_BY_SCORE),
   teams_AVL(SORT_BY_ID), valid_teams_AVL(SORT_BY_ID)
 {}
 
@@ -168,6 +168,7 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
             playerTeam->update_cardsReceived(cardsReceived);
             playerTeam->update_scoredGoals(scoredGoals);
             playerTeam->compare_to_top_scorer(player);
+            global_top_scorer_team->compare_to_top_scorer(player);
             // TODO: Check player/team really gets updated (not just from looking at prints)
         } else {
             return StatusType::FAILURE;
@@ -317,8 +318,32 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
 
 output_t<int> world_cup_t::get_top_scorer(int teamId)
 {
-	// TODO M: Your code goes here
-	return teamId;
+    //needs to be O(log(teams)), does not depend on number of players.
+    // needs to be O(1) if teamId<0.
+    if (teamId == 0){
+        return StatusType::INVALID_INPUT;
+    }
+    if (teamId < 0) // get from global tree
+    {
+        if (global_top_scorer_team->get_top_scorer())
+        {
+            return global_top_scorer_team->get_top_scorer()->get_id();
+        }
+        else{ //no players
+            return StatusType::FAILURE;
+        }
+    }
+    else{ // teamId > 0, not >= 0.
+        // multiple gets_team don't matter because every one is O(log(n))
+        if (teams_AVL.get_content(teamId) && //team exists
+            (teams_AVL.get_content(teamId)->get_top_scorer())) //players in the team
+        {
+                return teams_AVL.get_content(teamId)->get_top_scorer()->get_id();
+        }
+        else{
+            return StatusType::FAILURE; // no team or no players in team
+        }
+    }
 }
 
 output_t<int> world_cup_t::get_all_players_count(int teamId)

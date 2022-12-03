@@ -617,13 +617,7 @@ int AVL_tree<T>::Node::get_comparison(const Node &other) {
     }
     if (tree->sort_by_score == SORT_BY_SCORE){ //TODO E: this part breaks encapsulation. see trello for more details.
         return *(this->content) SCORE *(other.content);
-//        int scoreDiff = SCORE(*(this->content)) - SCORE(*other.content);
-//        int cardDiff = this->content->get_cards() - this->content->get_cards(); //TODO E: this line is broken. cant change second "this" without compilation errors.
-//        if (scoreDiff != 0)
-//            return scoreDiff;
-//        else if (cardDiff != 0)
-//            return -cardDiff; // should be negative because more cards is bad.
-//        return ID(*(this->content)) - ID(*other.content);
+
     }
     else
     {
@@ -842,7 +836,7 @@ void AVL_tree<T>::Node::update_descendants() {
         else throw;
     }
     else{
-        straight_line_ancestor = this; //TODO decide on this or nullptr
+        straight_line_ancestor = this;
     }
 }
 
@@ -853,7 +847,7 @@ T AVL_tree<T>::Node::get_closest_node_content() {
      * and then compare those players to get the closest one.
      * note: if there is only 1 child, it means that child does not have children of its own, because of AVL invariant.
      */
-    Node* zig_zag_ancestor = straight_line_ancestor->parent; // straight line ancestor is never null, but its parent may be. TODO: decide if its null for the root.
+    Node* zig_zag_ancestor = straight_line_ancestor->parent;
     Node* closest1 = nullptr;
     Node* closest2 = nullptr;
     if (left && right) //2 children

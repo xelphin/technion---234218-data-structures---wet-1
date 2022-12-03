@@ -807,9 +807,9 @@ bool closest_player_test() {
     worldCup.add_player(22, 2, 5, 6, 4, false);
     worldCup.add_player(23, 2, 5, 6, 4, false);
 
-    worldCup.add_player(50, 2, 5, 5, 3, false); //25,
+    worldCup.add_player(50, 2, 5, 5, 3, false);
     worldCup.add_player(25, 2, 5, 5, 4, false); //32
-    worldCup.add_player(51, 2, 5, 5, 4, false);
+    worldCup.add_player(51, 2, 5, 5, 4, false); //25
 
     worldCup.add_player(27, 2, 5, 6, 4, false);
     worldCup.add_player(28, 2, 5, 6, 4, false);

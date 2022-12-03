@@ -95,7 +95,6 @@ std::ostream& operator<<(std::ostream& os, const Team& toPrint)
 
 int Team::compare(const Team& team2, bool sort_by_score) const
 {
-    //TODO E: make sure int is right return type.
     if (sort_by_score == SORT_BY_SCORE){
         int score_diff = Team::get_points() - team2.get_points();
         if (score_diff != 0)
