@@ -868,13 +868,11 @@ bool nodeList_Teams_Basics()
 {
     int tests = 0;
     NodeList_Teams list;
-    std::cout << "am here1" << std::endl;
     list.add(1,0,0,0);
-    //list.add(4,0,0,0);
-    //list.add(3,0,0,0);
-    //list.add(5,0,0,0);
-    //tests += ("1 4 3 5 " == list.debug_print() );
-    std::cout << "am here2" << std::endl;
+    list.add(4,0,0,0);
+    list.add(3,0,0,0);
+    list.add(5,0,0,0);
+    tests += ("1 4 3 5 " == list.debug_print() );
 
-    return tests == 0;
+    return tests == 1;
 }

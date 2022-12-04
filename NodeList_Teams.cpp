@@ -16,8 +16,6 @@ NodeList_Teams::~NodeList_Teams() {
         delete currentNode;
         currentNode = nextNode;
     }
-    if (end)
-        delete end;
 }
 
 void NodeList_Teams::add(int id, int total_points, int total_goals, int total_cards)
