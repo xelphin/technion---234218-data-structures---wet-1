@@ -39,6 +39,7 @@ bool run_all_tests() {
 //    run_test(closest_player_test, "closest_player_test", success_string, success);
     run_test(nodeList_Teams_Basics, "nodeList_Teams_Basics", success_string, success);
     run_test(avl_Add_To_List, "avl_Add_To_List", success_string, success);
+    run_test(worldCup_Knockout_Winner, "worldCup_Knockout_Winner", success_string, success);
 
     std::cout << success_string << std::endl;
     return success;
@@ -883,6 +884,7 @@ bool nodeList_Teams_Basics()
 
 bool avl_Add_To_List()
 {
+    int tests = 0;
     NodeList_Teams list;
     AVL_tree<Team*> tree1(false); // sort by ID
     Team team1(1, 20);
@@ -904,9 +906,19 @@ bool avl_Add_To_List()
     //
     std::cout << tree1.debugging_printTree_new();
     //
-    tree1.add_to_list(list, 3, 6);
+    tree1.add_to_list(list, 2, 6);
     std::cout << "list: " << list.debug_print() << std::endl;
+    tests +=  ("2 3 4 5 6 " == list.debug_print() );
+    tests += (4 == list.knockout());
 
+    return tests == 2;
+}
 
-    return true;
+bool worldCup_Knockout_Winner()
+{
+    // Functionality checked using avl_Add_To_List() test
+    // This is just for checking that the function runs
+    world_cup_t worldCup;
+
+    return (StatusType::FAILURE == (worldCup.knockout_winner(2,3)).status());;
 }

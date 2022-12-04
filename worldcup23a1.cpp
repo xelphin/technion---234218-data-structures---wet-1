@@ -409,12 +409,25 @@ StatusType world_cup_t::get_all_players(int teamId, int *const output)
 //    return closest_id;
 //}
 
-//output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
-//{
-//	// TODO: OUR code goes here
-//tree.in_order_traversal_wrapper(FillPseudoTeam(arrTree, sizeTree)); //TODO E: code to fill your array.
-//	return 2;
-//}
+output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
+{
+	if (minTeamId<0 || maxTeamId<0 || maxTeamId<minTeamId)
+            return StatusType::INVALID_INPUT;
+    if (valid_teams_AVL.get_amount() < 1) {
+        return StatusType::FAILURE;
+    }
+    try {
+        NodeList_Teams list;
+        valid_teams_AVL.add_to_list(list, minTeamId, maxTeamId);
+        int winnerId = list.knockout();
+        if (winnerId < 1)
+            return StatusType::FAILURE;
+        return winnerId;
+    } catch (std::bad_alloc const&){
+        return StatusType::ALLOCATION_ERROR;
+    }
+    return StatusType::FAILURE;
+}
 
 //class FillPseudoTeam{ //TODO E
 //private:
