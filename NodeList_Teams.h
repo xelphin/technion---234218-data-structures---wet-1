@@ -5,6 +5,9 @@
 #ifndef NODELIST_TEAMS_H
 #define NODELIST_TEAMS_H
 
+#include <string>
+#include <iostream>
+
 // USED ONLY FOR KNOCKOUT
 
 class NodeList_Teams {
@@ -21,6 +24,7 @@ public:
     // Add (inorder) the valid teams
     void add(int id, int total_points, int total_goals, int total_cards);
     int knockout();
+    std::string debug_print();
 
 private:
     NodeList_Teams::Node *start;

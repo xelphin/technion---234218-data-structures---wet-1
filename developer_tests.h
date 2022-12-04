@@ -132,7 +132,7 @@ bool worldCup_Unite_Teams();
 bool worldCup_Get_All_Players_Count();
 bool closest_player_test();
 
-bool worldCup_knockoutWinner();
+bool nodeList_Teams_Basics();
 
 
 #endif

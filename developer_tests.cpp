@@ -37,7 +37,7 @@ bool run_all_tests() {
     run_test(worldCup_Unite_Teams, "worldCup_Unite_Teams", success_string, success);
     run_test(worldCup_Get_All_Players_Count, "worldCup_Get_All_Players_Count", success_string, success);
 //    run_test(closest_player_test, "closest_player_test", success_string, success);
-    run_test(worldCup_knockoutWinner, "worldCup_knockoutWinner", success_string, success);
+    run_test(nodeList_Teams_Basics, "nodeList_Teams_Basics", success_string, success);
 
     std::cout << success_string << std::endl;
     return success;
@@ -864,8 +864,17 @@ bool worldCup_Get_All_Players_Count()
 //}
 
 
-bool worldCup_knockoutWinner()
+bool nodeList_Teams_Basics()
 {
+    int tests = 0;
     NodeList_Teams list;
-    return true;
+    std::cout << "am here1" << std::endl;
+    list.add(1,0,0,0);
+    //list.add(4,0,0,0);
+    //list.add(3,0,0,0);
+    //list.add(5,0,0,0);
+    //tests += ("1 4 3 5 " == list.debug_print() );
+    std::cout << "am here2" << std::endl;
+
+    return tests == 0;
 }
