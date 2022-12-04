@@ -26,6 +26,22 @@ void query_get_all_players(string cmd, world_cup_t *obj, int teamID);
 
 int main()
 {
+//    world_cup_t worldCup;
+//    worldCup.add_team(1,0);
+//    Team team1(0,0);
+//    team1.add_player()
+
+//    AVL_tree<shared_ptr<Team>> tree(false);
+//    std::shared_ptr<Team> team(new Team(1, 0));
+//    tree.add(team);
+//    AVL_tree<shared_ptr<int>>::Node* a(nullptr);
+//    AVL_tree<shared_ptr<int>> tree(false);
+//    int a = 0;
+//    shared_ptr<int> b(new int(2));
+//    AVL_tree<shared_ptr<int>>::Node c(b);
+
+//    tree.add(b);
+
     // OUR TESTS (erase this code later)
     run_all_tests();
     // ---
@@ -100,47 +116,47 @@ _
     */
 	return 0;
 }
-
-// Helpers
-static const char *StatusTypeStr[] =
-{
-   	"SUCCESS",
-	"ALLOCATION_ERROR",
-	"INVALID_INPUT",
-	"FAILURE"
-};
-
-void print(string cmd, StatusType res) 
-{
-	cout << cmd << ": " << StatusTypeStr[(int) res] << endl;
-}
-
-void print(string cmd, output_t<int> res)
-{
-    if (res.status() == StatusType::SUCCESS) {
-	    cout << cmd << ": " << StatusTypeStr[(int) res.status()] << ", " << res.ans() << endl;
-    } else {
-	    cout << cmd << ": " << StatusTypeStr[(int) res.status()] << endl;
-    }
-}
-
-void query_get_all_players(string cmd, world_cup_t *obj, int teamID)
-{
-	output_t<int> count = obj->get_all_players_count(teamID);
-    // Allocate if okay
-    int *out_mem = nullptr;
-	if (count.status() == StatusType::SUCCESS && (count.ans() > 0)) {
-        out_mem = new int[count.ans()];
-        for (int i = 0; i < count.ans(); ++i) out_mem[i] = -1;
-    }
-    // Call function
-    StatusType status = obj->get_all_players(teamID, out_mem);
-    print(cmd, status);
-    if (status == StatusType::SUCCESS) {
-	    for (int i = 0; i < count.ans(); ++i)
-        {
-		    cout << out_mem[i] << endl;
-	    }
-    }
-    delete[] out_mem;
-}
+//
+//// Helpers
+//static const char *StatusTypeStr[] =
+//{
+//   	"SUCCESS",
+//	"ALLOCATION_ERROR",
+//	"INVALID_INPUT",
+//	"FAILURE"
+//};
+//
+//void print(string cmd, StatusType res)
+//{
+//	cout << cmd << ": " << StatusTypeStr[(int) res] << endl;
+//}
+//
+//void print(string cmd, output_t<int> res)
+//{
+//    if (res.status() == StatusType::SUCCESS) {
+//	    cout << cmd << ": " << StatusTypeStr[(int) res.status()] << ", " << res.ans() << endl;
+//    } else {
+//	    cout << cmd << ": " << StatusTypeStr[(int) res.status()] << endl;
+//    }
+//}
+//
+//void query_get_all_players(string cmd, world_cup_t *obj, int teamID)
+//{
+//	output_t<int> count = obj->get_all_players_count(teamID);
+//    // Allocate if okay
+//    int *out_mem = nullptr;
+//	if (count.status() == StatusType::SUCCESS && (count.ans() > 0)) {
+//        out_mem = new int[count.ans()];
+//        for (int i = 0; i < count.ans(); ++i) out_mem[i] = -1;
+//    }
+//    // Call function
+//    StatusType status = obj->get_all_players(teamID, out_mem);
+//    print(cmd, status);
+//    if (status == StatusType::SUCCESS) {
+//	    for (int i = 0; i < count.ans(); ++i)
+//        {
+//		    cout << out_mem[i] << endl;
+//	    }
+//    }
+//    delete[] out_mem;
+//}

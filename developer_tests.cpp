@@ -14,20 +14,20 @@ void printSuccess ();
 bool run_all_tests() {
     std::string success_string = "ALL (OUR) TESTS SUCCEEDED";
     bool success = true;
-//    run_test(playerCompare, "playerCompare", success_string, success);
-//    run_test(createAVL, "createAVL", success_string, success);
-//    run_test(balanceAVL_LL, "balanceAVL_LL", success_string, success);
-//    run_test(balanceAVL_RR, "balanceAVL_RR", success_string, success);
-//    run_test(balanceAVL_LR, "balanceAVL_LR", success_string, success);
-//    run_test(balanceAVL_RL, "balanceAVL_RL", success_string, success);
-//    run_test(inorder_print, "inorder print", success_string, success);
-//    run_test(inorder_print_check2, "inorder_print_check2()", success_string, success);
-//    run_test(find_test, "find", success_string, success);
-//    run_test(remove_test, "remove", success_string, success);
-//    run_test(team_create, "team_create", success_string, success);
-//    run_test(createAVL_byMerge, "createAVL_byMerge", success_string, success);
-//    run_test(worldCup_Constructor, "worldCup_Constructor", success_string, success);
-//    run_test(worldCup_Add, "worldCup_Add", success_string, success);
+    run_test(playerCompare, "playerCompare", success_string, success);
+    run_test(createAVL, "createAVL", success_string, success);
+    run_test(balanceAVL_LL, "balanceAVL_LL", success_string, success);
+    run_test(balanceAVL_RR, "balanceAVL_RR", success_string, success);
+    run_test(balanceAVL_LR, "balanceAVL_LR", success_string, success);
+    run_test(balanceAVL_RL, "balanceAVL_RL", success_string, success);
+    run_test(inorder_print, "inorder print", success_string, success);
+    run_test(inorder_print_check2, "inorder_print_check2()", success_string, success);
+    run_test(find_test, "find", success_string, success);
+    run_test(remove_test, "remove", success_string, success);
+    run_test(team_create, "team_create", success_string, success);
+    run_test(createAVL_byMerge, "createAVL_byMerge", success_string, success);
+    run_test(worldCup_Constructor, "worldCup_Constructor", success_string, success);
+    run_test(worldCup_Add, "worldCup_Add", success_string, success);
     run_test(worldCup_Add_Player, "worldCup_Add_Player", success_string, success);
     run_test(worldCup_Remove_Player, "worldCup_Remove_Player", success_string, success);
     run_test(worldCup_Remove_Team, "worldCup_Remove_Team", success_string, success);
@@ -664,16 +664,16 @@ bool worldCup_Play_Match()
     //
     worldCup.add_player(41, 4, 5, 6, 4, false);
     //
-//    tests += StatusType::SUCCESS == worldCup.play_match(1, 2);
-//    tests += (1 == (worldCup.get_team_points(1)).ans());
-//    tests += (1 == (worldCup.get_team_points(2)).ans());
-//    tests += StatusType::FAILURE == worldCup.play_match(1, 4);
-//    tests += StatusType::FAILURE == worldCup.play_match(1, 5);
+    tests += StatusType::SUCCESS == worldCup.play_match(1, 2);
+    tests += (1 == (worldCup.get_team_points(1)).ans());
+    tests += (1 == (worldCup.get_team_points(2)).ans());
+    tests += StatusType::FAILURE == worldCup.play_match(1, 4);
+    tests += StatusType::FAILURE == worldCup.play_match(1, 5);
 
     std::cout << "running tests on play_match worldcup line 655 before removing player 21: \n"
               << AVL_testing<Player*>::run_tests_on_worldCup(&worldCup);
     worldCup.remove_player(21); //TODO: fix segfault
-//    tests += StatusType::FAILURE == worldCup.play_match(1, 2);
+    tests += StatusType::FAILURE == worldCup.play_match(1, 2);
 
     std::cout << "running tests on play_match worldcup line 661 before adding player 33: \n"
     << AVL_testing<Player*>::run_tests_on_worldCup(&worldCup);
@@ -681,10 +681,10 @@ bool worldCup_Play_Match()
     worldCup.add_player(33, 2, 5, 6, 0, true); // ERROR CODE
     std::cout << "running tests on play_match worldcup line 655 before adding player 33: \n"
               << AVL_testing<Player*>::run_tests_on_worldCup(&worldCup);
-//    tests += StatusType::SUCCESS == worldCup.play_match(1, 2);
-//    tests += (1 == (worldCup.get_team_points(1)).ans());
-//    tests += (4 == (worldCup.get_team_points(2)).ans());
-//    tests += (StatusType::FAILURE == (worldCup.get_team_points(3)).status());
+    tests += StatusType::SUCCESS == worldCup.play_match(1, 2);
+    tests += (1 == (worldCup.get_team_points(1)).ans());
+    tests += (4 == (worldCup.get_team_points(2)).ans());
+    tests += (StatusType::FAILURE == (worldCup.get_team_points(3)).status());
     //
 
     // TODO: Checked a bit with prints, but difficult to check directly because no public function gives me direct access to Team pointer
