@@ -412,6 +412,25 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
 //output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
 //{
 //	// TODO: OUR code goes here
+//tree.in_order_traversal_wrapper(FillPseudoTeam(arrTree, sizeTree)); //TODO E: code to fill your array.
 //	return 2;
 //}
 
+//class FillPseudoTeam{ //TODO E
+//private:
+//    int size;
+//    int currIndex;
+//    PseudoTeam* arr;
+//public:
+//    ArrayFillerFunctor(PseudoTeam* arr, int size) : size(size), currIndex(0), arr(arr) {}
+//
+//    // call is: functor(node->content);
+//    void operator() (std::shared_ptr<Team>& team) {
+//        if (currIndex > size - 1){
+//            throw std::exception();
+//        }
+//        arr[currIndex] = PseudoTeam(team);
+//        currIndex++;
+//    }
+//    //typename AVL_tree<T>::Node* node, T arr[], int size, int& currIndex, F functor)
+//};

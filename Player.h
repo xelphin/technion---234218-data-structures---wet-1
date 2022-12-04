@@ -59,7 +59,9 @@ public:
     void operator() (std::shared_ptr<Player>& player) {
         player->change_team(new_team);
     }
-    //typename AVL_tree<T>::Node* node, T arr[], int size, int& currIndex, F functor)
 };
+
+
+
 
 #endif //TECHNION_234218_DATA_STRUCTURES_WET_1_PLAYER_H
