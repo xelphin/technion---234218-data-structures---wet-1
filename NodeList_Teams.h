@@ -29,6 +29,9 @@ public:
 private:
     NodeList_Teams::Node *start;
     NodeList_Teams::Node *end;
+
+    void call_match();
+    int get_winnerId(Node& team1, Node& team2);
 };
 
 class NodeList_Teams::Node{ // Node => Represents a Teams Stats
@@ -40,6 +43,8 @@ public:
     int total_cards;
 
     explicit Node(int id, int total_points, int total_goals, int total_cards);
+
+    int get_match_points() const;
 
     Node(const NodeList_Teams &) = delete; //cant copy nodes. make new ones.
     Node &operator=(NodeList_Teams &other) = delete;

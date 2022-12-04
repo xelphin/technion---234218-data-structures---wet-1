@@ -868,11 +868,14 @@ bool nodeList_Teams_Basics()
 {
     int tests = 0;
     NodeList_Teams list;
-    list.add(1,0,0,0);
-    list.add(4,0,0,0);
-    list.add(3,0,0,0);
-    list.add(5,0,0,0);
-    tests += ("1 4 3 5 " == list.debug_print() );
+    list.add(1,20,0,0);
+    list.add(3,20,0,0);
+    list.add(6,5,0,0);
+    list.add(7,30,0,0);
+    list.add(10,11,0,0);
+    tests += ("1 3 6 7 10 " == list.debug_print() );
+    //
+    tests += (3 == list.knockout());
 
-    return tests == 1;
+    return tests == 2;
 }
