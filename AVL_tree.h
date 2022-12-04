@@ -1121,15 +1121,32 @@ void AVL_tree<T>::add_to_list(NodeList_Teams& list, int minId, int maxId)
 template<class T>
 void AVL_tree<T>::add_to_list_aux(AVL_tree::Node* node, bool& passedMin, bool& passedMax, NodeList_Teams& list, int minId, int maxId)
 {
-    if (node == nullptr){
+    if (node == nullptr)
         return;
+    if (node->content == nullptr)
+        return;
+    std::cout << "We are looking at: " << ((*(node->content)).get_id()) << std::endl;
+    // CHECK LEFT of tree
+    if ((*(node->content)).get_id() > minId) {
+        add_to_list_aux(node->left, passedMin, passedMax, list, minId, maxId);
     }
-    //in_order_traversal(node->left, functor);
-    if (node->content != nullptr) {
-        // list.add()
+
+    // ADD Team to list and UPDATE passed arguments
+    if ((*(node->content)).get_id() >= minId && (*(node->content)).get_id() <= maxId) {
+        list.add((*(node->content)).get_id(),
+                 (*(node->content)).get_total_points(),
+                 (*(node->content)).get_goals(),
+                 (*(node->content)).get_cards());
+        if ((*(node->content)).get_id() == minId)
+            passedMin = true;
+        if ((*(node->content)).get_id() == maxId)
+            passedMax = true;
     }
-    //(*functor)(node->content);
-    //in_order_traversal(node->right, functor);
+
+    // CHECK RIGHT of tree
+    if ((*(node->content)).get_id() < maxId) {
+        add_to_list_aux(node->right, passedMin, passedMax, list, minId, maxId);
+    }
 
 }
 
