@@ -19,6 +19,7 @@
 #include "./Team.h"
 #include "./worldcup23a1.h"
 #include "./wet1util.h"
+#include "./NodeList_Teams.h"
 
 template<class T>
 class AVL_testing{
@@ -130,6 +131,8 @@ bool worldCup_Get_Num_Played_Games();
 bool worldCup_Unite_Teams();
 bool worldCup_Get_All_Players_Count();
 bool closest_player_test();
+
+bool worldCup_knockoutWinner();
 
 
 #endif

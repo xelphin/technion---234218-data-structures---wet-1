@@ -37,6 +37,7 @@ bool run_all_tests() {
     run_test(worldCup_Unite_Teams, "worldCup_Unite_Teams", success_string, success);
     run_test(worldCup_Get_All_Players_Count, "worldCup_Get_All_Players_Count", success_string, success);
 //    run_test(closest_player_test, "closest_player_test", success_string, success);
+    run_test(worldCup_knockoutWinner, "worldCup_knockoutWinner", success_string, success);
 
     std::cout << success_string << std::endl;
     return success;
@@ -861,3 +862,10 @@ bool worldCup_Get_All_Players_Count()
 //    close25.status() == StatusType::SUCCESS && false_id.status() == StatusType::FAILURE &&
 //    false_team.status() == StatusType::FAILURE);
 //}
+
+
+bool worldCup_knockoutWinner()
+{
+    NodeList_Teams list;
+    return true;
+}
