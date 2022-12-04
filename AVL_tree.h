@@ -19,6 +19,7 @@
 #include "stdexcept"
 #include "iostream"
 #include "Exception.h"
+#include "NodeList_Teams.h"
 
 #define SORT_BY_SCORE true
 #define SORT_BY_ID false
@@ -64,6 +65,11 @@ public:
 
     template<class F>
     void in_order_traversal_wrapper(F functor); // used to iterate on all the nodes.
+
+    // KNOCKOUT function
+    void add_to_list(NodeList_Teams& list, int minId, int maxId);
+    void add_to_list_aux(AVL_tree<T>::Node* root, bool& passedMin, bool& passedMax, NodeList_Teams& list, int minId, int maxId);
+
 
     // TESTS AND DEBUGGING FUNCTIONS
     std::string debugging_printTree();
@@ -1099,6 +1105,32 @@ std::string AVL_tree<T>::debugging_printTree_new()
     std::string tree = "";
     debugging_printTree_new(root, tree);
     return tree;
+}
+
+
+//------------------------------------------KNOCKOUT FUNCTIONS-----------------//
+
+template<class T>
+void AVL_tree<T>::add_to_list(NodeList_Teams& list, int minId, int maxId)
+{
+    bool passedMin = false;
+    bool passedMax = false;
+    add_to_list_aux(root, passedMin, passedMax, list, minId, maxId);
+}
+
+template<class T>
+void AVL_tree<T>::add_to_list_aux(AVL_tree::Node* node, bool& passedMin, bool& passedMax, NodeList_Teams& list, int minId, int maxId)
+{
+    if (node == nullptr){
+        return;
+    }
+    //in_order_traversal(node->left, functor);
+    if (node->content != nullptr) {
+        // list.add()
+    }
+    //(*functor)(node->content);
+    //in_order_traversal(node->right, functor);
+
 }
 
 //------------------------------------------OLD DEBUG FUNCTIONS FOR TESTS TO WORK-----------------//

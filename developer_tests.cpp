@@ -38,6 +38,7 @@ bool run_all_tests() {
     run_test(worldCup_Get_All_Players_Count, "worldCup_Get_All_Players_Count", success_string, success);
 //    run_test(closest_player_test, "closest_player_test", success_string, success);
     run_test(nodeList_Teams_Basics, "nodeList_Teams_Basics", success_string, success);
+    run_test(avl_Add_To_List, "avl_Add_To_List", success_string, success);
 
     std::cout << success_string << std::endl;
     return success;
@@ -878,4 +879,33 @@ bool nodeList_Teams_Basics()
     tests += (3 == list.knockout());
 
     return tests == 2;
+}
+
+bool avl_Add_To_List()
+{
+    NodeList_Teams list;
+    AVL_tree<Team*> tree1(false); // sort by ID
+    Team team1(1, 20);
+    Team team2(2, 10);
+    Team team3(3, 30);
+    Team team4(4, 60);
+    Team team5(5, 40);
+    Team team6(6, 40);
+    Team team7(7, 40);
+    Team team8(8, 40);
+    tree1.add(&team1);
+    tree1.add(&team2);
+    tree1.add(&team3);
+    tree1.add(&team4);
+    tree1.add(&team5);
+    tree1.add(&team6);
+    tree1.add(&team7);
+    tree1.add(&team8);
+    //
+    std::cout << tree1.debugging_printTree_new();
+    //
+    tree1.add_to_list(list, 3, 6);
+    std::cout << "list: " << list.debug_print() << std::endl;
+
+    return true;
 }
