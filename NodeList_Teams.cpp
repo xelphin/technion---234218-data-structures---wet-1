@@ -35,7 +35,7 @@ void NodeList_Teams::add(int id, int total_points, int total_goals, int total_ca
     }
 }
 
-int NodeList_Teams::knockout() // O(log(k))
+int NodeList_Teams::knockout() // O(r)
 {
     if (start == nullptr || end == nullptr)
         return -1;
@@ -73,13 +73,18 @@ void NodeList_Teams::call_match() // O(current amount of teams playing)
                                  team1->total_goals + team2->total_goals,
                                  team1->total_cards + team2->total_cards);
         // Arrange list
-        prevNode->next = newNode;
-        newNode->next = nextNode;
-        if (start == team1)
-            start = newNode;
-        if (end == team2)
-            end = newNode;
-
+        try {
+            prevNode->next = newNode;
+            newNode->next = nextNode;
+            if (start == team1)
+                start = newNode;
+            if (end == team2)
+                end = newNode;
+        } catch(...) {
+            delete team1;
+            delete team2;
+            throw;
+        }
         // Delete old teams
         delete team1;
         delete team2;
