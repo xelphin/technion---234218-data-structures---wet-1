@@ -334,6 +334,15 @@ bool AVL_tree<T>::remove_internal(Node* node) {
         }
         replace_nodes(node, replacement);
     }
+    if (replacement != nullptr){
+        //update descendants for get_closest_player support:
+        if (replacement->left){
+            climb_up_and_rebalance_tree(replacement->left->leftmost_descendant);
+        }
+        if (replacement->right){
+            climb_up_and_rebalance_tree(replacement->right->rightmost_descendant);
+        }
+    }
     climb_up_and_rebalance_tree(next_unbalanced_node);
     if (replacement != nullptr){
         //update descendants for get_closest_player support:
