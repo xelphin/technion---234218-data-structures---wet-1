@@ -42,20 +42,20 @@ public:
     AVL_tree(const AVL_tree &) = delete; //cant copy trees
     AVL_tree &operator=(AVL_tree &other) = delete;
 
-    Node* add(T item);
+    AVL_tree<T>::Node* add(T item);
     bool remove(int id);
     bool remove_by_item(const T& item);
-    bool remove_internal(Node* node);
+    bool remove_internal(AVL_tree<T>::Node* node);
 
     int get_amount();
-    Node* find(const T& item);
-    Node* find_id(int id);
-    Node* find_rightmost(Node* node);
+    AVL_tree<T>::Node* find(const T& item);
+    AVL_tree<T>::Node* find_id(int id);
+    AVL_tree<T>::Node* find_rightmost(AVL_tree<T>::Node* node);
     T get_content(int id);
     T get_biggest_in_tree();
 
 
-    Node* make_AVL_tree_from_array(T arr[], int start, int end);
+    AVL_tree<T>::Node* make_AVL_tree_from_array(T arr[], int start, int end);
     static void merge_sort(T newArr[], T arr1[], int size1, T arr2[], int size2, bool sort_by_score);
     static void fill_array(T newArr[], T oldArr[], int size, int& indexNew, int& indexOld);
 
@@ -68,24 +68,24 @@ public:
     // TESTS AND DEBUGGING FUNCTIONS
     std::string debugging_printTree();
     std::string debugging_printTree_new();
-    static void print_node(Node* node);
+    static void print_node(AVL_tree<T>::Node* node);
     void find_test_wrapper(int id);
     #ifndef NDEBUG
         friend AVL_testing<T>;
     #endif
 private:
     const bool sort_by_score;
-    Node *root;
+    AVL_tree<T>::Node *root;
     int amount;
 
-    Node* find_designated_parent(Node* new_leaf);
-    void climb_up_and_rebalance_tree(Node* leaf);
+    AVL_tree<T>::Node* find_designated_parent(AVL_tree<T>::Node* new_leaf);
+    void climb_up_and_rebalance_tree(AVL_tree<T>::Node* leaf);
     void post_order_delete();
-    Node* find_next_in_order(Node* node);
-    void replace_nodes(Node* node, Node* replacement);
+    AVL_tree<T>::Node* find_next_in_order(AVL_tree<T>::Node* node);
+    void replace_nodes(AVL_tree<T>::Node* node, AVL_tree<T>::Node* replacement);
 
     template<class F>
-    void in_order_traversal(Node* node, F* functor);
+    void in_order_traversal(AVL_tree<T>::Node* node, F* functor);
 
 
     // TESTS AND DEBUGGING FUNCTIONS
@@ -119,15 +119,15 @@ public:
     Node &operator=(AVL_tree &other) = delete;
     ~Node() = default;
 
-    int get_comparison(const Node &other); 
+    int get_comparison(const AVL_tree<T>::Node &other);
 
     //tree sorting functions:
     int set_balance_factor();
     int set_height();
-    int get_height(Node* node);
+    int get_height(AVL_tree<T>::Node* node);
     void choose_roll();
 
-    void update_parent(Node* replacement);
+    void update_parent(AVL_tree<T>::Node* replacement);
 
 
     //get_closest_player
@@ -184,12 +184,12 @@ typename AVL_tree<T>::Node* AVL_tree<T>::add(T item) {
     //the object is deleted.
     //
 
-    Node attempt(item);
+    AVL_tree<T>::Node attempt(item);
 //TODO: debug segfault at this line.
-    Node* leaf(new Node(item));
+    AVL_tree<T>::Node* leaf(new Node(item));
     try {
         leaf->tree = this;
-        Node *parent = find_designated_parent(leaf);
+        AVL_tree<T>::Node *parent = find_designated_parent(leaf);
         if (parent == nullptr) {
             root = leaf;
             leaf->tree = this;
@@ -224,7 +224,7 @@ template<class T>
 bool AVL_tree<T>::remove_by_item(const T& item) {
     // true if the node was removed. false otherwise.
     // time complexity: O(log(nodes))
-    Node* node = find(item);
+    AVL_tree<T>::Node* node = find(item);
     if (node == nullptr){
         return false;
     }
@@ -236,7 +236,7 @@ bool AVL_tree<T>::remove_by_item(const T& item) {
 template<class T>
 typename AVL_tree<T>::Node *AVL_tree<T>::find(const T& item) {
     //item acts like "this->content"
-    Node* current = root;
+    AVL_tree<T>::Node* current = root;
     if (!current){
         return nullptr;
     }
@@ -280,7 +280,7 @@ template<class T>
 bool AVL_tree<T>::remove(int id) {
     // true if the node was removed. false otherwise.
     // time complexity: O(log(nodes))
-    Node* node = find_id(id);
+    AVL_tree<T>::Node* node = find_id(id);
     if (node == nullptr){
         return false;
     }
@@ -291,9 +291,9 @@ bool AVL_tree<T>::remove(int id) {
 }
 
 template<class T>
-bool AVL_tree<T>::remove_internal(Node* node) {
-    Node* next_unbalanced_node;
-    Node* replacement = nullptr;
+bool AVL_tree<T>::remove_internal(AVL_tree<T>::Node* node) {
+    AVL_tree<T>::Node* next_unbalanced_node;
+    AVL_tree<T>::Node* replacement = nullptr;
     // updates parent and children before deletion
     if (node->left == nullptr && node->right == nullptr) //if leaf
     {
@@ -334,6 +334,7 @@ bool AVL_tree<T>::remove_internal(Node* node) {
         }
         replace_nodes(node, replacement);
     }
+
     if (replacement != nullptr){
         //update descendants for get_closest_player support:
         if (replacement->left){
@@ -343,7 +344,9 @@ bool AVL_tree<T>::remove_internal(Node* node) {
             climb_up_and_rebalance_tree(replacement->right->rightmost_descendant);
         }
     }
+
     climb_up_and_rebalance_tree(next_unbalanced_node);
+
     if (replacement != nullptr){
         //update descendants for get_closest_player support:
         if (replacement->left){
@@ -360,7 +363,7 @@ bool AVL_tree<T>::remove_internal(Node* node) {
 
 template<class T>
 typename AVL_tree<T>::Node *AVL_tree<T>::find_id(int id) {
-    Node* current = root;
+    AVL_tree<T>::Node* current = root;
     if (!current){
         return nullptr;
     }
@@ -391,7 +394,7 @@ typename AVL_tree<T>::Node *AVL_tree<T>::find_id(int id) {
 }
 
 template<class T>
-typename AVL_tree<T>::Node *AVL_tree<T>::find_rightmost(Node* node) {
+typename AVL_tree<T>::Node *AVL_tree<T>::find_rightmost(AVL_tree<T>::Node* node) {
     if (node == nullptr){
         return nullptr;
     }
@@ -413,7 +416,7 @@ typename AVL_tree<T>::Node *AVL_tree<T>::find_rightmost(Node* node) {
 
 template<class T>
 T AVL_tree<T>::get_content(int id) {
-    Node* node = find_id(id);
+    AVL_tree<T>::Node* node = find_id(id);
     if (node){
         return node->content;
     }
@@ -425,7 +428,7 @@ T AVL_tree<T>::get_content(int id) {
 
 template<class T>
 T AVL_tree<T>::get_biggest_in_tree() {
-    Node* node = find_rightmost(root);
+    AVL_tree<T>::Node* node = find_rightmost(root);
     if (node != nullptr){
         T value = node->content;
         return value;
@@ -496,7 +499,15 @@ AVL_tree<T>::AVL_tree(AVL_tree<T>& tree1, AVL_tree<T>& tree2, bool sort_by_score
     int sizeTree1 = tree1.get_amount();
     int sizeTree2 = tree2.get_amount();
     T *arrTree1 = new T [sizeTree1];
-    T *arrTree2 = new T [sizeTree2];
+    T *arrTree2;
+    try
+    {
+        arrTree2 = new T [sizeTree2];
+    }
+    catch (...){
+        delete[] arrTree1;
+        throw;
+    }
 
     try {
         // Fill an inorder array for each tree
@@ -542,7 +553,7 @@ typename AVL_tree<T>::Node *AVL_tree<T>::make_AVL_tree_from_array(T arr[], int s
         throw;
 
 
-    Node *node = new Node(arr[midIndex]); //in case of bad_alloc, memory is freed from the tree destructor.
+    AVL_tree<T>::Node *node = new Node(arr[midIndex]); //in case of bad_alloc, memory is freed from the tree destructor.
 
     try {
         node->tree = this;
@@ -616,8 +627,8 @@ void AVL_tree<T>::post_order_delete() {
     if (root == nullptr){
         return;
     }
-    Node* current = root;
-    Node* temp = root;
+    AVL_tree<T>::Node* current = root;
+    AVL_tree<T>::Node* temp = root;
     // while not in root or root has children:
     while (current->parent || (current == root && (root->left || root->right))){
         if (current->left != nullptr)
@@ -673,7 +684,7 @@ typename AVL_tree<T>::Node *AVL_tree<T>::find_next_in_order(AVL_tree::Node *node
     if (node == nullptr){
         throw std::invalid_argument("next in order activated on nullptr");
     }
-    Node* current = node;
+    AVL_tree<T>::Node* current = node;
     while(current->left != nullptr) // while left child
     {
         current = current->left;
@@ -700,7 +711,7 @@ void AVL_tree<T>::replace_nodes(AVL_tree::Node *node, AVL_tree::Node *replacemen
 template<class T>
 typename AVL_tree<T>::Node* AVL_tree<T>::find_designated_parent(AVL_tree::Node* new_leaf) {
     //I THINK DOCUMENTATION IN THIS FUNCTION IS WRONG.
-    Node* current = root;
+    AVL_tree<T>::Node* current = root;
     if (!current){
         return nullptr;
     }
@@ -728,7 +739,7 @@ typename AVL_tree<T>::Node* AVL_tree<T>::find_designated_parent(AVL_tree::Node* 
 
 
 template <class T>
-int AVL_tree<T>::Node::get_comparison(const Node &other) {
+int AVL_tree<T>::Node::get_comparison(const AVL_tree<T>::Node &other) {
     // since its unknown if the tree is sorted by id or by score, we need this function to work on both.
     // '!' operator is for score. '~' operator is for id.
     // the comparison is done between the dereferences of the pointers the nodes holds.
@@ -784,10 +795,10 @@ int AVL_tree<T>::Node::set_balance_factor() {
 }
 
 template<class T>
-void AVL_tree<T>::climb_up_and_rebalance_tree(AVL_tree::Node *leaf) {
-    Node* current = leaf; //not node.parent, so it also updates the height of the node to 0 if it's a leaf.
-    
-    while (current){ //climbs up tree. stops after iterating on root.
+void AVL_tree<T>::climb_up_and_rebalance_tree(AVL_tree<T>::Node *leaf) {
+    AVL_tree<T>::Node* current = leaf; //not node.parent, so it also updates the height of the node to 0 if it's a leaf.
+
+    while (current != nullptr){ //climbs up tree. stops after iterating on root.
         current->set_height();
         current->set_balance_factor();
         //std::cout << "Currently on: " << (*current->content)
@@ -805,7 +816,7 @@ void AVL_tree<T>::climb_up_and_rebalance_tree(AVL_tree::Node *leaf) {
 }
 
 template<class T>
-void AVL_tree<T>::Node::update_parent(Node* replacement) {
+void AVL_tree<T>::Node::update_parent(AVL_tree<T>::Node* replacement) {
     //updates the parent after a roll to point to the replacement of the old child.
     if (parent) {
         if (parent->left == this) {
@@ -857,7 +868,7 @@ void AVL_tree<T>::Node::choose_roll() {
 
 template<class T>
 void AVL_tree<T>::Node::roll_left() {
-    Node* original_right = right;
+    AVL_tree<T>::Node* original_right = right;
     if (right->left){
     right->left->parent = this;
     }
@@ -870,7 +881,7 @@ void AVL_tree<T>::Node::roll_left() {
 
 template<class T>
 void AVL_tree<T>::Node::roll_right() {
-    Node* original_left = left;
+    AVL_tree<T>::Node* original_left = left;
     if(left->right){
         left->right->parent = this;
     }
@@ -983,9 +994,9 @@ T AVL_tree<T>::Node::get_closest_node_content() {
     else{
         straight_line_ancestor = this;
     }
-    Node* zig_zag_ancestor = straight_line_ancestor->parent;
-    Node* closest1 = nullptr;
-    Node* closest2 = nullptr;
+    AVL_tree<T>::Node* zig_zag_ancestor = straight_line_ancestor->parent;
+    AVL_tree<T>::Node* closest1 = nullptr;
+    AVL_tree<T>::Node* closest2 = nullptr;
     if (left && right) //2 children
     {
         closest1 = left->rightmost_descendant;
@@ -1132,7 +1143,7 @@ void AVL_tree<T>::find_test_wrapper(int id) {
 }
 
 template<class T>
-void AVL_tree<T>::print_node(Node* node){
+void AVL_tree<T>::print_node(AVL_tree<T>::Node* node){
     //the format is: self, parent, left, right
     if (node == nullptr){
         std::cout << "NULL\n";
