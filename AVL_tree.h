@@ -293,6 +293,7 @@ bool AVL_tree<T>::remove(int id) {
 template<class T>
 bool AVL_tree<T>::remove_internal(Node* node) {
     Node* next_unbalanced_node;
+    Node* replacement = nullptr;
     // updates parent and children before deletion
     if (node->left == nullptr && node->right == nullptr) //if leaf
     {
@@ -308,21 +309,21 @@ bool AVL_tree<T>::remove_internal(Node* node) {
         node->update_parent(node->right);
     }
     else { // 2 children
-        Node* replacement = find_next_in_order(node->right); // replacement does not have a left child this way.
+        replacement = find_next_in_order(node->right); // replacement does not have a left child this way.
 
-        //update replacement to point to right places
-        replacement->rightmost_descendant = node->rightmost_descendant;
-        replacement->leftmost_descendant = node->leftmost_descendant;
-
-        //update descendants to point to replacement if needed
-        if (node->leftmost_descendant->straight_line_ancestor == node){
-            node->leftmost_descendant->straight_line_ancestor = replacement;
-            replacement->straight_line_ancestor = node->rightmost_descendant->straight_line_ancestor;
-        }
-        if (node->rightmost_descendant->straight_line_ancestor == node){
-            node->rightmost_descendant->straight_line_ancestor = replacement;
-            replacement->straight_line_ancestor = node->leftmost_descendant->straight_line_ancestor;
-        }
+//        //update replacement to point to right places
+//        replacement->rightmost_descendant = node->rightmost_descendant;
+//        replacement->leftmost_descendant = node->leftmost_descendant;
+//
+//        //update descendants to point to replacement if needed
+//        if (node->leftmost_descendant->straight_line_ancestor == node){
+//            node->leftmost_descendant->straight_line_ancestor = replacement;
+//            replacement->straight_line_ancestor = node->rightmost_descendant->straight_line_ancestor;
+//        }
+//        if (node->rightmost_descendant->straight_line_ancestor == node){
+//            node->rightmost_descendant->straight_line_ancestor = replacement;
+//            replacement->straight_line_ancestor = node->leftmost_descendant->straight_line_ancestor;
+//        }
 
         if (replacement != node->right){
             next_unbalanced_node = replacement->parent;
@@ -334,6 +335,15 @@ bool AVL_tree<T>::remove_internal(Node* node) {
         replace_nodes(node, replacement);
     }
     climb_up_and_rebalance_tree(next_unbalanced_node);
+    if (replacement != nullptr){
+        //update descendants for get_closest_player support:
+        if (replacement->left){
+            climb_up_and_rebalance_tree(replacement->left->leftmost_descendant);
+        }
+        if (replacement->right){
+            climb_up_and_rebalance_tree(replacement->right->rightmost_descendant);
+        }
+    }
     delete node;
     this->amount--;
     return true;
