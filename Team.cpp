@@ -9,9 +9,9 @@ Team::Team(int id, int points)
 
 
 // C'tor used for merging two different teams
-Team::Team(int id, int points, int total_players, int total_goals, int total_cards, int total_goalKeepers, std::shared_ptr<Player> top_scorer,
-     AVL_tree<std::shared_ptr<Player>>* team1_players, AVL_tree<std::shared_ptr<Player>>* team2_players,
-     AVL_tree<std::shared_ptr<Player>>* team1_players_scores, AVL_tree<std::shared_ptr<Player>>* team2_players_scores)
+Team::Team(int id, int points, int total_players, int total_goals, int total_cards, int total_goalKeepers, Player* top_scorer,
+     AVL_tree<Player>* team1_players, AVL_tree<Player>* team2_players,
+     AVL_tree<Player>* team1_players_scores, AVL_tree<Player>* team2_players_scores)
      :
      id(id), total_players(total_players), total_points(points), total_goals(total_goals),
      total_cards(total_cards), total_goalKeepers(total_goalKeepers), gamesPlayed(0), top_scorer(top_scorer),
@@ -41,18 +41,19 @@ int Team::get_points() const{
     return total_points;
 }
 
-void Team::add_player(const std::shared_ptr<Player>& player) {
+void Team::add_player(const Player* player) {
     if (player == nullptr)
     {
         return;
     }
-    team_players.add(player);
+    std::shared_ptr<Player> new_player(new std::shared_ptr<Player>(player))
+    team_players.add(std::make_shared<Player>(player));
     team_players_scores.add(player);
     compare_to_top_scorer(player);
     total_players++;
 }
 
-std::shared_ptr<Player> Team::find_player(int player_id)
+Player Team::find_player(int player_id)
 {
     // O(log(n))
     // (TODO_IF_AND_WHEN_USED)M: make sure this does not need to return a pointer to the shared pointer.
@@ -76,12 +77,12 @@ bool Team::remove_player(int player_id)
     return success;
 }
 
-AVL_tree<std::shared_ptr<Player>>* Team::get_AVL_tree_id()
+AVL_tree<Player* Team::get_AVL_tree_id()
 {
     return &team_players;
 }
 
-AVL_tree<std::shared_ptr<Player>>* Team::get_AVL_tree_score()
+AVL_tree<Player* Team::get_AVL_tree_score()
 {
     return &team_players_scores;
 }
@@ -180,7 +181,7 @@ bool Team::get_isValid() const
     return false;
 }
 
-void Team::compare_to_top_scorer(const std::shared_ptr<Player>& player) {
+void Team::compare_to_top_scorer(const Player& player) {
     if (not top_scorer){
         top_scorer = player;
     }
@@ -191,6 +192,6 @@ void Team::compare_to_top_scorer(const std::shared_ptr<Player>& player) {
     }
 }
 
-std::shared_ptr<Player> Team::get_top_scorer() {
+Player Team::get_top_scorer() {
     return top_scorer;
 }

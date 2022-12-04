@@ -30,10 +30,10 @@ private:
     int amount_players;
     Team global_top_scorer_team;
 
-	AVL_tree<std::shared_ptr<Player>> all_players_AVL;
-    AVL_tree<std::shared_ptr<Player>> all_players_score_AVL;
-    AVL_tree<std::shared_ptr<Team>> teams_AVL;
-    AVL_tree<std::shared_ptr<Team>> valid_teams_AVL;
+	AVL_tree<Player> all_players_AVL;
+    AVL_tree<Player> all_players_score_AVL;
+    AVL_tree<Team> teams_AVL;
+    AVL_tree<Team> valid_teams_AVL;
 
 #ifndef NDEBUG
     template <typename T> friend class AVL_testing;

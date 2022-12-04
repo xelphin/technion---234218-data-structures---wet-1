@@ -19,6 +19,7 @@
 #include "stdexcept"
 #include "iostream"
 #include "Exception.h"
+#include <memory>
 
 #define SORT_BY_SCORE true
 #define SORT_BY_ID false
@@ -42,7 +43,7 @@ public:
     AVL_tree(const AVL_tree &) = delete; //cant copy trees
     AVL_tree &operator=(AVL_tree &other) = delete;
 
-    Node* add(T item);
+    Node* add(const std::shared_ptr<T> & item);
     bool remove(int id);
     bool remove_by_item(const T& item);
     bool remove_internal(Node* node);
@@ -106,7 +107,7 @@ public:
     AVL_tree<T>::Node *parent;
     AVL_tree<T>::Node *left;
     AVL_tree<T>::Node *right;
-    T content; //T is always a type of pointer.
+    std::shared_ptr<T> content; //T is always a type of pointer.
     int balance_factor; //to manage the sorting of the AVL tree.
     int height;
     //closest player stuff:
@@ -114,7 +115,7 @@ public:
     AVL_tree<T>::Node* leftmost_descendant;
     AVL_tree<T>::Node* rightmost_descendant;
 
-    explicit Node(T);
+    explicit Node(std::shared_ptr<T> new_item);
     Node(const AVL_tree &) = delete; //cant copy nodes. make new ones.
     Node &operator=(AVL_tree &other) = delete;
     ~Node() = default;
@@ -158,12 +159,12 @@ AVL_tree<T>::~AVL_tree() {
 
 
 template<class T>
-AVL_tree<T>::Node::Node(T new_item) 
+AVL_tree<T>::Node::Node(std::shared_ptr<T> new_item)
 : tree(nullptr),
 parent(nullptr),
 left(nullptr),
 right(nullptr),
-content(nullptr),
+content(std::shared_ptr<T>(new_item)),
 balance_factor(0),
 height(0),
   straight_line_ancestor(nullptr),
@@ -173,18 +174,17 @@ height(0),
     straight_line_ancestor = this;
     leftmost_descendant = this;
     rightmost_descendant = this;
-    content = new_item;
 }
 
 
 template<class T>
-typename AVL_tree<T>::Node* AVL_tree<T>::add(T item) {
+typename AVL_tree<T>::Node* AVL_tree<T>::add(const std::shared_ptr<T> & item) {
     // returns a pointer to the node holding the pointer to the item. we need that
     // in order to store the list of nodes in the object, so we can delete all the nodes when
     //the object is deleted.
     //
 
-    Node attempt(item);
+//    Node attempt(item);
 //TODO: debug segfault at this line.
     Node* leaf(new Node(item));
     try {

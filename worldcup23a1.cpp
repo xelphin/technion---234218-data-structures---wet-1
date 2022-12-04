@@ -39,7 +39,7 @@ StatusType world_cup_t::remove_team(int teamId)
         return StatusType::INVALID_INPUT;
     }
 	try {
-        Team* team = &(*(teams_AVL.get_content(teamId))); // O(log(k))
+        Team* team = teams_AVL.get_content(teamId).get(); // O(log(k))
         if (team != nullptr) {
             if (team->get_total_players() > 0)
                 return StatusType::FAILURE;
