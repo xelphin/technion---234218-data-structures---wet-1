@@ -52,6 +52,7 @@ public:
     AVL_tree<T>::Node* find(const T& item);
     AVL_tree<T>::Node* find_id(int id);
     AVL_tree<T>::Node* find_rightmost(AVL_tree<T>::Node* node);
+    AVL_tree<T>::Node* find_leftmost(AVL_tree<T>::Node* node);
     T get_content(int id);
     T get_biggest_in_tree();
 
@@ -147,6 +148,7 @@ private:
     void LR_roll();
     void RR_roll();
     void RL_roll();
+    void post_roll_descendants_update();
 };
 
 
@@ -286,6 +288,47 @@ typename AVL_tree<T>::Node *AVL_tree<T>::find(const T& item) {
     }
 }
 
+template<class T>
+typename AVL_tree<T>::Node *AVL_tree<T>::find_rightmost(AVL_tree<T>::Node* node) {
+    if (node == nullptr){
+        return nullptr;
+    }
+//    return node->rightmost_descendant;
+    Node* current = node->right;
+    if (current == nullptr){ //no nodes to the right of this node
+        return nullptr;
+    }
+
+    while(true){ //while true loop ok because in every case we either return or go down tree.
+        if (current->right != nullptr){
+            current = current->right;
+        }
+        else{
+            return current; //returns when there is no right child
+        }
+    }
+}
+
+template<class T>
+typename AVL_tree<T>::Node *AVL_tree<T>::find_leftmost(AVL_tree<T>::Node* node) {
+    if (node == nullptr){
+        return nullptr;
+    }
+//    return node->leftmost_descendant;
+    Node* current = node->left;
+    if (current == nullptr){ //no nodes to the left of this node
+        return nullptr;
+    }
+
+    while(true){ //while true loop ok because in every case we either return or go down tree.
+        if (current->left != nullptr){
+            current = current->left;
+        }
+        else{
+            return current; //returns when there is no left child
+        }
+    }
+}
 
 template<class T>
 bool AVL_tree<T>::remove(int id) {
@@ -303,6 +346,7 @@ bool AVL_tree<T>::remove(int id) {
 
 template<class T>
 bool AVL_tree<T>::remove_internal(AVL_tree<T>::Node* node) {
+    //needs to be O(log(n)), where n is either players or teams in system, depending on calling function.
     AVL_tree<T>::Node* next_unbalanced_node = nullptr;
     AVL_tree<T>::Node* replacement = nullptr;
     // updates parent and children before deletion
@@ -322,6 +366,32 @@ bool AVL_tree<T>::remove_internal(AVL_tree<T>::Node* node) {
     else { // 2 children
         replacement = find_next_in_order(node->right); // replacement does not have a left child this way.
 
+        if (replacement == nullptr){
+            throw std::invalid_argument("next in order activated on nullptr");
+        }
+
+        //update replacement to point to right places
+
+//        {
+//            //TODO: this code only causes valgrind when descendants are not updated recursively.
+//            replacement->rightmost_descendant = node->rightmost_descendant;
+//            replacement->leftmost_descendant = node->leftmost_descendant;
+//        }
+//
+//        {
+//            //TODO: this code causes errors even when all the descendants are updated recursively.
+//        //update descendants to point to replacement if needed
+//        if (node->leftmost_descendant->straight_line_ancestor == node){
+//            node->leftmost_descendant->straight_line_ancestor = replacement;
+////            replacement->straight_line_ancestor = node->rightmost_descendant->straight_line_ancestor;
+//        }
+//        if (node->rightmost_descendant->straight_line_ancestor == node){
+//            node->rightmost_descendant->straight_line_ancestor = replacement;
+////            replacement->straight_line_ancestor = node->leftmost_descendant->straight_line_ancestor;
+//        }
+//        }
+
+
         if (replacement != node->right){
             next_unbalanced_node = replacement->parent;
             replacement->update_parent(replacement->right); // update parent should work even on nullptr
@@ -332,10 +402,29 @@ bool AVL_tree<T>::remove_internal(AVL_tree<T>::Node* node) {
         replace_nodes(node, replacement);
     }
 
+    // found next unbalanced, replaced if necessary.
     if (next_unbalanced_node != nullptr) //if not removed root and now empty tree
     {
         climb_up_and_rebalance_tree(next_unbalanced_node);
     }
+
+    //    //TODO: this code only causes valgrind when descendants are not updated recursively.
+    // after moving and rolling and everything, update the descendants of the replacement and all the chain leading to it. including itself.
+    if (replacement != nullptr ){
+        climb_up_and_rebalance_tree(find_leftmost(replacement));
+        climb_up_and_rebalance_tree(find_rightmost(replacement));
+    }
+
+//    //TODO: this code only causes valgrind when descendants are not updated recursively.
+//    if (replacement != nullptr){
+//        //update descendants for get_closest_player support:
+//        if (replacement->left){
+//            climb_up_and_rebalance_tree(replacement->left->leftmost_descendant);
+//        }
+//        if (replacement->right){
+//            climb_up_and_rebalance_tree(replacement->right->rightmost_descendant);
+//        }
+//    }
 
     delete node;
     this->amount--;
@@ -370,27 +459,6 @@ typename AVL_tree<T>::Node *AVL_tree<T>::find_id(int id) {
             else{
                 return nullptr;
             }
-        }
-    }
-}
-
-template<class T>
-typename AVL_tree<T>::Node *AVL_tree<T>::find_rightmost(AVL_tree<T>::Node* node) {
-    if (node == nullptr){
-        return nullptr;
-    }
-//    return node->rightmost_descendant;
-    Node* current = node->right;
-    if (current == nullptr){ //no nodes to the right of this node
-        return nullptr;
-    }
-
-    while(true){ //while true loop ok because in every case we either return or go down tree.
-        if (current->right != nullptr){
-            current = current->right;
-        }
-        else{
-            return current; //returns when there is no right child
         }
     }
 }
@@ -780,11 +848,10 @@ void AVL_tree<T>::climb_up_and_rebalance_tree(AVL_tree<T>::Node *leaf) {
     AVL_tree<T>::Node* current = leaf; //not node.parent, so it also updates the height of the node to 0 if it's a leaf.
 
     while (current != nullptr){ //climbs up tree. stops after iterating on root.
+//        current->update_descendants();
         current->set_height();
+
         current->set_balance_factor();
-        //std::cout << "Currently on: " << (*current->content)
-        //<< " -> balance factor " << std::to_string(current->balance_factor)
-        //<< ", height " << std::to_string(current->height)<< std::endl;
         if (abs(current->balance_factor) == UNBALANCED){
             current->choose_roll(); //because roll switches parent and child, we will still get to the new parent.
         }
@@ -856,7 +923,7 @@ void AVL_tree<T>::Node::roll_left() {
     original_right->left = this;
     update_parent(original_right);
     set_balance_factor();
-    update_descendants();
+    post_roll_descendants_update();
 }
 
 template<class T>
@@ -869,7 +936,7 @@ void AVL_tree<T>::Node::roll_right() {
     original_left->right = this;
     update_parent(original_left);
     set_balance_factor();
-    update_descendants();
+    post_roll_descendants_update();
 }
 
 template<class T>
@@ -894,6 +961,18 @@ void AVL_tree<T>::Node::RL_roll() {
     roll_left();
 }
 
+template<class T>
+void AVL_tree<T>::Node::post_roll_descendants_update() {
+    //first update children of descendants in case of rolls
+    if (right != nullptr){
+        right->update_descendants();
+    }
+    if (left != nullptr){
+        left->update_descendants();
+    }
+    update_descendants();
+}
+
 
 
 //------------------------------------------"CLOSEST" NODES--------------------------------------//
@@ -902,6 +981,7 @@ void AVL_tree<T>::Node::RL_roll() {
 
 template<class T>
 void AVL_tree<T>::Node::update_descendants() {
+    //TODO: remove this code. its recursive and very bad complexity.
     //first update children of descendants in case of rolls
     if (right != nullptr){
         right->update_descendants();
@@ -910,13 +990,12 @@ void AVL_tree<T>::Node::update_descendants() {
         left->update_descendants();
     }
 
-
     //update descendants
     if (left != nullptr){
         leftmost_descendant = left->leftmost_descendant; // bubble up the best leftmost descendant
-        if (leftmost_descendant->straight_line_ancestor == left){ // bubble up the ancestor and update the best descendant accordingly
-            leftmost_descendant->straight_line_ancestor = this; //update descendant to point at self because self is now above prev ancestor
-        }
+        leftmost_descendant->straight_line_ancestor = this; //update descendant to point at self because self is now above prev ancestor
+//        if (leftmost_descendant->straight_line_ancestor == left){ // bubble up the ancestor and update the best descendant accordingly
+//        }
     }
     else
     {
@@ -925,10 +1004,11 @@ void AVL_tree<T>::Node::update_descendants() {
 
     if (right != nullptr){
         rightmost_descendant = right->rightmost_descendant;
-        if (rightmost_descendant->straight_line_ancestor == right){
-            //update descendant to point at self because self is now above prev ancestor
-            rightmost_descendant->straight_line_ancestor = this;
-        }
+        rightmost_descendant->straight_line_ancestor = this;
+
+//        if (rightmost_descendant->straight_line_ancestor == right){
+//            //update descendant to point at self because self is now above prev ancestor
+//        }
     }
     else
     {
