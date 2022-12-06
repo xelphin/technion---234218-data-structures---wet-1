@@ -379,12 +379,28 @@ StatusType world_cup_t::get_all_players(int teamId, int *const output)
     //inorder traversal with the right functor fills the target array with IDs of the players inside the tree.
     if (teamId < 0) {
         arr_size = all_players_score_AVL.get_amount();
+        if (arr_size == 0){
+            return StatusType::FAILURE;
+        }
         all_players_score_AVL.in_order_traversal_wrapper(ArrayFillerFunctor_ID<std::shared_ptr<Player>>(output, arr_size));
     }
     else{ //team id > 0. not >= 0.
         std::shared_ptr<Team> team = teams_AVL.get_content(teamId);
-        arr_size = team->get_total_players();
-        team->get_AVL_tree_score()->in_order_traversal_wrapper(ArrayFillerFunctor_ID<std::shared_ptr<Player>>(output, arr_size));
+        if (team) {
+            arr_size = team->get_total_players();
+            if (team->get_total_players() > 0)
+            {
+                team->get_AVL_tree_score()->in_order_traversal_wrapper(
+                        ArrayFillerFunctor_ID<std::shared_ptr<Player>>(output, arr_size));
+            }
+            else{
+                return StatusType::FAILURE;
+            }
+
+        }
+        else{
+            return StatusType::FAILURE;
+        }
     }
 
     return StatusType::SUCCESS;
@@ -405,7 +421,7 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
     if (player == nullptr){
         return StatusType::FAILURE;
     }
-    int closest_id = player->get_global_score_node()->get_closest_node_content()->get_id();
+    int closest_id = 0; //player->get_global_score_node()->get_closest_node_content()->get_id(); //TODO
     return closest_id;
 }
 

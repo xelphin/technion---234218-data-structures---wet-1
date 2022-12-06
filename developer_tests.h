@@ -136,6 +136,7 @@ bool closest_player_test();
 bool nodeList_Teams_Basics();
 bool avl_Add_To_List();
 bool worldCup_Knockout_Winner();
+bool omeramir_tests_line451();
 
 
 #endif

@@ -13,11 +13,7 @@
 #include "worldcup23a1.h"
 #include <string>
 #include <iostream>
-
-// OUR TESTS !!!!
 #include "developer_tests.h"
-//#include "testnode.h"
-// erase later
 
 using namespace std;
 
@@ -25,116 +21,82 @@ void print(string cmd, StatusType res);
 void print(string cmd, output_t<int> res);
 void query_get_all_players(string cmd, world_cup_t *obj, int teamID);
 
-int main()
-{
-//    world_cup_t worldCup;
-//    worldCup.add_team(1,0);
-//    Team team1(0,0);
-//    team1.add_player()
-
-//    Tree<shared_ptr<Team>> tree(true);
-//    shared_ptr<Team> b(new Team(0,0));
-//    tree.add(b);
-
-//    Tree<shared_ptr<int>>::test_node2 c(b);
-
-//    std::shared_ptr<int> team(new int(0));
-//    tree.add(team);
-//    AVL_tree_copy<shared_ptr<int>>::Node* a(nullptr);
-//    AVL_tree_copy<shared_ptr<int>> tree(false);
-//    int a = 0;
-//    shared_ptr<int> b(new int(2));
-//    AVL_tree_copy<shared_ptr<int>>::NodeCopy c(b);
-
-//    shared_ptr<Team> b(new Team(0,0));
-//    AVL_tree<shared_ptr<Team>>::Node c(b);
-
-//    for (int i = 0; i < 1000; ++i) {
-//        AVL_tree<shared_ptr<Team>> tree(false);
-//        shared_ptr<Team> team(new Team(1,0));
-//        tree.add(team);
+int main(){
+    run_all_tests();
+    return 0;
+}
+//
+//int main()
+//{
+//    cin >> std::boolalpha;
+//
+//    int d1, d2, d3, d4, d5;
+//    bool b1;
+//
+//    // Init
+//	world_cup_t *obj = new world_cup_t();
+//
+//    // Execute all commands in file
+//	string op;
+//	while (cin >> op)
+//    {
+//        if (!op.compare("add_team")) {
+//            cin >> d1 >> d2;
+//            print(op, obj->add_team(d1, d2));
+//        } else if (!op.compare("remove_team")) {
+//            cin >> d1;
+//            print(op, obj->remove_team(d1));
+//        } else if (!op.compare("add_player")) {
+//            cin >> d1 >> d2 >> d3 >> d4 >> d5 >> b1;
+//            print(op, obj->add_player(d1, d2, d3, d4, d5, b1));
+//        } else if (!op.compare("remove_player")) {
+//            cin >> d1;
+//            print(op, obj->remove_player(d1));
+//        } else if (!op.compare("update_player_stats")) {
+//            cin >> d1 >> d2 >> d3 >> d4;
+//            print(op, obj->update_player_stats(d1, d2, d3, d4));
+//        } else if (!op.compare("play_match")) {
+//            cin >> d1 >> d2;
+//            print(op, obj->play_match(d1, d2));
+//        } else if (!op.compare("get_num_played_games")) {
+//            cin >> d1;
+//            print(op, obj->get_num_played_games(d1));
+//        } else if (!op.compare("get_team_points")) {
+//            cin >> d1;
+//            print(op, obj->get_team_points(d1));
+//        } else if (!op.compare("unite_teams")) {
+//            cin >> d1 >> d2 >> d3;
+//            print(op, obj->unite_teams(d1, d2, d3));
+//        } else if (!op.compare("get_top_scorer")) {
+//            cin >> d1;
+//            print(op, obj->get_top_scorer(d1));
+//        } else if (!op.compare("get_all_players_count")) {
+//            cin >> d1;
+//            print(op, obj->get_all_players_count(d1));
+//        } else if (!op.compare("get_all_players")) {
+//            cin >> d1;
+//            query_get_all_players(op, obj, d1);
+//        } else if (!op.compare("get_closest_player")) {
+//            cin >> d1 >> d2;
+//            print(op, obj->get_closest_player(d1, d2));
+//        } else if (!op.compare("knockout_winner")) {
+//            cin >> d1 >> d2;
+//            print(op, obj->knockout_winner(d1, d2));
+//        } else {
+//            cout << "Unknown command: " << op << endl;
+//            return -1;
+//        }
+//        // Verify no faults
+//        if (cin.fail()){
+//            cout << "Invalid input format" << endl;
+//            return -1;
+//        }
 //    }
 //
-////    tree.add(b);
-
-
-
-
-
-    // OUR TESTS (erase this code later)
-    run_all_tests();
-    // ---
-    /*
-    cin >> std::boolalpha;
-	
-    int d1, d2, d3, d4, d5;
-    bool b1;
-_
-    // Init
-	world_cup_t *obj = new world_cup_t();
-	
-    // Execute all commands in file
-	string op;
-	while (cin >> op)
-    {
-        if (!op.compare("add_team")) {
-            cin >> d1 >> d2;
-            print(op, obj->add_team(d1, d2));
-        } else if (!op.compare("remove_team")) {
-            cin >> d1;
-            print(op, obj->remove_team(d1));
-        } else if (!op.compare("add_player")) {
-            cin >> d1 >> d2 >> d3 >> d4 >> d5 >> b1;
-            print(op, obj->add_player(d1, d2, d3, d4, d5, b1));
-        } else if (!op.compare("remove_player")) {
-            cin >> d1;
-            print(op, obj->remove_player(d1));
-        } else if (!op.compare("update_player_stats")) {
-            cin >> d1 >> d2 >> d3 >> d4;
-            print(op, obj->update_player_stats(d1, d2, d3, d4));
-        } else if (!op.compare("play_match")) {
-            cin >> d1 >> d2;
-            print(op, obj->play_match(d1, d2));
-        } else if (!op.compare("get_num_played_games")) {
-            cin >> d1;
-            print(op, obj->get_num_played_games(d1));
-        } else if (!op.compare("get_team_points")) {
-            cin >> d1;
-            print(op, obj->get_team_points(d1));
-        } else if (!op.compare("unite_teams")) {
-            cin >> d1 >> d2 >> d3;
-            print(op, obj->unite_teams(d1, d2, d3));
-        } else if (!op.compare("get_top_scorer")) {
-            cin >> d1;
-            print(op, obj->get_top_scorer(d1));
-        } else if (!op.compare("get_all_players_count")) {
-            cin >> d1;
-            print(op, obj->get_all_players_count(d1));
-        } else if (!op.compare("get_all_players")) {
-            cin >> d1;
-            query_get_all_players(op, obj, d1);
-        } else if (!op.compare("get_closest_player")) {
-            cin >> d1 >> d2;
-            print(op, obj->get_closest_player(d1, d2));
-        } else if (!op.compare("knockout_winner")) {
-            cin >> d1 >> d2;
-            print(op, obj->knockout_winner(d1, d2));
-        } else {
-            cout << "Unknown command: " << op << endl;
-            return -1;
-        }
-        // Verify no faults
-        if (cin.fail()){
-            cout << "Invalid input format" << endl;
-            return -1;
-        }
-    }
-
-    // Quit 
-	delete obj;
-    */
-	return 0;
-}
+//    // Quit
+//	delete obj;
+//	return 0;
+//}
 //
 //// Helpers
 //static const char *StatusTypeStr[] =
@@ -179,4 +141,3 @@ _
 //    }
 //    delete[] out_mem;
 //}
-

@@ -10,6 +10,7 @@ void printSuccess ();
 #define printFail() (std::cout<< test_name <<" FAILED."<<std::endl)
 #define printSuccess() (std::cout<< test_name <<" SUCCESS."<<std::endl)
 #endif
+#include <cassert>
 
 bool run_all_tests() {
     std::string success_string = "ALL (OUR) TESTS SUCCEEDED";
@@ -40,6 +41,7 @@ bool run_all_tests() {
     run_test(nodeList_Teams_Basics, "nodeList_Teams_Basics", success_string, success);
     run_test(avl_Add_To_List, "avl_Add_To_List", success_string, success);
     run_test(worldCup_Knockout_Winner, "worldCup_Knockout_Winner", success_string, success);
+    run_test(omeramir_tests_line451, "omeramir_tests_line451", success_string, success);
 
     std::cout << success_string << std::endl;
     return success;
@@ -921,4 +923,147 @@ bool worldCup_Knockout_Winner()
     world_cup_t worldCup;
 
     return (StatusType::FAILURE == (worldCup.knockout_winner(2,3)).status());;
+}
+
+bool omeramir_tests_line451(){
+    std::cout << ("add teams and players - segel test - remove at random stages") << std::endl;
+    {
+        world_cup_t *obj = new world_cup_t();
+        StatusType res = obj->add_team(1, 10000);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_team(2, 20000);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_team(3, 30000);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_team(4, 40000);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1001, 1, 10, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1002, 1, 10, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1003, 1, 10, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1004, 1, 10, 0, 2, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1005, 1, 10, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1006, 1, 10, 4, 3, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1007, 1, 10, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->remove_player(1007);
+        assert(res == StatusType::SUCCESS);
+        res = obj->remove_player(1002);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1008, 1, 10, 0, 0, true);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1009, 1, 10, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1010, 1, 10, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1011, 1, 10, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->remove_player(1001);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1012, 1, 10, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+
+        res = obj->add_player(2001, 2, 20, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(2002, 2, 20, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(2003, 2, 20, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(2004, 2, 20, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(2005, 2, 20, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->remove_player(1011);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(2006, 2, 20, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(2007, 2, 20, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(2008, 2, 20, 6, 4, true);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(2009, 2, 20, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->remove_player(2001);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(2010, 2, 0, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(2011, 2, 20, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->remove_player(2010);
+        assert(res == StatusType::SUCCESS);
+
+        res = obj->add_player(3001, 3, 30, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(3002, 3, 30, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(3003, 3, 30, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(3004, 3, 30, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(3005, 3, 30, 2, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(3006, 3, 30, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(3007, 3, 30, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(3008, 3, 30, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(3009, 3, 30, 0, 2, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(3010, 3, 30, 0, 0, true);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(3011, 3, 30, 0, 0, true);
+        assert(res == StatusType::SUCCESS);
+        res = obj->remove_player(3011);
+        assert(res == StatusType::SUCCESS);
+        res = obj->remove_player(3008);
+        assert(res == StatusType::SUCCESS);
+        res = obj->remove_player(3002);
+        assert(res == StatusType::SUCCESS);
+        res = obj->remove_player(3010);
+        assert(res == StatusType::SUCCESS);
+        res = obj->remove_player(3009);
+        assert(res == StatusType::SUCCESS);
+        res = obj->remove_player(3005);
+        assert(res == StatusType::SUCCESS);
+        res = obj->remove_player(3004);
+        assert(res == StatusType::SUCCESS);
+        res = obj->remove_player(3006);
+        assert(res == StatusType::SUCCESS);
+        res = obj->remove_player(3007);
+        assert(res == StatusType::SUCCESS);
+        res = obj->remove_player(3001);
+        assert(res == StatusType::SUCCESS);
+        res = obj->remove_player(3003);
+        assert(res == StatusType::SUCCESS);
+
+        res = obj->add_player(4001, 4, 2, 1, 2, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(4002, 4, 2, 2, 2, false);
+        assert(res == StatusType::SUCCESS);
+
+        delete obj;
+    }
+
+    std::cout <<("get_all_players failure") << std::endl;
+    {
+        world_cup_t *obj = new world_cup_t();
+        int players[4] = {};
+
+        StatusType res = obj->get_all_players(1, players);
+        assert(res == StatusType::FAILURE);
+        res = obj->get_all_players(-1, players);
+        assert(res == StatusType::FAILURE);
+        res = obj->add_team(1, 3);
+        assert(res == StatusType::SUCCESS);
+        res = obj->get_all_players(1, players);
+        assert(res == StatusType::FAILURE);
+        delete obj;
+    }
+    return true;
 }
