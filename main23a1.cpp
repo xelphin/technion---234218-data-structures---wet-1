@@ -16,6 +16,7 @@
 
 // OUR TESTS !!!!
 #include "developer_tests.h"
+//#include "testnode.h"
 // erase later
 
 using namespace std;
@@ -31,16 +32,34 @@ int main()
 //    Team team1(0,0);
 //    team1.add_player()
 
-//    AVL_tree<shared_ptr<Team>> tree(false);
-//    std::shared_ptr<Team> team(new Team(1, 0));
+//    Tree<shared_ptr<Team>> tree(true);
+//    shared_ptr<Team> b(new Team(0,0));
+//    tree.add(b);
+
+//    Tree<shared_ptr<int>>::test_node2 c(b);
+
+//    std::shared_ptr<int> team(new int(0));
 //    tree.add(team);
-//    AVL_tree<shared_ptr<int>>::Node* a(nullptr);
-//    AVL_tree<shared_ptr<int>> tree(false);
+//    AVL_tree_copy<shared_ptr<int>>::Node* a(nullptr);
+//    AVL_tree_copy<shared_ptr<int>> tree(false);
 //    int a = 0;
 //    shared_ptr<int> b(new int(2));
-//    AVL_tree<shared_ptr<int>>::Node c(b);
+//    AVL_tree_copy<shared_ptr<int>>::NodeCopy c(b);
 
-//    tree.add(b);
+//    shared_ptr<Team> b(new Team(0,0));
+//    AVL_tree<shared_ptr<Team>>::Node c(b);
+
+//    for (int i = 0; i < 1000; ++i) {
+//        AVL_tree<shared_ptr<Team>> tree(false);
+//        shared_ptr<Team> team(new Team(1,0));
+//        tree.add(team);
+//    }
+//
+////    tree.add(b);
+
+
+
+
 
     // OUR TESTS (erase this code later)
     run_all_tests();
@@ -160,3 +179,4 @@ _
 //    }
 //    delete[] out_mem;
 //}
+

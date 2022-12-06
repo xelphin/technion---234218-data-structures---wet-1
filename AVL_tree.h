@@ -154,7 +154,12 @@ private:
 //---------------------------PUBLIC FUNCTION DEFINITIONS------------------------------//
 
 template<class T>
-AVL_tree<T>::AVL_tree(bool sort_by_score) : sort_by_score(sort_by_score), root(nullptr), amount(0){
+AVL_tree<T>::AVL_tree(bool sort_by_score) :
+sort_by_score(sort_by_score),
+root(nullptr),
+amount(0)
+{
+
 }
 
 template<class T>
@@ -191,7 +196,6 @@ typename AVL_tree<T>::Node* AVL_tree<T>::add(T item) {
     //the object is deleted.
     //
 
-    AVL_tree<T>::Node attempt(item);
 //TODO: debug segfault at this line.
     AVL_tree<T>::Node* leaf(new Node(item));
     try {
