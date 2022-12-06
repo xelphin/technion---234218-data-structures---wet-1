@@ -205,7 +205,7 @@ typename AVL_tree<T>::Node* AVL_tree<T>::add(T item) {
             root = leaf;
             leaf->tree = this;
             this->amount++;
-//            leaf->update_descendants();
+            leaf->update_descendants();
             return leaf;
         } 
 
@@ -820,7 +820,7 @@ void AVL_tree<T>::climb_up_and_rebalance_tree(AVL_tree<T>::Node *leaf) {
         }
         current->set_height();
 
-//        current->update_descendants();
+        current->update_descendants();
         current = current->parent;
     }
     
@@ -887,7 +887,7 @@ void AVL_tree<T>::Node::roll_left() {
     original_right->left = this;
     update_parent(original_right);
     set_balance_factor();
-//    update_descendants();
+    update_descendants();
 }
 
 template<class T>
