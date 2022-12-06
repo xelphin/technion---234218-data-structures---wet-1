@@ -421,7 +421,7 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
     if (player == nullptr){
         return StatusType::FAILURE;
     }
-    int closest_id = 0; //player->get_global_score_node()->get_closest_node_content()->get_id(); //TODO
+    int closest_id = player->get_global_score_node()->get_closest_node_content()->get_id(); //TODO
     return closest_id;
 }
 
