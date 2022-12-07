@@ -450,7 +450,26 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
     }
     // TODO: Get closest of node
     // NodeList::Node* node_in_list = player->get_playerScoreListNode();
-    // return sorted_score_List->get_closest(node_in_list)
+    // return sorted_score_List->get_closest(node_in_list);
+
+    try {
+        // FIND PLAYER
+        std::shared_ptr<Player> player = all_players_AVL.get_content(playerId); // O(log(n))
+        if (player != nullptr) {
+            // PLAYER FOUND
+            NodeList::Node* node_in_list = player->get_playerScoreListNode();
+            return sorted_score_List.get_closest(node_in_list);
+
+        } else {
+            // PLAYER NOT FOUND
+            return StatusType::FAILURE;
+        }
+
+    } catch (std::bad_alloc const& ) {
+        return StatusType::ALLOCATION_ERROR;
+    }
+
+
 
     return StatusType::FAILURE;
 }
