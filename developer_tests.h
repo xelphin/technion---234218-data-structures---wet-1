@@ -135,6 +135,7 @@ bool closest_player_test();
 
 // Nodelist
 bool nodeList_Add();
+bool nodeList_Remove();
 
 // Knockout
 bool nodeList_Teams_Basics();

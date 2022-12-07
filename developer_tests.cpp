@@ -42,6 +42,7 @@ bool run_all_tests() {
     run_test(avl_Add_To_List, "avl_Add_To_List", success_string, success);
     run_test(worldCup_Knockout_Winner, "worldCup_Knockout_Winner", success_string, success);
     run_test(nodeList_Add, "nodeList_Add", success_string, success);
+    run_test(nodeList_Remove, "nodeList_Remove", success_string, success);
 
     std::cout << success_string << std::endl;
     return success;
@@ -881,6 +882,41 @@ bool nodeList_Add()
 
     std::cout << list.debug_print() << std::endl;
     return tests == 1;
+}
+
+bool nodeList_Remove()
+{
+    int tests = 0;
+    NodeList_Teams list;
+    NodeList_Teams::Node* p1 = list.add(nullptr, 1,20,0,0);
+    NodeList_Teams::Node* p2 =list.add(p1, 2,25,0,0);
+    NodeList_Teams::Node* p3 =list.add(p1, 3,18,0,0);
+    NodeList_Teams::Node* p4 =list.add(p2, 4,27,0,0);
+    NodeList_Teams::Node* p5 = list.add(p3, 5,19,0,0);
+    NodeList_Teams::Node* p6 = list.add(p4, 6,30,0,0);
+    tests += ("3 5 1 2 4 6 " == list.debug_print() );
+    // Start removing
+    list.remove(p5);
+    tests += ("3 1 2 4 6 " == list.debug_print() );
+    list.remove(p3);
+    tests += ("1 2 4 6 " == list.debug_print() );
+    list.remove(p6);
+    tests += ("1 2 4 " == list.debug_print() );
+
+    NodeList_Teams::Node* p3_new = list.add(p1, 3,10,0,0);
+
+    tests += ("3 1 2 4 " == list.debug_print() );
+    list.remove(p4);
+    tests += ("3 1 2 " == list.debug_print() );
+    list.remove(p3_new);
+    tests += ("1 2 " == list.debug_print() );
+    // std::cout << "Final: " << list.debug_print() << std::endl;
+    list.remove(p2);
+    tests += ("1 " == list.debug_print() );
+    list.remove(p1);
+    tests += ("" == list.debug_print() );
+
+    return tests == 9;
 }
 
 bool nodeList_Teams_Basics()

@@ -62,6 +62,7 @@ NodeList_Teams::Node* NodeList_Teams::add(Node* nodeNextTo, int id, int total_po
             prevNode->next = newNode;
         } else {
             std::cout << "Made " << (id) << " start of list" << std::endl;
+
             start = newNode;
         }
         newNode->prev = prevNode;
@@ -81,6 +82,58 @@ NodeList_Teams::Node* NodeList_Teams::add(Node* nodeNextTo, int id, int total_po
     }
     std::cout << "list: " << (this->debug_print()) << std::endl;
     return newNode;
+}
+
+void NodeList_Teams::remove(Node* node)
+{
+    if (node == nullptr)
+        return;
+    std::cout << "Removing: " << (node->id) << std::endl;
+    NodeList_Teams::Node* prevNode = node->prev;
+    NodeList_Teams::Node* nextNode = node->next;
+    // ONE NODE
+    if (prevNode == nullptr && nextNode == nullptr) {
+        if (start != end && start != nullptr) {
+            std::cout << "ERROR!" << std::endl;
+            return;
+        }
+        delete node;
+        start = nullptr;
+        end = nullptr;
+        std::cout << "List after removal: " << this->debug_print() << std::endl;
+        return;
+    }
+    // node == start
+    if (prevNode == nullptr) {
+        if (start != node) {
+            std::cout << "ERROR!" << std::endl;
+            return;
+        }
+        start = nextNode;
+        if (start == nullptr)
+            std::cout << "ERROR!" << std::endl;
+        nextNode->prev = nullptr;
+        delete node;
+        std::cout << "List after removal: " << this->debug_print() << std::endl;
+        return;
+    }
+    // node == end
+    if (nextNode == nullptr) {
+        if (end != node) {
+            std::cout << "ERROR2!" << std::endl;
+            return;
+        }
+        end = prevNode;
+        prevNode->next = nullptr;
+        delete node;
+        std::cout << "List after removal: " << this->debug_print() << std::endl;
+        return;
+    }
+    // node is in middle
+    prevNode->next = nextNode;
+    nextNode->prev = prevNode;
+    delete node;
+    std::cout << "List after removal: " << this->debug_print() << std::endl;
 }
 
 int NodeList_Teams::knockout() // O(r)

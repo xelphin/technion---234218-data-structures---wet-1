@@ -24,6 +24,7 @@ public:
     // Add (inorder) the valid teams
     void add(int id, int total_points, int total_goals, int total_cards);
     NodeList_Teams::Node* add(Node* nodeNextTo, int id, int total_points, int total_goals, int total_cards);
+    void remove(Node* node);
     int knockout();
     std::string debug_print();
 
