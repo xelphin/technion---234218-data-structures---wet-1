@@ -29,7 +29,7 @@ class world_cup_t {
 private:
     // Here you may add anything you want
     int amount_players;
-    Team global_top_scorer_team;
+    Team global_top_scorer_team; // TODO: edit
 
 	AVL_tree<std::shared_ptr<Player>> all_players_AVL;
     AVL_tree<std::shared_ptr<Player>> all_players_score_AVL;

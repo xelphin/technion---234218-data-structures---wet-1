@@ -1,5 +1,7 @@
 #include "worldcup23a1.h"
 
+// TODO: valid teams make sure to add remove
+// TODO: get amount of games played check (especially in update)
 
 world_cup_t::world_cup_t()
 : amount_players(0), global_top_scorer_team(0,0), all_players_AVL(SORT_BY_ID), all_players_score_AVL(SORT_BY_SCORE),
@@ -74,6 +76,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
         // TEAM exists and PLAYER doesn't exist
         // TRY to Create PLAYER and ADD to TEAM and AVLs
         try {
+            //
             std::shared_ptr<Player> player(new Player(playerId, teamId, gamesPlayed, goals, cards, goalKeeper));
             player->set_team(team);
             team->add_player(player);
@@ -84,7 +87,10 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
 
             player->set_team(team);
             all_players_AVL.add(player);
-            player->set_global_score_node(all_players_score_AVL.add(player));
+//            if(player->get_team()->get_isValid()){ // TODO
+//                valid_teams_AVL.add((player->get_team()));
+//            }
+            player->set_global_score_node(all_players_score_AVL.add(player)); // TODO: check over
         } catch (std::bad_alloc const&) { // EXCEPTION: Bad Alloc
 //            all_players_AVL.remove(playerId); //no need to free memory since we are using a shared pointer and tree d'tor.
 //            all_players_score_AVL.remove_by_item(player);
@@ -124,6 +130,10 @@ StatusType world_cup_t::remove_player(int playerId)
                 playerTeam->update_cardsReceived(-(player->get_cards()));
                 playerTeam->update_scoredGoals(-(player->get_score()));
                 playerTeam->update_removeAGoalKeeper(player->get_isGoalKeeper());
+                // REMOVE team from valid teams if necessary
+                if(!(player->get_team()->get_isValid())){
+                    valid_teams_AVL.remove((player->get_team()->get_id()));
+                }
             } else {
                 success1 = false;
             }
@@ -159,20 +169,18 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
         // FIND PLAYER
         std::shared_ptr<Player> player = all_players_AVL.get_content(playerId); // O(log(players))
         if (player != nullptr) {
-            // PLAYER FOUND
-            Team* playerTeam = (*player).get_team();
-            if (playerTeam == nullptr)
+            //add_player(int playerId, int teamId, int gamesPlayed,
+            //        int goals, int cards, bool goalKeeper)
+            if (player->get_team() == nullptr)
                 return StatusType::FAILURE;
-            // UPDATE PLAYER
-            player->update_gamesPlayed(gamesPlayed);
-            player->update_scoredGoals(scoredGoals);
-            player->update_cardsReceived(cardsReceived);
-            // UPDATE TEAM
-            playerTeam->update_cardsReceived(cardsReceived);
-            playerTeam->update_scoredGoals(scoredGoals);
-            playerTeam->compare_to_top_scorer(player);
-            global_top_scorer_team.compare_to_top_scorer(player);
-            // TODO: Check player/team really gets updated (not just from looking at prints)
+            int teamId = player->get_id();
+            int gamesPlayedNew = player->get_gamesPlayed_withoutTeam() + gamesPlayed; // TODO: possible needs to be negative something
+            int goals = player->get_score() + scoredGoals;
+            int cards = player->get_cards() + cardsReceived;
+            bool goalKeeper = player->get_isGoalKeeper();
+            this->remove_player(playerId);
+            this->add_player(playerId, teamId, gamesPlayedNew, goals, cards, goalKeeper);
+
         } else {
             return StatusType::FAILURE;
         }
@@ -321,32 +329,8 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
 
 output_t<int> world_cup_t::get_top_scorer(int teamId)
 {
-    //needs to be O(log(teams)), does not depend on number of players.
-    // needs to be O(1) if teamId<0.
-    if (teamId == 0){
-        return StatusType::INVALID_INPUT;
-    }
-    if (teamId < 0) // get from global tree
-    {
-        if (global_top_scorer_team.get_top_scorer())
-        {
-            return global_top_scorer_team.get_top_scorer()->get_id();
-        }
-        else{ //no players
-            return StatusType::FAILURE;
-        }
-    }
-    else{ // teamId > 0, not >= 0.
-        // multiple gets_team don't matter because every one is O(log(n))
-        if (teams_AVL.get_content(teamId) && //team exists
-            (teams_AVL.get_content(teamId)->get_top_scorer())) //players in the team
-        {
-                return teams_AVL.get_content(teamId)->get_top_scorer()->get_id();
-        }
-        else{
-            return StatusType::FAILURE; // no team or no players in team
-        }
-    }
+    // TODO
+    return StatusType::FAILURE;
 }
 
 output_t<int> world_cup_t::get_all_players_count(int teamId)
@@ -370,7 +354,6 @@ output_t<int> world_cup_t::get_all_players_count(int teamId)
 
 StatusType world_cup_t::get_all_players(int teamId, int *const output)
 {
-
     // CHECK INVALID - O(1)
     if (teamId == 0 || output == nullptr)
         return StatusType::INVALID_INPUT;
@@ -383,6 +366,8 @@ StatusType world_cup_t::get_all_players(int teamId, int *const output)
     }
     else{ //team id > 0. not >= 0.
         std::shared_ptr<Team> team = teams_AVL.get_content(teamId);
+        if (team == nullptr)
+            return StatusType::FAILURE;
         arr_size = team->get_total_players();
         team->get_AVL_tree_score()->in_order_traversal_wrapper(ArrayFillerFunctor_ID<std::shared_ptr<Player>>(output, arr_size));
     }

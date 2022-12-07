@@ -20,6 +20,11 @@ int Player::get_gamesPlayed() const
     return gamesPlayed;
 }
 
+int Player::get_gamesPlayed_withoutTeam() const
+{
+    return gamesPlayed;
+}
+
 int Player::get_cards() const
 {
     return Player::cards;

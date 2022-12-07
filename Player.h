@@ -16,6 +16,7 @@ public:
     int get_score() const;
     int get_id() const;
     int get_gamesPlayed() const;
+    int get_gamesPlayed_withoutTeam() const;
     int get_cards() const;
     bool get_isGoalKeeper() const;
     Team* get_team() const;
