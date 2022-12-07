@@ -2,23 +2,23 @@
 // Created by Administrator on 04/12/2022.
 //
 
-#include "NodeList_Teams.h"
+#include "NodeList.h"
 
-NodeList_Teams::NodeList_Teams() : start(nullptr), end(nullptr)
+NodeList::NodeList() : start(nullptr), end(nullptr)
 {}
 
-NodeList_Teams::~NodeList_Teams() {
-    NodeList_Teams::Node* currentNode = this->start; // initialize current node to start
+NodeList::~NodeList() {
+    NodeList::Node* currentNode = this->start; // initialize current node to start
     while (currentNode)
     {
-        NodeList_Teams::Node* nextNode = currentNode->next;
+        NodeList::Node* nextNode = currentNode->next;
         std::cout << "deleting: " << (currentNode->id) << std::endl;
         delete currentNode;
         currentNode = nextNode;
     }
 }
 
-void NodeList_Teams::add(int id, int total_points, int total_goals, int total_cards)
+void NodeList::add(int id, int total_points, int total_goals, int total_cards)
 {
     // O(1)
     Node* newNode = new Node(id, total_points, total_goals, total_cards);
@@ -36,7 +36,7 @@ void NodeList_Teams::add(int id, int total_points, int total_goals, int total_ca
     }
 }
 
-NodeList_Teams::Node* NodeList_Teams::add(Node* nodeNextTo, int id, int total_points, int total_goals, int total_cards)
+NodeList::Node* NodeList::add(Node* nodeNextTo, int id, int total_points, int total_goals, int total_cards)
 {
     Node* newNode = new Node(id, total_points, total_goals, total_cards);
     // Empty list
@@ -57,7 +57,7 @@ NodeList_Teams::Node* NodeList_Teams::add(Node* nodeNextTo, int id, int total_po
     int winnerId = get_winnerId(*nodeNextTo, *newNode);
     if (winnerId == nodeNextTo->get_id()) { // prevNode < newNode < nodeNextTo
         std::cout << "Entering " << (id) << " before " << (nodeNextTo->get_id()) << std::endl;
-        NodeList_Teams::Node* prevNode = nodeNextTo->prev;
+        NodeList::Node* prevNode = nodeNextTo->prev;
         if (prevNode != nullptr) {
             prevNode->next = newNode;
         } else {
@@ -69,7 +69,7 @@ NodeList_Teams::Node* NodeList_Teams::add(Node* nodeNextTo, int id, int total_po
         newNode->next = nodeNextTo;
         nodeNextTo->prev = newNode;
     } else { // nodeNextTo < newNode < postNode
-        NodeList_Teams::Node* postNode = nodeNextTo->next;
+        NodeList::Node* postNode = nodeNextTo->next;
         if (postNode != nullptr)
             postNode->prev = newNode;
         else {
@@ -84,13 +84,13 @@ NodeList_Teams::Node* NodeList_Teams::add(Node* nodeNextTo, int id, int total_po
     return newNode;
 }
 
-void NodeList_Teams::remove(Node* node)
+void NodeList::remove(Node* node)
 {
     if (node == nullptr)
         return;
     std::cout << "Removing: " << (node->id) << std::endl;
-    NodeList_Teams::Node* prevNode = node->prev;
-    NodeList_Teams::Node* nextNode = node->next;
+    NodeList::Node* prevNode = node->prev;
+    NodeList::Node* nextNode = node->next;
     // ONE NODE
     if (prevNode == nullptr && nextNode == nullptr) {
         if (start != end && start != nullptr) {
@@ -136,7 +136,7 @@ void NodeList_Teams::remove(Node* node)
     std::cout << "List after removal: " << this->debug_print() << std::endl;
 }
 
-int NodeList_Teams::knockout() // O(r)
+int NodeList::knockout() // O(r)
 {
     if (start == nullptr || end == nullptr)
         return -1;
@@ -149,7 +149,7 @@ int NodeList_Teams::knockout() // O(r)
     return 0;
 }
 
-void NodeList_Teams::call_match() // O(current amount of teams playing)
+void NodeList::call_match() // O(current amount of teams playing)
 {
     // empty
     if (start == nullptr || end == nullptr)
@@ -158,10 +158,10 @@ void NodeList_Teams::call_match() // O(current amount of teams playing)
     if (start == end)
         return;
     // Play matches
-    NodeList_Teams::Node* prevNode = this->start;
-    NodeList_Teams::Node* team1 = this->start;
-    NodeList_Teams::Node* team2 = team1->next;
-    NodeList_Teams::Node* nextNode;
+    NodeList::Node* prevNode = this->start;
+    NodeList::Node* team1 = this->start;
+    NodeList::Node* team2 = team1->next;
+    NodeList::Node* nextNode;
     if (team2 !=nullptr)
         nextNode = team2->next;
 
@@ -206,7 +206,7 @@ void NodeList_Teams::call_match() // O(current amount of teams playing)
     std::cout << "list end: " << (this->debug_print()) << std::endl;
 }
 
-int NodeList_Teams::get_winnerId(Node& team1, Node& team2)
+int NodeList::get_winnerId(Node& team1, Node& team2)
 {
     int winnerId = 0;
     if (team1.get_match_points() > team2.get_match_points()) {
@@ -221,29 +221,29 @@ int NodeList_Teams::get_winnerId(Node& team1, Node& team2)
     return winnerId;
 }
 
-std::string NodeList_Teams::debug_print()
+std::string NodeList::debug_print()
 {
     std::string str = "";
-    NodeList_Teams::Node* currentNode = this->start; // initialize current node to start
+    NodeList::Node* currentNode = this->start; // initialize current node to start
     while (currentNode)
     {
-        NodeList_Teams::Node* nextNode = currentNode->next;
+        NodeList::Node* nextNode = currentNode->next;
         str += std::to_string(currentNode->id) + " ";
         currentNode = nextNode;
     }
     return str;
 }
 
-NodeList_Teams::Node::Node(int id, int total_points, int total_goals, int total_cards)
+NodeList::Node::Node(int id, int total_points, int total_goals, int total_cards)
         : next(nullptr), id(id), total_points(total_points), total_goals(total_goals), total_cards(total_cards)
         {}
 
-int NodeList_Teams::Node::get_match_points() const
+int NodeList::Node::get_match_points() const
 {
     return total_points + total_goals - total_cards;
 }
 
-int NodeList_Teams::Node::get_id() const
+int NodeList::Node::get_id() const
 {
     return this->id;
 }

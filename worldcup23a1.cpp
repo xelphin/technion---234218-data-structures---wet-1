@@ -433,7 +433,7 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
         return StatusType::FAILURE;
     }
     try {
-        NodeList_Teams list;
+        NodeList list;
         valid_teams_AVL.add_to_list(list, minTeamId, maxTeamId);
         int winnerId = list.knockout();
         if (winnerId < 1)

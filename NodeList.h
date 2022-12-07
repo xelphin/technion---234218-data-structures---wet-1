@@ -10,36 +10,36 @@
 
 // USED ONLY FOR KNOCKOUT
 
-class NodeList_Teams {
+class NodeList {
 public:
     class Node;
 
-    explicit NodeList_Teams(); // O(1)
+    explicit NodeList(); // O(1)
 
-    ~NodeList_Teams();
+    ~NodeList();
 
-    NodeList_Teams(const NodeList_Teams &) = delete; //cant copy trees
-    NodeList_Teams &operator=(NodeList_Teams &other) = delete;
+    NodeList(const NodeList &) = delete; //cant copy trees
+    NodeList &operator=(NodeList &other) = delete;
 
     // Add (inorder) the valid teams
     void add(int id, int total_points, int total_goals, int total_cards);
-    NodeList_Teams::Node* add(Node* nodeNextTo, int id, int total_points, int total_goals, int total_cards);
+    NodeList::Node* add(Node* nodeNextTo, int id, int total_points, int total_goals, int total_cards);
     void remove(Node* node);
     int knockout();
     std::string debug_print();
 
 private:
-    NodeList_Teams::Node *start;
-    NodeList_Teams::Node *end;
+    NodeList::Node *start;
+    NodeList::Node *end;
 
     void call_match();
     int get_winnerId(Node& team1, Node& team2);
 };
 
-class NodeList_Teams::Node{ // Node => Represents a Teams Stats
+class NodeList::Node{ // Node => Represents a Teams Stats
 public:
-    NodeList_Teams::Node *prev;
-    NodeList_Teams::Node *next;
+    NodeList::Node *prev;
+    NodeList::Node *next;
     int id;
     int total_points;
     int total_goals;
@@ -50,8 +50,8 @@ public:
     int get_match_points() const;
     int get_id() const;
 
-    Node(const NodeList_Teams &) = delete; //cant copy nodes. make new ones.
-    Node &operator=(NodeList_Teams &other) = delete;
+    Node(const NodeList &) = delete; //cant copy nodes. make new ones.
+    Node &operator=(NodeList &other) = delete;
     ~Node() = default;
 
 

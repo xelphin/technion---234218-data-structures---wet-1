@@ -19,7 +19,7 @@
 #include "stdexcept"
 #include "iostream"
 #include "Exception.h"
-#include "NodeList_Teams.h"
+#include "NodeList.h"
 
 #define SORT_BY_SCORE true
 #define SORT_BY_ID false
@@ -68,8 +68,8 @@ public:
     void in_order_traversal_wrapper(F functor); // used to iterate on all the nodes.
 
     // KNOCKOUT function
-    void add_to_list(NodeList_Teams& list, int minId, int maxId);
-    void add_to_list_aux(AVL_tree<T>::Node* root, bool& passedMin, bool& passedMax, NodeList_Teams& list, int minId, int maxId);
+    void add_to_list(NodeList& list, int minId, int maxId);
+    void add_to_list_aux(AVL_tree<T>::Node* root, bool& passedMin, bool& passedMax, NodeList& list, int minId, int maxId);
 
 
     // TESTS AND DEBUGGING FUNCTIONS
@@ -952,7 +952,7 @@ std::string AVL_tree<T>::debugging_printTree_new()
 //------------------------------------------KNOCKOUT FUNCTIONS-----------------//
 
 template<class T>
-void AVL_tree<T>::add_to_list(NodeList_Teams& list, int minId, int maxId)
+void AVL_tree<T>::add_to_list(NodeList& list, int minId, int maxId)
 {
     bool passedMin = false;
     bool passedMax = false;
@@ -960,7 +960,7 @@ void AVL_tree<T>::add_to_list(NodeList_Teams& list, int minId, int maxId)
 }
 
 template<class T>
-void AVL_tree<T>::add_to_list_aux(AVL_tree::Node* node, bool& passedMin, bool& passedMax, NodeList_Teams& list, int minId, int maxId)
+void AVL_tree<T>::add_to_list_aux(AVL_tree::Node* node, bool& passedMin, bool& passedMax, NodeList& list, int minId, int maxId)
 {
     if (node == nullptr)
         return;

@@ -22,19 +22,19 @@ $(O_FILES_DIR)/UnitTests.o : $(TESTS_DIR)/WorldCupTests.cpp
 #	$(GPP) -c $(COMP_FLAG) AVL_tree.cpp -o $@
 
 #nodelist
-$(O_FILES_DIR)/NodeList_Teams.o : NodeList_Teams.cpp NodeList_Teams.h
+$(O_FILES_DIR)/NodeList_Teams.o : NodeList.cpp NodeList.h
 	@mkdir -p $(O_FILES_DIR)
 	$(GPP) -c $(COMP_FLAG) NodeList_Teams.cpp -o $@
 
-$(O_FILES_DIR)/Team.o : Team.cpp Team.h Player.h AVL_tree.h NodeList_Teams.h Exception.h
+$(O_FILES_DIR)/Team.o : Team.cpp Team.h Player.h AVL_tree.h NodeList.h Exception.h
 	@mkdir -p $(O_FILES_DIR)
 	$(GPP) -c $(COMP_FLAG) Team.cpp -o $@
 
-$(O_FILES_DIR)/Player.o : Player.cpp Player.h Team.h AVL_tree.h NodeList_Teams.h Exception.h Team.h
+$(O_FILES_DIR)/Player.o : Player.cpp Player.h Team.h AVL_tree.h NodeList.h Exception.h Team.h
 	@mkdir -p $(O_FILES_DIR)
 	$(GPP) -c $(COMP_FLAG) Player.cpp -o $@
 
-$(O_FILES_DIR)/worldcup23a1.o : worldcup23a1.cpp worldcup23a1.h wet1util.h AVL_tree.h NodeList_Teams.h Exception.h Team.h Player.h
+$(O_FILES_DIR)/worldcup23a1.o : worldcup23a1.cpp worldcup23a1.h wet1util.h AVL_tree.h NodeList.h Exception.h Team.h Player.h
 	@mkdir -p $(O_FILES_DIR)
 	$(GPP) -c $(COMP_FLAG) worldcup23a1.cpp -o $@
 

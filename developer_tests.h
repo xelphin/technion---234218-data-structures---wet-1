@@ -19,7 +19,7 @@
 #include "./Team.h"
 #include "./worldcup23a1.h"
 #include "./wet1util.h"
-#include "./NodeList_Teams.h"
+#include "./NodeList.h"
 
 template<class T>
 class AVL_testing{

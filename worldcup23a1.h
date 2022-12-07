@@ -23,7 +23,7 @@
 #include "AVL_tree.h"
 #include "Player.h"
 #include "Team.h"
-#include "NodeList_Teams.h"
+#include "NodeList.h"
 
 class world_cup_t {
 private:

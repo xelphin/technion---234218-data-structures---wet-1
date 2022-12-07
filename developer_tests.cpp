@@ -872,11 +872,11 @@ bool worldCup_Get_All_Players_Count()
 bool nodeList_Add()
 {
     int tests = 0;
-    NodeList_Teams list;
-    NodeList_Teams::Node* p1 = list.add(nullptr, 1,20,0,0);
-    NodeList_Teams::Node* p2 =list.add(p1, 2,25,0,0);
-    NodeList_Teams::Node* p3 =list.add(p1, 3,18,0,0);
-    NodeList_Teams::Node* p4 =list.add(p2, 4,27,0,0);
+    NodeList list;
+    NodeList::Node* p1 = list.add(nullptr, 1, 20, 0, 0);
+    NodeList::Node* p2 =list.add(p1, 2, 25, 0, 0);
+    NodeList::Node* p3 =list.add(p1, 3, 18, 0, 0);
+    NodeList::Node* p4 =list.add(p2, 4, 27, 0, 0);
     list.add(p3, 5,19,0,0);
     list.add(p4, 6,30,0,0);
     tests += ("3 5 1 2 4 6 " == list.debug_print() );
@@ -888,13 +888,13 @@ bool nodeList_Add()
 bool nodeList_Remove()
 {
     int tests = 0;
-    NodeList_Teams list;
-    NodeList_Teams::Node* p1 = list.add(nullptr, 1,20,0,0);
-    NodeList_Teams::Node* p2 =list.add(p1, 2,25,0,0);
-    NodeList_Teams::Node* p3 =list.add(p1, 3,18,0,0);
-    NodeList_Teams::Node* p4 =list.add(p2, 4,27,0,0);
-    NodeList_Teams::Node* p5 = list.add(p3, 5,19,0,0);
-    NodeList_Teams::Node* p6 = list.add(p4, 6,30,0,0);
+    NodeList list;
+    NodeList::Node* p1 = list.add(nullptr, 1, 20, 0, 0);
+    NodeList::Node* p2 =list.add(p1, 2, 25, 0, 0);
+    NodeList::Node* p3 =list.add(p1, 3, 18, 0, 0);
+    NodeList::Node* p4 =list.add(p2, 4, 27, 0, 0);
+    NodeList::Node* p5 = list.add(p3, 5, 19, 0, 0);
+    NodeList::Node* p6 = list.add(p4, 6, 30, 0, 0);
     tests += ("3 5 1 2 4 6 " == list.debug_print() );
     // Start removing
     list.remove(p5);
@@ -904,7 +904,7 @@ bool nodeList_Remove()
     list.remove(p6);
     tests += ("1 2 4 " == list.debug_print() );
 
-    NodeList_Teams::Node* p3_new = list.add(p1, 3,10,0,0);
+    NodeList::Node* p3_new = list.add(p1, 3, 10, 0, 0);
 
     tests += ("3 1 2 4 " == list.debug_print() );
     list.remove(p4);
@@ -923,7 +923,7 @@ bool nodeList_Remove()
 bool nodeList_Teams_Basics()
 {
     int tests = 0;
-    NodeList_Teams list;
+    NodeList list;
     list.add(1,20,0,0);
     list.add(3,20,0,0);
     list.add(6,5,0,0);
@@ -939,7 +939,7 @@ bool nodeList_Teams_Basics()
 bool avl_Add_To_List()
 {
     int tests = 0;
-    NodeList_Teams list;
+    NodeList list;
     AVL_tree<Team*> tree1(false); // sort by ID
     Team team1(1, 20);
     Team team2(2, 10);
