@@ -31,8 +31,56 @@ void NodeList_Teams::add(int id, int total_points, int total_goals, int total_ca
         if (end == nullptr)
             throw;
         end->next = newNode;
+        newNode->prev = end;
         end = newNode; // update end to point at most recent node addition
     }
+}
+
+NodeList_Teams::Node* NodeList_Teams::add(Node* nodeNextTo, int id, int total_points, int total_goals, int total_cards)
+{
+    Node* newNode = new Node(id, total_points, total_goals, total_cards);
+    // Empty list
+    if (nodeNextTo == nullptr) { // empty list
+        if (start != nullptr || end != nullptr) {
+            std::cout << "mistake" << std::endl;
+            return nullptr;
+        }
+        std::cout << "adding " << (id) << " to empty list" << std::endl;
+        start = newNode;
+        end = newNode;
+        newNode->next = nullptr;
+        newNode->prev = nullptr;
+        std::cout << "list: " << (this->debug_print()) << std::endl;
+        return newNode;
+    }
+    // Not empty
+    int winnerId = get_winnerId(*nodeNextTo, *newNode);
+    if (winnerId == nodeNextTo->get_id()) { // prevNode < newNode < nodeNextTo
+        std::cout << "Entering " << (id) << " before " << (nodeNextTo->get_id()) << std::endl;
+        NodeList_Teams::Node* prevNode = nodeNextTo->prev;
+        if (prevNode != nullptr) {
+            prevNode->next = newNode;
+        } else {
+            std::cout << "Made " << (id) << " start of list" << std::endl;
+            start = newNode;
+        }
+        newNode->prev = prevNode;
+        newNode->next = nodeNextTo;
+        nodeNextTo->prev = newNode;
+    } else { // nodeNextTo < newNode < postNode
+        NodeList_Teams::Node* postNode = nodeNextTo->next;
+        if (postNode != nullptr)
+            postNode->prev = newNode;
+        else {
+            std::cout << "Made " << (id) << " end of list" << std::endl;
+            end = newNode;
+        }
+        newNode->next = postNode;
+        newNode->prev = nodeNextTo;
+        nodeNextTo->next = newNode;
+    }
+    std::cout << "list: " << (this->debug_print()) << std::endl;
+    return newNode;
 }
 
 int NodeList_Teams::knockout() // O(r)
@@ -140,4 +188,9 @@ NodeList_Teams::Node::Node(int id, int total_points, int total_goals, int total_
 int NodeList_Teams::Node::get_match_points() const
 {
     return total_points + total_goals - total_cards;
+}
+
+int NodeList_Teams::Node::get_id() const
+{
+    return this->id;
 }

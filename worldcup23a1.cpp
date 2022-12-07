@@ -376,23 +376,15 @@ StatusType world_cup_t::get_all_players(int teamId, int *const output)
 }
 
 
-//output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
-//{
-//    if (playerId <= 0 || teamId <= 0){
-//        return StatusType::INVALID_INPUT;
-//    }
-//
-//    std::shared_ptr<Team> team = teams_AVL.get_content(teamId);
-//    if (team == nullptr || amount_players <= 2){
-//        return StatusType::FAILURE;
-//    }
-//    std::shared_ptr<Player> player = team->find_player(playerId);
-//    if (player == nullptr){
-//        return StatusType::FAILURE;
-//    }
-//    int closest_id = player->get_global_score_node()->get_closest_node_content()->get_id();
-//    return closest_id;
-//}
+output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
+{
+    if (playerId <= 0 || teamId <= 0){
+        return StatusType::INVALID_INPUT;
+    }
+
+
+    return StatusType::FAILURE;
+}
 
 output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
 {
@@ -413,22 +405,3 @@ output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
     }
     return StatusType::FAILURE;
 }
-
-//class FillPseudoTeam{ //TODO E
-//private:
-//    int size;
-//    int currIndex;
-//    PseudoTeam* arr;
-//public:
-//    ArrayFillerFunctor(PseudoTeam* arr, int size) : size(size), currIndex(0), arr(arr) {}
-//
-//    // call is: functor(node->content);
-//    void operator() (std::shared_ptr<Team>& team) {
-//        if (currIndex > size - 1){
-//            throw std::exception();
-//        }
-//        arr[currIndex] = PseudoTeam(team);
-//        currIndex++;
-//    }
-//    //typename AVL_tree<T>::Node* node, T arr[], int size, int& currIndex, F functor)
-//};

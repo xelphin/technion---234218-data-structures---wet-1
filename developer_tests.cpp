@@ -36,10 +36,12 @@ bool run_all_tests() {
     run_test(worldCup_Get_Num_Played_Games, "worldCup_Get_Num_Played_Games", success_string, success);
     run_test(worldCup_Unite_Teams, "worldCup_Unite_Teams", success_string, success);
     run_test(worldCup_Get_All_Players_Count, "worldCup_Get_All_Players_Count", success_string, success);
-//    run_test(closest_player_test, "closest_player_test", success_string, success);
+//    run_test(nodeList_Add, "nodeList_Add", success_string, success);
+
     run_test(nodeList_Teams_Basics, "nodeList_Teams_Basics", success_string, success);
     run_test(avl_Add_To_List, "avl_Add_To_List", success_string, success);
     run_test(worldCup_Knockout_Winner, "worldCup_Knockout_Winner", success_string, success);
+    run_test(nodeList_Add, "nodeList_Add", success_string, success);
 
     std::cout << success_string << std::endl;
     return success;
@@ -865,6 +867,21 @@ bool worldCup_Get_All_Players_Count()
 //    false_team.status() == StatusType::FAILURE);
 //}
 
+bool nodeList_Add()
+{
+    int tests = 0;
+    NodeList_Teams list;
+    NodeList_Teams::Node* p1 = list.add(nullptr, 1,20,0,0);
+    NodeList_Teams::Node* p2 =list.add(p1, 2,25,0,0);
+    NodeList_Teams::Node* p3 =list.add(p1, 3,18,0,0);
+    NodeList_Teams::Node* p4 =list.add(p2, 4,27,0,0);
+    list.add(p3, 5,19,0,0);
+    list.add(p4, 6,30,0,0);
+    tests += ("3 5 1 2 4 6 " == list.debug_print() );
+
+    std::cout << list.debug_print() << std::endl;
+    return tests == 1;
+}
 
 bool nodeList_Teams_Basics()
 {

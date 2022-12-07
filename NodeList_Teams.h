@@ -23,6 +23,7 @@ public:
 
     // Add (inorder) the valid teams
     void add(int id, int total_points, int total_goals, int total_cards);
+    NodeList_Teams::Node* add(Node* nodeNextTo, int id, int total_points, int total_goals, int total_cards);
     int knockout();
     std::string debug_print();
 
@@ -36,6 +37,7 @@ private:
 
 class NodeList_Teams::Node{ // Node => Represents a Teams Stats
 public:
+    NodeList_Teams::Node *prev;
     NodeList_Teams::Node *next;
     int id;
     int total_points;
@@ -45,6 +47,7 @@ public:
     explicit Node(int id, int total_points, int total_goals, int total_cards);
 
     int get_match_points() const;
+    int get_id() const;
 
     Node(const NodeList_Teams &) = delete; //cant copy nodes. make new ones.
     Node &operator=(NodeList_Teams &other) = delete;
