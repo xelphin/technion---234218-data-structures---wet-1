@@ -5,7 +5,7 @@
 
 world_cup_t::world_cup_t()
 : amount_players(0), global_top_scorer_team(0,0), all_players_AVL(SORT_BY_ID), all_players_score_AVL(SORT_BY_SCORE),
-  teams_AVL(SORT_BY_ID), valid_teams_AVL(SORT_BY_ID)
+  teams_AVL(SORT_BY_ID), valid_teams_AVL(SORT_BY_ID), sorted_score_List()
 {}
 
 world_cup_t::~world_cup_t()
