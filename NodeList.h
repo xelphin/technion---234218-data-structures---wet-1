@@ -24,6 +24,7 @@ public:
     // Add (inorder) the valid teams
     void add(int id, int total_points, int total_goals, int total_cards);
     NodeList::Node* add(Node* nodeNextTo, int id, int total_points, int total_goals, int total_cards);
+    int get_closest(Node* node) const;
     void remove(Node* node);
     int knockout();
     std::string debug_print();
@@ -34,6 +35,7 @@ private:
 
     void call_match();
     int get_winnerId(Node& team1, Node& team2);
+    bool player1_biggerScorer(Node& player1, Node& player2);
 };
 
 class NodeList::Node{ // Node => Represents a Teams Stats

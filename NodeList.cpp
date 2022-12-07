@@ -54,8 +54,9 @@ NodeList::Node* NodeList::add(Node* nodeNextTo, int id, int total_points, int to
         return newNode;
     }
     // Not empty
-    int winnerId = get_winnerId(*nodeNextTo, *newNode);
-    if (winnerId == nodeNextTo->get_id()) { // prevNode < newNode < nodeNextTo
+    bool nodeNextTo_BiggerScorer = player1_biggerScorer(*nodeNextTo, *newNode);
+
+    if (nodeNextTo_BiggerScorer) { // prevNode < newNode < nodeNextTo
         std::cout << "Entering " << (id) << " before " << (nodeNextTo->get_id()) << std::endl;
         NodeList::Node* prevNode = nodeNextTo->prev;
         if (prevNode != nullptr) {
@@ -219,6 +220,50 @@ int NodeList::get_winnerId(Node& team1, Node& team2)
         winnerId = team2.id;
     }
     return winnerId;
+}
+
+int NodeList::get_closest(Node* node) const
+{
+    if (node == nullptr)
+        return 0;
+    NodeList::Node* prev = node->prev;
+    NodeList::Node* next = node->next;
+    if (prev == nullptr && next == nullptr)
+        return 0;
+    if (prev == nullptr)
+        return next->get_id();
+    if (next == nullptr)
+        return prev->get_id();
+
+    // Both nodes exist
+    if (abs(prev->total_goals - node->total_goals) > abs(next->total_goals - node->total_goals))
+        return next->get_id();
+    if (abs(prev->total_goals - node->total_goals) < abs(next->total_goals - node->total_goals))
+        return prev->get_id();
+    if (abs(prev->total_cards - node->total_cards) > abs(next->total_cards - node->total_cards))
+        return next->get_id();
+    if (abs(prev->total_cards - node->total_cards) < abs(next->total_cards - node->total_cards))
+        return prev->get_id();
+    if (abs(prev->id - node->id) > abs(next->id - node->id))
+        return next->get_id();
+    if (abs(prev->id - node->id) < abs(next->id - node->id))
+        return prev->get_id();
+    return 0;
+}
+
+bool NodeList::player1_biggerScorer(Node& player1, Node& player2)
+{
+    if (player1.total_goals > player2.total_goals)
+        return true;
+    if (player1.total_goals < player2.total_goals)
+        return false;
+    if (player1.total_cards > player2.total_cards)
+        return false;
+    if (player1.total_cards < player2.total_cards)
+        return true;
+    if ((player1.id > player2.id))
+        return true;
+    return false;
 }
 
 std::string NodeList::debug_print()

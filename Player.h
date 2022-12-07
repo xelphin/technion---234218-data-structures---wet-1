@@ -2,6 +2,7 @@
 #define TECHNION_234218_DATA_STRUCTURES_WET_1_PLAYER_H
 
 #include "Team.h"
+#include "NodeList.h"
 #include "AVL_tree.h"
 #include <memory>
 
@@ -25,6 +26,7 @@ public:
     int operator SCORE(const Player&) const;
     int operator ID() const;
     AVL_tree<std::shared_ptr<Player>>::Node* get_global_score_node();
+    NodeList::Node* get_playerScoreListNode();
 
     void change_team(Team* new_team);
     void set_team(Team* playerTeam);
@@ -33,6 +35,7 @@ public:
     void update_scoredGoals(int toAdd);
     void update_cardsReceived(int toAdd);
     void set_global_score_node(AVL_tree<std::shared_ptr<Player>>::Node* node);
+    void set_playerScoreListNode(NodeList::Node* node);
 
 
     friend std::ostream& operator<<(std::ostream& os, const Player& player);
@@ -47,6 +50,7 @@ private:
     bool goalKeeper;
     Team* team;
     AVL_tree<std::shared_ptr<Player>>::Node* global_scorers_tree_node;
+    NodeList::Node* playerScoreListNode;
 };
 
 // used to iterate on inorder_traversal and add all players to a new array.

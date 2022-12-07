@@ -93,7 +93,27 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
             player->set_team(team);
             all_players_AVL.add(player);
             player->set_global_score_node(all_players_score_AVL.add(player));
-            // TODO: Add player to sorted_score_List
+
+            // Add player to sorted_score_List
+            AVL_tree<std::shared_ptr<Player>>::Node* close_node = all_players_score_AVL.find_a_closest(player->get_global_score_node()); // find neighbor
+            if (close_node != nullptr && close_node->content != nullptr) {
+                // Get where close_node points to itself in the list
+                NodeList::Node* close_node_in_list = close_node->content->get_playerScoreListNode();
+                if (close_node_in_list == nullptr) {
+                    std::cout << "ERROR: all players should point to where they are in the list" << std::endl;
+                    throw;
+                }
+                // Add to the list our new player (and make our player point to its location in the list)
+                NodeList::Node* newNode = sorted_score_List.add(close_node_in_list, playerId, 0, goals, cards);
+                player->set_playerScoreListNode(newNode);
+
+            } else { // empty list
+                // add player directly with nullptr
+                NodeList::Node* newNode = sorted_score_List.add(nullptr, playerId, 0, goals, cards);
+                player->set_playerScoreListNode(newNode);
+            }
+
+
         } catch (std::bad_alloc const&) { // EXCEPTION: Bad Alloc
 //            all_players_AVL.remove(playerId); //no need to free memory since we are using a shared pointer and tree d'tor.
 //            all_players_score_AVL.remove_by_item(player);
@@ -137,7 +157,11 @@ StatusType world_cup_t::remove_player(int playerId)
                 if (playerTeam->get_isValid() && team_valid_before_action){
                     valid_teams_AVL.remove(playerTeam->get_id());
                 }
-                // TODO: Remove player from sorted_score_List
+
+                // Remove player from sorted_score_List
+                NodeList::Node* node_in_list = player->get_playerScoreListNode();
+                sorted_score_List.remove(node_in_list);
+
             } else {
                 success1 = false;
             }
@@ -421,10 +445,12 @@ StatusType world_cup_t::get_all_players(int teamId, int *const output)
 
 output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
 {
-    if (playerId <= 0 || teamId <= 0){
+    if (playerId <= 0 || teamId <= 0 || all_players_AVL.get_amount() <= 1){
         return StatusType::INVALID_INPUT;
     }
-
+    // TODO: Get closest of node
+    // NodeList::Node* node_in_list = player->get_playerScoreListNode();
+    // return sorted_score_List->get_closest(node_in_list)
 
     return StatusType::FAILURE;
 }

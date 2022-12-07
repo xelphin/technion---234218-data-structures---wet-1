@@ -47,6 +47,7 @@ bool run_all_tests() {
 
     run_test(avl_getClosestLeft, "avl_getClosestLeft", success_string, success);
     run_test(avl_getClosestRight, "avl_getClosestRight", success_string, success);
+    run_test(nodeList_Get_Closest, "nodeList_Get_Closest", success_string, success);
 
     std::cout << success_string << std::endl;
     return success;
@@ -876,12 +877,12 @@ bool nodeList_Add()
 {
     int tests = 0;
     NodeList list;
-    NodeList::Node* p1 = list.add(nullptr, 1, 20, 0, 0);
-    NodeList::Node* p2 =list.add(p1, 2, 25, 0, 0);
-    NodeList::Node* p3 =list.add(p1, 3, 18, 0, 0);
-    NodeList::Node* p4 =list.add(p2, 4, 27, 0, 0);
-    list.add(p3, 5,19,0,0);
-    list.add(p4, 6,30,0,0);
+    NodeList::Node* p1 = list.add(nullptr, 1, 20, 20, 0);
+    NodeList::Node* p2 =list.add(p1, 2, 27, 27, 2);
+    NodeList::Node* p3 =list.add(p1, 3, 18, 18, 0);
+    NodeList::Node* p4 =list.add(p2, 4, 27, 27, 0);
+    list.add(p3, 5,19,19,0);
+    list.add(p4, 6,30,30,0);
     tests += ("3 5 1 2 4 6 " == list.debug_print() );
 
     std::cout << list.debug_print() << std::endl;
@@ -892,12 +893,12 @@ bool nodeList_Remove()
 {
     int tests = 0;
     NodeList list;
-    NodeList::Node* p1 = list.add(nullptr, 1, 20, 0, 0);
-    NodeList::Node* p2 =list.add(p1, 2, 25, 0, 0);
-    NodeList::Node* p3 =list.add(p1, 3, 18, 0, 0);
-    NodeList::Node* p4 =list.add(p2, 4, 27, 0, 0);
-    NodeList::Node* p5 = list.add(p3, 5, 19, 0, 0);
-    NodeList::Node* p6 = list.add(p4, 6, 30, 0, 0);
+    NodeList::Node* p1 = list.add(nullptr, 1, 20, 20, 0);
+    NodeList::Node* p2 =list.add(p1, 2, 25, 25, 0);
+    NodeList::Node* p3 =list.add(p1, 3, 18, 18, 0);
+    NodeList::Node* p4 =list.add(p2, 4, 27, 27, 0);
+    NodeList::Node* p5 = list.add(p3, 5, 19, 19, 0);
+    NodeList::Node* p6 = list.add(p4, 6, 30, 30, 0);
     tests += ("3 5 1 2 4 6 " == list.debug_print() );
     // Start removing
     list.remove(p5);
@@ -907,7 +908,7 @@ bool nodeList_Remove()
     list.remove(p6);
     tests += ("1 2 4 " == list.debug_print() );
 
-    NodeList::Node* p3_new = list.add(p1, 3, 10, 0, 0);
+    NodeList::Node* p3_new = list.add(p1, 3, 10, 10, 0);
 
     tests += ("3 1 2 4 " == list.debug_print() );
     list.remove(p4);
@@ -921,6 +922,27 @@ bool nodeList_Remove()
     tests += ("" == list.debug_print() );
 
     return tests == 9;
+}
+
+bool nodeList_Get_Closest()
+{
+    int tests = 0;
+    NodeList list;
+    tests += (list.get_closest(nullptr) == 0);
+    NodeList::Node* p1 = list.add(nullptr, 1, 0, 1, 0);
+    tests += (list.get_closest(p1) == 0);
+    NodeList::Node* p2 = list.add(p1, 2, 0, 5, 0);
+    NodeList::Node* p3 = list.add(p2, 3, 0, 8, 0);
+    NodeList::Node* p4 =list.add(p3, 4, 0, 10, 0);
+    list.add(p3, 5, 0, 7, 0);
+    list.add(p2, 6, 0, 5, 0);
+    tests += ("1 2 6 5 3 4 " == list.debug_print() );
+
+    tests += (list.get_closest(p2) == 6);
+    tests += (list.get_closest(p3) == 5);
+    tests += (list.get_closest(p4) == 3);
+
+    return tests == 6;
 }
 
 bool nodeList_Teams_Basics()

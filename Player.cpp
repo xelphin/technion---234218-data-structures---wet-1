@@ -1,7 +1,8 @@
 #include "Player.h"
 
 Player::Player(int playerId, int teamId, int gamesPlayed, int goals, int cards, bool goalKeeper) 
-: playerId(playerId), teamId(teamId), gamesPlayed(gamesPlayed), goals(goals), cards(cards), goalKeeper(goalKeeper), team(nullptr)
+: playerId(playerId), teamId(teamId), gamesPlayed(gamesPlayed), goals(goals), cards(cards),
+goalKeeper(goalKeeper), team(nullptr), global_scorers_tree_node(nullptr), playerScoreListNode(nullptr)
 {
 }
 
@@ -154,4 +155,14 @@ void Player::set_global_score_node(AVL_tree<std::shared_ptr<Player>>::Node* node
 
 AVL_tree<std::shared_ptr<Player>>::Node *Player::get_global_score_node() {
     return global_scorers_tree_node;
+}
+
+void Player::set_playerScoreListNode(NodeList::Node* node)
+{
+    playerScoreListNode = node;
+}
+
+NodeList::Node* Player::get_playerScoreListNode()
+{
+    return playerScoreListNode;
 }
