@@ -268,7 +268,7 @@ std::string NodeList::debug_print()
 }
 
 NodeList::Node::Node(int id, int total_points, int total_goals, int total_cards)
-        : next(nullptr), id(id), total_points(total_points), total_goals(total_goals), total_cards(total_cards)
+        : prev(nullptr), next(nullptr), id(id), total_points(total_points), total_goals(total_goals), total_cards(total_cards)
         {}
 
 int NodeList::Node::get_match_points() const

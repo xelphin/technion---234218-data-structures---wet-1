@@ -52,8 +52,8 @@ public:
     int get_match_points() const;
     int get_id() const;
 
-    Node(const NodeList &) = delete; //cant copy nodes. make new ones.
-    Node &operator=(NodeList &other) = delete;
+    Node(const Node &) = delete; //cant copy nodes. make new ones.
+    Node &operator=(Node &other) = delete;
     ~Node() = default;
 
 
