@@ -53,6 +53,10 @@ public:
     AVL_tree<T>::Node* find_id(int id);
     AVL_tree<T>::Node* find_rightmost(AVL_tree<T>::Node* node);
     AVL_tree<T>::Node* find_leftmost(AVL_tree<T>::Node* node);
+
+    // CLOSEST functions
+    AVL_tree<T>::Node* find_closest_left(AVL_tree<T>::Node* node);
+
     T get_content(int id);
     T get_biggest_in_tree();
 
@@ -308,6 +312,49 @@ typename AVL_tree<T>::Node *AVL_tree<T>::find_leftmost(AVL_tree<T>::Node* node) 
             return current; //returns when there is no left child
         }
     }
+}
+
+template<class T>
+typename AVL_tree<T>::Node *AVL_tree<T>::find_closest_left(AVL_tree<T>::Node* node)
+{
+    // Called after add_player() -> log(n)
+    // Called before remove_player() -> log(n)
+    // ((*leaf).get_comparison(*parent) > 0)
+    if (node == nullptr)
+        return nullptr;
+    if (root == nullptr)
+        return nullptr;
+    Node* node_immediate_left = node->left;
+
+    // Has no left child -> search through ancestors
+    if (node_immediate_left == nullptr) {
+        Node* top = root;
+        while (top != nullptr && top != node) {
+            if (top->get_comparison(*node) < 0) { // top > node
+                if (top->right == nullptr)
+                    return nullptr;
+                if (top->right->get_comparison(*node) >= 0) // top->right >= node
+                    return top;
+                top = top->right;
+            } else {
+                top = top->left;
+                if (top == node) // smallest
+                    return nullptr;
+            }
+        }
+    }
+
+    // Has left child -> search through children
+    Node* current = node_immediate_left->right;
+    if (current == nullptr)
+        return node_immediate_left;
+    // Get the rightmost from node_immediate_left
+    while(current) {
+        if (current->right == nullptr)
+            return current;
+        current = current->right;
+    }
+    return current;
 }
 
 template<class T>
