@@ -148,6 +148,7 @@ bool omeramir_tests_line451();
 // Closest Player Functions
 bool avl_getClosestLeft();
 bool avl_getClosestRight();
+bool worldCup_get_closest_player();
 
 
 

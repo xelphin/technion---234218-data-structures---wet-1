@@ -448,9 +448,8 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
     if (playerId <= 0 || teamId <= 0 || all_players_AVL.get_amount() <= 1){
         return StatusType::INVALID_INPUT;
     }
-    // TODO: Get closest of node
-    // NodeList::Node* node_in_list = player->get_playerScoreListNode();
-    // return sorted_score_List->get_closest(node_in_list);
+    std::cout << all_players_score_AVL.debugging_printTree_new() << std::endl;
+    std::cout << sorted_score_List.debug_print() << std::endl;
 
     try {
         // FIND PLAYER

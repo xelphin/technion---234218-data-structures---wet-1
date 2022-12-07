@@ -47,7 +47,10 @@ bool run_all_tests() {
 
     run_test(avl_getClosestLeft, "avl_getClosestLeft", success_string, success);
     run_test(avl_getClosestRight, "avl_getClosestRight", success_string, success);
+    run_test(worldCup_get_closest_player, "worldCup_get_closest_player", success_string, success);
+
     run_test(nodeList_Get_Closest, "nodeList_Get_Closest", success_string, success);
+    run_test(worldCup_get_closest_player, "worldCup_get_closest_player", success_string, success);
 
     std::cout << success_string << std::endl;
     return success;
@@ -1284,4 +1287,30 @@ bool avl_getClosestRight()
     tests += (*(tree2.find_a_closest(player21->get_global_score_node()))->content).get_id() == 20;
 
     return tests == 15;
+}
+
+bool worldCup_get_closest_player()
+{
+    int tests = 0;
+    world_cup_t worldCup;
+
+    worldCup.add_team(1,0);
+    worldCup.add_team(2,0);
+    worldCup.add_player(1, 2, 5, 5, 0, false);
+    worldCup.add_player(2, 2, 5, 2, 0, false);
+    worldCup.add_player(3, 2, 5, 7, 0, false);
+    worldCup.add_player(4, 1, 5, 8, 0, false);
+    worldCup.add_player(5, 1, 5, 1, 0, false);
+    worldCup.add_player(6, 1, 5, 5, 0, false);
+    //
+    tests += (worldCup.get_closest_player(3,2).ans() == 4);
+    tests += (worldCup.get_closest_player(5,1).ans() == 2);
+
+//    world_cup_t *obj = new world_cup_t();
+//    StatusType res = obj->add_team(1, 2);
+//    assert(res == StatusType::SUCCESS);
+//    delete obj;
+
+    return tests == 2;
+
 }
