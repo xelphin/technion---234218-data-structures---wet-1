@@ -71,6 +71,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
 
     Team* team = &(*(teams_AVL.get_content(teamId))); // O(log(k))
     if (team != nullptr && all_players_AVL.find_id(playerId) == nullptr) { // O(log(k) + log(n))
+        bool team_valid_before_action = team->get_isValid();
         // TEAM exists and PLAYER doesn't exist
         // TRY to Create PLAYER and ADD to TEAM and AVLs
         try {
@@ -80,6 +81,9 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
             team->update_cardsReceived(cards);
             team->update_scoredGoals(goals);
             team->update_addAGoalKeeper(goalKeeper);
+            if (team->get_isValid() && !team_valid_before_action){
+                valid_teams_AVL.add(teams_AVL.get_content(teamId));
+            }
 
 
             player->set_team(team);
@@ -117,6 +121,7 @@ StatusType world_cup_t::remove_player(int playerId)
         if (player != nullptr) {
             // PLAYER FOUND
             Team* playerTeam = (*player).get_team();
+            bool team_valid_before_action = playerTeam->get_isValid();
             if (playerTeam != nullptr) {
                 // REMOVE from PLAYER_TEAM
                 success1 = (*playerTeam).remove_player(playerId); // we know: playerTeam != nullptr
@@ -124,6 +129,9 @@ StatusType world_cup_t::remove_player(int playerId)
                 playerTeam->update_cardsReceived(-(player->get_cards()));
                 playerTeam->update_scoredGoals(-(player->get_score()));
                 playerTeam->update_removeAGoalKeeper(player->get_isGoalKeeper());
+                if (playerTeam->get_isValid() && team_valid_before_action){
+                    valid_teams_AVL.remove(playerTeam->get_id());
+                }
             } else {
                 success1 = false;
             }
@@ -161,8 +169,10 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
         if (player != nullptr) {
             // PLAYER FOUND
             Team* playerTeam = (*player).get_team();
-            if (playerTeam == nullptr)
+            if (playerTeam == nullptr){
                 return StatusType::FAILURE;
+            }
+            bool team_valid_before_action = playerTeam->get_isValid();
             // UPDATE PLAYER
             player->update_gamesPlayed(gamesPlayed);
             player->update_scoredGoals(scoredGoals);
@@ -171,6 +181,10 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
             playerTeam->update_cardsReceived(cardsReceived);
             playerTeam->update_scoredGoals(scoredGoals);
             playerTeam->compare_to_top_scorer(player);
+            if (playerTeam->get_isValid() && !team_valid_before_action){
+                valid_teams_AVL.add(teams_AVL.get_content(playerTeam->get_id()));
+            }
+
             global_top_scorer_team.compare_to_top_scorer(player);
             // TODO: Check player/team really gets updated (not just from looking at prints)
         } else {
