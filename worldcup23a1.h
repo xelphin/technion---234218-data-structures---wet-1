@@ -35,6 +35,7 @@ private:
     AVL_tree<std::shared_ptr<Player>> all_players_score_AVL;
     AVL_tree<std::shared_ptr<Team>> teams_AVL;
     AVL_tree<std::shared_ptr<Team>> valid_teams_AVL;
+    NodeList sorted_score_List;
 
 #ifndef NDEBUG
     template <typename T> friend class AVL_testing;

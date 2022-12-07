@@ -57,6 +57,7 @@ public:
     // CLOSEST functions
     AVL_tree<T>::Node* find_closest_left(AVL_tree<T>::Node* node);
     AVL_tree<T>::Node* find_closest_right(AVL_tree<T>::Node* node);
+    AVL_tree<T>::Node* find_a_closest(AVL_tree<T>::Node* node);
 
     T get_content(int id);
     T get_biggest_in_tree();
@@ -368,6 +369,7 @@ typename AVL_tree<T>::Node *AVL_tree<T>::find_closest_right(AVL_tree<T>::Node* n
         return nullptr;
     if (root == nullptr)
         return nullptr;
+
     Node* node_immediate_right = node->right;
 
     // Has no right child -> search through ancestors
@@ -399,6 +401,20 @@ typename AVL_tree<T>::Node *AVL_tree<T>::find_closest_right(AVL_tree<T>::Node* n
         current = current->left;
     }
     return current;
+}
+
+template<class T>
+typename AVL_tree<T>::Node *AVL_tree<T>::find_a_closest(AVL_tree<T>::Node* node)
+{
+    if (node == nullptr || node->content == nullptr)
+        return nullptr;
+    if (this->amount == 1) {
+        return nullptr;
+    }
+    Node* closest_right = this->find_closest_right(node);
+    if (closest_right != nullptr)
+        return closest_right;
+    return this->find_closest_left(node);
 }
 
 template<class T>

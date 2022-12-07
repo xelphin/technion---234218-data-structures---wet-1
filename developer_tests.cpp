@@ -1247,6 +1247,19 @@ bool avl_getClosestRight()
     tests += (*(tree1.find_closest_right(player11->get_global_score_node()))->content).get_id() == 12;
     tests += (*(tree1.find_closest_right(player10->get_global_score_node()))->content).get_id() == 11;
     tests += (*(tree1.find_closest_right(player5->get_global_score_node()))->content).get_id() == 6;
+    //
+    // Find a closest()
+    tests += (*(tree1.find_a_closest(player10->get_global_score_node()))->content).get_id() == 11;
+    tests += (*(tree1.find_a_closest(player13->get_global_score_node()))->content).get_id() == 12;
+    tests += (*(tree1.find_a_closest(player3->get_global_score_node()))->content).get_id() == 4;
+    AVL_tree<std::shared_ptr<Player>> tree2(true); // sort by SCORE
+    std::shared_ptr<Player> player20(new Player(20, 2, 1, 10, 0, false));
+    player20->set_global_score_node(tree2.add(player20));
+    if (player20->get_global_score_node() != nullptr)
+        tests += (tree2.find_a_closest(player20->get_global_score_node()) == nullptr);
+    std::shared_ptr<Player> player21(new Player(21, 2, 1, 10, 0, false));
+    player21->set_global_score_node(tree2.add(player21));
+    tests += (*(tree2.find_a_closest(player21->get_global_score_node()))->content).get_id() == 20;
 
-    return tests == 10;
+    return tests == 15;
 }

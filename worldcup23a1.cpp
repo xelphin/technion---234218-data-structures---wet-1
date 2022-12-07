@@ -77,20 +77,23 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
         // TEAM exists and PLAYER doesn't exist
         // TRY to Create PLAYER and ADD to TEAM and AVLs
         try {
-            //
+            // Create player
             std::shared_ptr<Player> player(new Player(playerId, teamId, gamesPlayed, goals, cards, goalKeeper));
             player->set_team(team);
+            // Update team
             team->add_player(player);
             team->update_cardsReceived(cards);
             team->update_scoredGoals(goals);
             team->update_addAGoalKeeper(goalKeeper);
+            // Add team to valid_teams_AVL
             if (team->get_isValid() && !team_valid_before_action){
                 valid_teams_AVL.add(teams_AVL.get_content(teamId));
             }
-
+            // Add player to AVLs
             player->set_team(team);
             all_players_AVL.add(player);
             player->set_global_score_node(all_players_score_AVL.add(player));
+            // TODO: Add player to sorted_score_List
         } catch (std::bad_alloc const&) { // EXCEPTION: Bad Alloc
 //            all_players_AVL.remove(playerId); //no need to free memory since we are using a shared pointer and tree d'tor.
 //            all_players_score_AVL.remove_by_item(player);
@@ -134,6 +137,7 @@ StatusType world_cup_t::remove_player(int playerId)
                 if (playerTeam->get_isValid() && team_valid_before_action){
                     valid_teams_AVL.remove(playerTeam->get_id());
                 }
+                // TODO: Remove player from sorted_score_List
             } else {
                 success1 = false;
             }
@@ -180,6 +184,7 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
             bool goalKeeper = player->get_isGoalKeeper();
             this->remove_player(playerId);
             this->add_player(playerId, teamId, gamesPlayedNew, goals, cards, goalKeeper);
+            // Notice: automatically updates AVLs and Lists
 
         } else {
             return StatusType::FAILURE;
