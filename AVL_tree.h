@@ -116,10 +116,6 @@ public:
     T content; //T is always a type of pointer.
     int balance_factor; //to manage the sorting of the AVL tree.
     int height;
-    //closest player stuff:
-    AVL_tree<T>::Node* straight_line_ancestor;
-    AVL_tree<T>::Node* leftmost_descendant;
-    AVL_tree<T>::Node* rightmost_descendant;
 
     explicit Node(T);
     Node(const AVL_tree &) = delete; //cant copy nodes. make new ones.
@@ -136,11 +132,6 @@ public:
 
     void update_parent(AVL_tree<T>::Node* replacement);
 
-
-    //get_closest_player
-    void update_descendants();
-    T get_closest_node_content();
-
 private:
     void roll_right();
     void roll_left();
@@ -148,7 +139,6 @@ private:
     void LR_roll();
     void RR_roll();
     void RL_roll();
-    void post_roll_descendants_update();
 };
 
 
@@ -179,14 +169,7 @@ right(nullptr),
 content(nullptr),
 balance_factor(0),
 height(0)
-,
-  straight_line_ancestor(nullptr),
-  leftmost_descendant(nullptr),
-  rightmost_descendant(nullptr)
 {
-    straight_line_ancestor = this;
-    leftmost_descendant = this;
-    rightmost_descendant = this;
     content = new_item;
 }
 
@@ -207,7 +190,6 @@ typename AVL_tree<T>::Node* AVL_tree<T>::add(T item) {
             root = leaf;
             leaf->tree = this;
             this->amount++;
-//            leaf->update_descendants();
             return leaf;
         } 
 
@@ -293,7 +275,6 @@ typename AVL_tree<T>::Node *AVL_tree<T>::find_rightmost(AVL_tree<T>::Node* node)
     if (node == nullptr){
         return nullptr;
     }
-//    return node->rightmost_descendant;
     Node* current = node->right;
     if (current == nullptr){ //no nodes to the right of this node
         return nullptr;
@@ -314,7 +295,6 @@ typename AVL_tree<T>::Node *AVL_tree<T>::find_leftmost(AVL_tree<T>::Node* node) 
     if (node == nullptr){
         return nullptr;
     }
-//    return node->leftmost_descendant;
     Node* current = node->left;
     if (current == nullptr){ //no nodes to the left of this node
         return nullptr;
@@ -398,24 +378,6 @@ bool AVL_tree<T>::remove_internal(AVL_tree<T>::Node* node) {
     {
         climb_up_and_rebalance_tree(next_unbalanced_node);
     }
-
-    //    //TODO: this code only causes valgrind when descendants are not updated recursively.
-    // after moving and rolling and everything, update the descendants of the replacement and all the chain leading to it. including itself.
-//    if (replacement != nullptr ){
-//        climb_up_and_rebalance_tree(find_leftmost(replacement));
-//        climb_up_and_rebalance_tree(find_rightmost(replacement));
-//    }
-
-//    //TODO: this code only causes valgrind when descendants are not updated recursively.
-//    if (replacement != nullptr){
-//        //update descendants for get_closest_player support:
-//        if (replacement->left){
-//            climb_up_and_rebalance_tree(replacement->left->leftmost_descendant);
-//        }
-//        if (replacement->right){
-//            climb_up_and_rebalance_tree(replacement->right->rightmost_descendant);
-//        }
-//    }
 
     delete node;
     this->amount--;
@@ -837,7 +799,6 @@ int AVL_tree<T>::Node::set_balance_factor() {
 template<class T>
 void AVL_tree<T>::climb_up_and_rebalance_tree(AVL_tree<T>::Node *leaf) {
     AVL_tree<T>::Node* current = leaf; //not node.parent, so it also updates the height of the node to 0 if it's a leaf.
-    current->update_descendants();
 
     while (current != nullptr){ //climbs up tree. stops after iterating on root.
         current->set_height();
@@ -847,8 +808,6 @@ void AVL_tree<T>::climb_up_and_rebalance_tree(AVL_tree<T>::Node *leaf) {
             current->choose_roll(); //because roll switches parent and child, we will still get to the new parent.
         }
         current->set_height();
-
-        current->update_descendants();
         current = current->parent;
     }
     
@@ -914,7 +873,6 @@ void AVL_tree<T>::Node::roll_left() {
     original_right->left = this;
     update_parent(original_right);
     set_balance_factor();
-    post_roll_descendants_update();
 }
 
 template<class T>
@@ -927,7 +885,6 @@ void AVL_tree<T>::Node::roll_right() {
     original_left->right = this;
     update_parent(original_left);
     set_balance_factor();
-    post_roll_descendants_update();
 }
 
 template<class T>
@@ -952,147 +909,8 @@ void AVL_tree<T>::Node::RL_roll() {
     roll_left();
 }
 
-template<class T>
-void AVL_tree<T>::Node::post_roll_descendants_update() {
-    //first update children of descendants in case of rolls
-    if (right != nullptr){
-        right->update_descendants();
-    }
-    if (left != nullptr){
-        left->update_descendants();
-    }
-    update_descendants();
-}
 
 
-
-//------------------------------------------"CLOSEST" NODES--------------------------------------//
-
-//this section is used only for get_closest_player.
-
-template<class T>
-void AVL_tree<T>::Node::update_descendants() {
-    //TODO: remove this code. its recursive and very bad complexity.
-//    //first update children of descendants in case of rolls
-//    if (right != nullptr){
-//        right->update_descendants();
-//    }
-//    if (left != nullptr){
-//        left->update_descendants();
-//    }
-
-    if (left != nullptr){
-        leftmost_descendant = left->leftmost_descendant; // bubble up the best leftmost descendant
-    }
-    else
-    {
-        leftmost_descendant = this; // for the recursion to work, the last node has to point on itself.
-    }
-
-    if (right != nullptr){
-        rightmost_descendant = right->rightmost_descendant;
-    }
-    else
-    {
-        rightmost_descendant = this; // for the recursion to work, the last node has to point on itself.
-    }
-
-    // after the previous lines there will always be a descendant. it may be itself, but this code still works for that.
-    //update descendant to point at self because self is now above prev ancestor
-    leftmost_descendant->straight_line_ancestor = this;
-    rightmost_descendant->straight_line_ancestor = this;
-}
-
-template<class T>
-T AVL_tree<T>::Node::get_closest_node_content() {
-    /*
-     * this is the algorithm to find the nodes that contain the closest players,
-     * and then compare those players to get the closest one.
-     * note: if there is only 1 child, it means that child does not have children of its own, because of AVL invariant.
-     */
-
-    //first update who the real ancestor is
-    if (parent){
-        if (parent->left == this){ // this is a left child
-            straight_line_ancestor = leftmost_descendant->straight_line_ancestor;
-        }
-        else if (parent->right == this){ // this is a right child
-            straight_line_ancestor = rightmost_descendant->straight_line_ancestor;
-        }
-        else throw;
-    }
-    else{
-        straight_line_ancestor = this;
-    }
-    AVL_tree<T>::Node* zig_zag_ancestor = straight_line_ancestor->parent;
-    AVL_tree<T>::Node* closest1 = nullptr;
-    AVL_tree<T>::Node* closest2 = nullptr;
-    if (left && right) //2 children
-    {
-        closest1 = left->rightmost_descendant;
-        closest2 = right->leftmost_descendant;
-    }
-    else if (left == nullptr && right == nullptr){ //no children
-        closest1 = parent;
-        closest2 = zig_zag_ancestor;
-    }
-    else if (left == nullptr){ //only right child
-        if (parent){
-            if (parent->left == this){ // right child, this is left child
-                closest1 = zig_zag_ancestor;
-                closest2 = right;
-            }
-            else if (parent->right == this){ // right child, this is right child
-                closest1 = parent;
-                closest2 = right;
-            }
-            else throw;
-        }
-        else // only 1 child, no parent.
-        {
-            return right->content;
-        }
-    }
-    else if (right == nullptr){
-        //only left child
-        if (parent){
-            if (parent->right == this){ // left child, this is right child
-                closest1 = zig_zag_ancestor;
-                closest2 = left;
-            }
-            else if (parent->left == this){ // left child, this is left child
-                closest1 = parent;
-                closest2 = left;
-            }
-            else throw;
-        }
-        else // only 1 child, no parent.
-        {
-            return left->content;
-        }
-    }
-    else throw;
-
-
-    if (closest1 == closest2){
-        if (closest1 == nullptr){ //no closest. alone in tree.
-            return nullptr;
-        }
-        else{
-            return closest1->content; //both are the same and not null
-        }
-    }
-    else if (closest1 == nullptr){ //if only closest2 is valid
-        return closest2->content;
-    }
-    else if (closest2 == nullptr){ //if only closest1 is valid
-        return closest1->content;
-    }
-    else{ //both are valid. need to compare them.
-        //calls a Player function.
-        return content->get_closest_from_pair(closest1->content, closest2->content) ? closest1->content : closest2->content;
-    }
-}
 
 //-------------------------------------------DEBUGGING-------------------------------------------//
 // ONLY FOR DEBUGGING - ERASE LATER
