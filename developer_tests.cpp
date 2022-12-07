@@ -951,22 +951,51 @@ bool omeramir_tests_line451(){
         assert(res == StatusType::SUCCESS);
         res = obj->add_player(1007, 1, 10, 0, 0, false);
         assert(res == StatusType::SUCCESS);
+//
+//        std::cout << "test 1 :" <<AVL_testing<Player*>::run_tests_on_worldCup(obj);
+//        assert(AVL_testing<Player*>::run_tests_on_worldCup(obj));
+
         res = obj->remove_player(1007);
         assert(res == StatusType::SUCCESS);
+
+//        std::cout << "test 2 :" <<AVL_testing<Player*>::run_tests_on_worldCup(obj);
+//        assert(AVL_testing<Player*>::run_tests_on_worldCup(obj));
+
         res = obj->remove_player(1002);
         assert(res == StatusType::SUCCESS);
+
+//        std::cout << "test 3 :" <<AVL_testing<Player*>::run_tests_on_worldCup(obj);
+//        assert(AVL_testing<Player*>::run_tests_on_worldCup(obj));
+
         res = obj->add_player(1008, 1, 10, 0, 0, true);
         assert(res == StatusType::SUCCESS);
+
+//        std::cout << "test 4 :" <<AVL_testing<Player*>::run_tests_on_worldCup(obj);
+//        assert(AVL_testing<Player*>::run_tests_on_worldCup(obj));
+
         res = obj->add_player(1009, 1, 10, 0, 0, false);
         assert(res == StatusType::SUCCESS);
         res = obj->add_player(1010, 1, 10, 0, 0, false);
         assert(res == StatusType::SUCCESS);
+
+//        std::cout << "test 5 :" <<AVL_testing<Player*>::run_tests_on_worldCup(obj);
+//        assert(AVL_testing<Player*>::run_tests_on_worldCup(obj));
+
+        //TODO: first leak
         res = obj->add_player(1011, 1, 10, 0, 0, false);
         assert(res == StatusType::SUCCESS);
+//
+//        std::cout << "test 6 :" <<AVL_testing<Player*>::run_tests_on_worldCup(obj);
+//        assert(AVL_testing<Player*>::run_tests_on_worldCup(obj));
+
         res = obj->remove_player(1001);
         assert(res == StatusType::SUCCESS);
         res = obj->add_player(1012, 1, 10, 0, 0, false);
         assert(res == StatusType::SUCCESS);
+
+//        std::cout << "test 7 :" <<AVL_testing<Player*>::run_tests_on_worldCup(obj);
+//        assert(AVL_testing<Player*>::run_tests_on_worldCup(obj));
+
 
         res = obj->add_player(2001, 2, 20, 0, 0, false);
         assert(res == StatusType::SUCCESS);

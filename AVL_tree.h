@@ -207,7 +207,7 @@ typename AVL_tree<T>::Node* AVL_tree<T>::add(T item) {
             root = leaf;
             leaf->tree = this;
             this->amount++;
-            leaf->update_descendants();
+//            leaf->update_descendants();
             return leaf;
         } 
 
@@ -370,34 +370,25 @@ bool AVL_tree<T>::remove_internal(AVL_tree<T>::Node* node) {
             throw std::invalid_argument("next in order activated on nullptr");
         }
 
-        //update replacement to point to right places
-
-//        {
-//            //TODO: this code only causes valgrind when descendants are not updated recursively.
-//            replacement->rightmost_descendant = node->rightmost_descendant;
-//            replacement->leftmost_descendant = node->leftmost_descendant;
-//        }
-//
-//        {
-//            //TODO: this code causes errors even when all the descendants are updated recursively.
-//        //update descendants to point to replacement if needed
-//        if (node->leftmost_descendant->straight_line_ancestor == node){
-//            node->leftmost_descendant->straight_line_ancestor = replacement;
-////            replacement->straight_line_ancestor = node->rightmost_descendant->straight_line_ancestor;
-//        }
-//        if (node->rightmost_descendant->straight_line_ancestor == node){
-//            node->rightmost_descendant->straight_line_ancestor = replacement;
-////            replacement->straight_line_ancestor = node->leftmost_descendant->straight_line_ancestor;
-//        }
-//        }
+        if (replacement->left != nullptr){
+            throw std::logic_error("not supposed to have left son");
+        }
+        else if (replacement->right != nullptr){ // if it has a right child
+            next_unbalanced_node = replacement->right;
+            // his right cant have a child node because that makes replacement have a BF of -2.
+        }
+        else if (replacement != node->right) //replacement has no children, and is not the right child of the removed node.
+        {
+            next_unbalanced_node = replacement->parent;
+        }
+        else
+        { // replacement is the right child of the removed node.
+            next_unbalanced_node = replacement;
+        }
 
 
         if (replacement != node->right){
-            next_unbalanced_node = replacement->parent;
             replacement->update_parent(replacement->right); // update parent should work even on nullptr
-        }
-        else{ // replacement is the right child of the removed node.
-            next_unbalanced_node = replacement;
         }
         replace_nodes(node, replacement);
     }
@@ -410,10 +401,10 @@ bool AVL_tree<T>::remove_internal(AVL_tree<T>::Node* node) {
 
     //    //TODO: this code only causes valgrind when descendants are not updated recursively.
     // after moving and rolling and everything, update the descendants of the replacement and all the chain leading to it. including itself.
-    if (replacement != nullptr ){
-        climb_up_and_rebalance_tree(find_leftmost(replacement));
-        climb_up_and_rebalance_tree(find_rightmost(replacement));
-    }
+//    if (replacement != nullptr ){
+//        climb_up_and_rebalance_tree(find_leftmost(replacement));
+//        climb_up_and_rebalance_tree(find_rightmost(replacement));
+//    }
 
 //    //TODO: this code only causes valgrind when descendants are not updated recursively.
 //    if (replacement != nullptr){
@@ -846,9 +837,9 @@ int AVL_tree<T>::Node::set_balance_factor() {
 template<class T>
 void AVL_tree<T>::climb_up_and_rebalance_tree(AVL_tree<T>::Node *leaf) {
     AVL_tree<T>::Node* current = leaf; //not node.parent, so it also updates the height of the node to 0 if it's a leaf.
+    current->update_descendants();
 
     while (current != nullptr){ //climbs up tree. stops after iterating on root.
-//        current->update_descendants();
         current->set_height();
 
         current->set_balance_factor();
@@ -982,20 +973,16 @@ void AVL_tree<T>::Node::post_roll_descendants_update() {
 template<class T>
 void AVL_tree<T>::Node::update_descendants() {
     //TODO: remove this code. its recursive and very bad complexity.
-    //first update children of descendants in case of rolls
-    if (right != nullptr){
-        right->update_descendants();
-    }
-    if (left != nullptr){
-        left->update_descendants();
-    }
+//    //first update children of descendants in case of rolls
+//    if (right != nullptr){
+//        right->update_descendants();
+//    }
+//    if (left != nullptr){
+//        left->update_descendants();
+//    }
 
-    //update descendants
     if (left != nullptr){
         leftmost_descendant = left->leftmost_descendant; // bubble up the best leftmost descendant
-        leftmost_descendant->straight_line_ancestor = this; //update descendant to point at self because self is now above prev ancestor
-//        if (leftmost_descendant->straight_line_ancestor == left){ // bubble up the ancestor and update the best descendant accordingly
-//        }
     }
     else
     {
@@ -1004,43 +991,16 @@ void AVL_tree<T>::Node::update_descendants() {
 
     if (right != nullptr){
         rightmost_descendant = right->rightmost_descendant;
-        rightmost_descendant->straight_line_ancestor = this;
-
-//        if (rightmost_descendant->straight_line_ancestor == right){
-//            //update descendant to point at self because self is now above prev ancestor
-//        }
     }
     else
     {
         rightmost_descendant = this; // for the recursion to work, the last node has to point on itself.
     }
 
-    // not necessary since this automatically happens when we look for the closest player. the important part is that
-    // it keeps bubbling up, and that happens in the code previous to this.
-    //update ancestor
-//    if (parent != nullptr){
-//        if (parent->left == this){ // this is a left child
-//            if (left != nullptr)
-//            {
-//                straight_line_ancestor = left->straight_line_ancestor; // ask the leftmost who is daddy is, then go there.
-//            }
-//            else{ // no left child, ancestry will update upwards in future recursive calls.
-//                straight_line_ancestor = parent;
-//            }
-//        }
-//        else if (parent->right == this){
-//            if (right != nullptr){
-//                straight_line_ancestor = right->straight_line_ancestor;
-//            }
-//            else{ // no right child, ancestry will update upwards in future recursive calls.
-//                straight_line_ancestor = parent;
-//            }
-//        }
-//        else throw;
-//    }
-//    else{
-//        straight_line_ancestor = this;
-//    }
+    // after the previous lines there will always be a descendant. it may be itself, but this code still works for that.
+    //update descendant to point at self because self is now above prev ancestor
+    leftmost_descendant->straight_line_ancestor = this;
+    rightmost_descendant->straight_line_ancestor = this;
 }
 
 template<class T>
