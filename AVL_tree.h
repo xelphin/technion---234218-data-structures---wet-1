@@ -1058,45 +1058,45 @@ std::string AVL_tree<T>::debugging_printTree_new()
 
 //------------------------------------------KNOCKOUT FUNCTIONS-----------------//
 
-template<class T>
-void AVL_tree<T>::add_to_list(NodeList& list, int minId, int maxId)
-{
-    bool passedMin = false;
-    bool passedMax = false;
-    add_to_list_aux(root, passedMin, passedMax, list, minId, maxId);
-}
-
-template<class T>
-void AVL_tree<T>::add_to_list_aux(AVL_tree::Node* node, bool& passedMin, bool& passedMax, NodeList& list, int minId, int maxId)
-{
-    if (node == nullptr)
-        return;
-    if (node->content == nullptr)
-        return;
-    std::cout << "We are looking at: " << ((*(node->content)).get_id()) << std::endl;
-    // CHECK LEFT of tree
-    if ((*(node->content)).get_id() > minId) {
-        add_to_list_aux(node->left, passedMin, passedMax, list, minId, maxId);
-    }
-
-    // ADD Team to list and UPDATE passed arguments
-    if ((*(node->content)).get_id() >= minId && (*(node->content)).get_id() <= maxId) {
-        list.add((*(node->content)).get_id(),
-                 (*(node->content)).get_total_points(),
-                 (*(node->content)).get_goals(),
-                 (*(node->content)).get_cards());
-        if ((*(node->content)).get_id() == minId)
-            passedMin = true;
-        if ((*(node->content)).get_id() == maxId)
-            passedMax = true;
-    }
-
-    // CHECK RIGHT of tree
-    if ((*(node->content)).get_id() < maxId) {
-        add_to_list_aux(node->right, passedMin, passedMax, list, minId, maxId);
-    }
-
-}
+//template<class T>
+//void AVL_tree<T>::add_to_list(NodeList& list, int minId, int maxId)
+//{
+//    bool passedMin = false;
+//    bool passedMax = false;
+//    add_to_list_aux(root, passedMin, passedMax, list, minId, maxId);
+//}
+//
+//template<class T>
+//void AVL_tree<T>::add_to_list_aux(AVL_tree::Node* node, bool& passedMin, bool& passedMax, NodeList& list, int minId, int maxId)
+//{
+//    if (node == nullptr)
+//        return;
+//    if (node->content == nullptr)
+//        return;
+//    std::cout << "We are looking at: " << ((*(node->content)).get_id()) << std::endl;
+//    // CHECK LEFT of tree
+//    if ((*(node->content)).get_id() > minId) {
+//        add_to_list_aux(node->left, passedMin, passedMax, list, minId, maxId);
+//    }
+//
+//    // ADD Team to list and UPDATE passed arguments
+//    if ((*(node->content)).get_id() >= minId && (*(node->content)).get_id() <= maxId) {
+//        list.add((*(node->content)).get_id(),
+//                 (*(node->content)).get_total_points(),
+//                 (*(node->content)).get_goals(),
+//                 (*(node->content)).get_cards());
+//        if ((*(node->content)).get_id() == minId)
+//            passedMin = true;
+//        if ((*(node->content)).get_id() == maxId)
+//            passedMax = true;
+//    }
+//
+//    // CHECK RIGHT of tree
+//    if ((*(node->content)).get_id() < maxId) {
+//        add_to_list_aux(node->right, passedMin, passedMax, list, minId, maxId);
+//    }
+//
+//}
 
 //------------------------------------------OLD DEBUG FUNCTIONS FOR TESTS TO WORK-----------------//
 

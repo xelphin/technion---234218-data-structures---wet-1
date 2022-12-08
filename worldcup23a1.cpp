@@ -95,23 +95,23 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
             player->set_global_score_node(all_players_score_AVL.add(player));
 
             // Add player to sorted_score_List
-            AVL_tree<std::shared_ptr<Player>>::Node* close_node = all_players_score_AVL.find_a_closest(player->get_global_score_node()); // find neighbor
-            if (close_node != nullptr && close_node->content != nullptr) {
-                // Get where close_node points to itself in the list
-                NodeList::Node* close_node_in_list = close_node->content->get_playerScoreListNode();
-                if (close_node_in_list == nullptr) {
-                    std::cout << "ERROR: all players should point to where they are in the list" << std::endl;
-                    throw;
-                }
-                // Add to the list our new player (and make our player point to its location in the list)
-                NodeList::Node* newNode = sorted_score_List.add(close_node_in_list, playerId, 0, goals, cards);
-                player->set_playerScoreListNode(newNode);
-
-            } else { // empty list
-                // add player directly with nullptr
-                NodeList::Node* newNode = sorted_score_List.add(nullptr, playerId, 0, goals, cards);
-                player->set_playerScoreListNode(newNode);
-            }
+//            AVL_tree<std::shared_ptr<Player>>::Node* close_node = all_players_score_AVL.find_a_closest(player->get_global_score_node()); // find neighbor
+//            if (close_node != nullptr && close_node->content != nullptr) {
+//                // Get where close_node points to itself in the list
+//                NodeList::Node* close_node_in_list = close_node->content->get_playerScoreListNode();
+//                if (close_node_in_list == nullptr) {
+//                    std::cout << "ERROR: all players should point to where they are in the list" << std::endl;
+//                    throw;
+//                }
+//                // Add to the list our new player (and make our player point to its location in the list)
+//                NodeList::Node* newNode = sorted_score_List.add(close_node_in_list, playerId, 0, goals, cards);
+//                player->set_playerScoreListNode(newNode);
+//
+//            } else { // empty list
+//                // add player directly with nullptr
+//                NodeList::Node* newNode = sorted_score_List.add(nullptr, playerId, 0, goals, cards);
+//                player->set_playerScoreListNode(newNode);
+//            }
 
 
         } catch (std::bad_alloc const&) { // EXCEPTION: Bad Alloc
@@ -158,9 +158,9 @@ StatusType world_cup_t::remove_player(int playerId)
                     valid_teams_AVL.remove(playerTeam->get_id());
                 }
 
-                // Remove player from sorted_score_List
-                NodeList::Node* node_in_list = player->get_playerScoreListNode();
-                sorted_score_List.remove(node_in_list);
+//                // Remove player from sorted_score_List
+//                NodeList::Node* node_in_list = player->get_playerScoreListNode();
+//                sorted_score_List.remove(node_in_list);
 
             } else {
                 success1 = false;
@@ -445,50 +445,53 @@ StatusType world_cup_t::get_all_players(int teamId, int *const output)
 
 output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
 {
-    if (playerId <= 0 || teamId <= 0 || all_players_AVL.get_amount() <= 1){
-        return StatusType::INVALID_INPUT;
-    }
-    std::cout << all_players_score_AVL.debugging_printTree_new() << std::endl;
-    std::cout << sorted_score_List.debug_print() << std::endl;
-
-    try {
-        // FIND PLAYER
-        std::shared_ptr<Player> player = all_players_AVL.get_content(playerId); // O(log(n))
-        if (player != nullptr) {
-            // PLAYER FOUND
-            NodeList::Node* node_in_list = player->get_playerScoreListNode();
-            return sorted_score_List.get_closest(node_in_list);
-
-        } else {
-            // PLAYER NOT FOUND
-            return StatusType::FAILURE;
-        }
-
-    } catch (std::bad_alloc const& ) {
-        return StatusType::ALLOCATION_ERROR;
-    }
-
-
-
-    return StatusType::FAILURE;
+    return 0;
+//    if (playerId <= 0 || teamId <= 0 || all_players_AVL.get_amount() <= 1){
+//        return StatusType::INVALID_INPUT;
+//    }
+//    std::cout << all_players_score_AVL.debugging_printTree_new() << std::endl;
+////    std::cout << sorted_score_List.debug_print() << std::endl;
+//
+//    try {
+//        // FIND PLAYER
+//        std::shared_ptr<Player> player = all_players_AVL.get_content(playerId); // O(log(n))
+//        if (player != nullptr) {
+//            // PLAYER FOUND
+//            NodeList::Node* node_in_list = player->get_playerScoreListNode();
+//            return sorted_score_List.get_closest(node_in_list);
+//
+//        } else {
+//            // PLAYER NOT FOUND
+//            return StatusType::FAILURE;
+//        }
+//
+//    } catch (std::bad_alloc const& ) {
+//        return StatusType::ALLOCATION_ERROR;
+//    }
+//
+//
+//
+//    return StatusType::FAILURE;
 }
 
 output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
 {
-	if (minTeamId<0 || maxTeamId<0 || maxTeamId<minTeamId)
-            return StatusType::INVALID_INPUT;
-    if (valid_teams_AVL.get_amount() < 1) {
-        return StatusType::FAILURE;
-    }
-    try {
-        NodeList list;
-        valid_teams_AVL.add_to_list(list, minTeamId, maxTeamId);
-        int winnerId = list.knockout();
-        if (winnerId < 1)
-            return StatusType::FAILURE;
-        return winnerId;
-    } catch (std::bad_alloc const&){
-        return StatusType::ALLOCATION_ERROR;
-    }
+    return minTeamId+maxTeamId;
+//	if (minTeamId<0 || maxTeamId<0 || maxTeamId<minTeamId)
+//            return StatusType::INVALID_INPUT;
+//    if (valid_teams_AVL.get_amount() < 1) {
+//        return StatusType::FAILURE;
+//    }
+//    try {
+//        NodeList list;
+//        valid_teams_AVL.add_to_list(list, minTeamId, maxTeamId);
+//        int winnerId = 0;
+////        list.knockout();
+//        if (winnerId < 1)
+//            return StatusType::FAILURE;
+//        return winnerId;
+//    } catch (std::bad_alloc const&){
+//        return StatusType::ALLOCATION_ERROR;
+//    }
     return StatusType::FAILURE;
 }

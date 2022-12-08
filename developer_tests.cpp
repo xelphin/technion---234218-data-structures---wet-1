@@ -879,50 +879,50 @@ bool worldCup_Get_All_Players_Count()
 bool nodeList_Add()
 {
     int tests = 0;
-    NodeList list;
-    NodeList::Node* p1 = list.add(nullptr, 1, 20, 20, 0);
-    NodeList::Node* p2 =list.add(p1, 2, 27, 27, 2);
-    NodeList::Node* p3 =list.add(p1, 3, 18, 18, 0);
-    NodeList::Node* p4 =list.add(p2, 4, 27, 27, 0);
-    list.add(p3, 5,19,19,0);
-    list.add(p4, 6,30,30,0);
-    tests += ("3 5 1 2 4 6 " == list.debug_print() );
-
-    std::cout << list.debug_print() << std::endl;
+//    NodeList list;
+//    NodeList::Node* p1 = list.add(nullptr, 1, 20, 20, 0);
+//    NodeList::Node* p2 =list.add(p1, 2, 27, 27, 2);
+//    NodeList::Node* p3 =list.add(p1, 3, 18, 18, 0);
+//    NodeList::Node* p4 =list.add(p2, 4, 27, 27, 0);
+//    list.add(p3, 5,19,19,0);
+//    list.add(p4, 6,30,30,0);
+//    tests += ("3 5 1 2 4 6 " == list.debug_print() );
+//
+//    std::cout << list.debug_print() << std::endl;
     return tests == 1;
 }
 
 bool nodeList_Remove()
 {
     int tests = 0;
-    NodeList list;
-    NodeList::Node* p1 = list.add(nullptr, 1, 20, 20, 0);
-    NodeList::Node* p2 =list.add(p1, 2, 25, 25, 0);
-    NodeList::Node* p3 =list.add(p1, 3, 18, 18, 0);
-    NodeList::Node* p4 =list.add(p2, 4, 27, 27, 0);
-    NodeList::Node* p5 = list.add(p3, 5, 19, 19, 0);
-    NodeList::Node* p6 = list.add(p4, 6, 30, 30, 0);
-    tests += ("3 5 1 2 4 6 " == list.debug_print() );
-    // Start removing
-    list.remove(p5);
-    tests += ("3 1 2 4 6 " == list.debug_print() );
-    list.remove(p3);
-    tests += ("1 2 4 6 " == list.debug_print() );
-    list.remove(p6);
-    tests += ("1 2 4 " == list.debug_print() );
-
-    NodeList::Node* p3_new = list.add(p1, 3, 10, 10, 0);
-
-    tests += ("3 1 2 4 " == list.debug_print() );
-    list.remove(p4);
-    tests += ("3 1 2 " == list.debug_print() );
-    list.remove(p3_new);
-    tests += ("1 2 " == list.debug_print() );
-    // std::cout << "Final: " << list.debug_print() << std::endl;
-    list.remove(p2);
-    tests += ("1 " == list.debug_print() );
-    list.remove(p1);
-    tests += ("" == list.debug_print() );
+//    NodeList list;
+//    NodeList::Node* p1 = list.add(nullptr, 1, 20, 20, 0);
+//    NodeList::Node* p2 =list.add(p1, 2, 25, 25, 0);
+//    NodeList::Node* p3 =list.add(p1, 3, 18, 18, 0);
+//    NodeList::Node* p4 =list.add(p2, 4, 27, 27, 0);
+//    NodeList::Node* p5 = list.add(p3, 5, 19, 19, 0);
+//    NodeList::Node* p6 = list.add(p4, 6, 30, 30, 0);
+//    tests += ("3 5 1 2 4 6 " == list.debug_print() );
+//    // Start removing
+//    list.remove(p5);
+//    tests += ("3 1 2 4 6 " == list.debug_print() );
+//    list.remove(p3);
+//    tests += ("1 2 4 6 " == list.debug_print() );
+//    list.remove(p6);
+//    tests += ("1 2 4 " == list.debug_print() );
+//
+//    NodeList::Node* p3_new = list.add(p1, 3, 10, 10, 0);
+//
+//    tests += ("3 1 2 4 " == list.debug_print() );
+//    list.remove(p4);
+//    tests += ("3 1 2 " == list.debug_print() );
+//    list.remove(p3_new);
+//    tests += ("1 2 " == list.debug_print() );
+//    // std::cout << "Final: " << list.debug_print() << std::endl;
+//    list.remove(p2);
+//    tests += ("1 " == list.debug_print() );
+//    list.remove(p1);
+//    tests += ("" == list.debug_print() );
 
     return tests == 9;
 }
@@ -930,20 +930,20 @@ bool nodeList_Remove()
 bool nodeList_Get_Closest()
 {
     int tests = 0;
-    NodeList list;
-    tests += (list.get_closest(nullptr) == 0);
-    NodeList::Node* p1 = list.add(nullptr, 1, 0, 1, 0);
-    tests += (list.get_closest(p1) == 0);
-    NodeList::Node* p2 = list.add(p1, 2, 0, 5, 0);
-    NodeList::Node* p3 = list.add(p2, 3, 0, 8, 0);
-    NodeList::Node* p4 =list.add(p3, 4, 0, 10, 0);
-    list.add(p3, 5, 0, 7, 0);
-    list.add(p2, 6, 0, 5, 0);
-    tests += ("1 2 6 5 3 4 " == list.debug_print() );
-
-    tests += (list.get_closest(p2) == 6);
-    tests += (list.get_closest(p3) == 5);
-    tests += (list.get_closest(p4) == 3);
+//    NodeList list;
+//    tests += (list.get_closest(nullptr) == 0);
+//    NodeList::Node* p1 = list.add(nullptr, 1, 0, 1, 0);
+//    tests += (list.get_closest(p1) == 0);
+//    NodeList::Node* p2 = list.add(p1, 2, 0, 5, 0);
+//    NodeList::Node* p3 = list.add(p2, 3, 0, 8, 0);
+//    NodeList::Node* p4 =list.add(p3, 4, 0, 10, 0);
+//    list.add(p3, 5, 0, 7, 0);
+//    list.add(p2, 6, 0, 5, 0);
+//    tests += ("1 2 6 5 3 4 " == list.debug_print() );
+//
+//    tests += (list.get_closest(p2) == 6);
+//    tests += (list.get_closest(p3) == 5);
+//    tests += (list.get_closest(p4) == 3);
 
     return tests == 6;
 }
@@ -951,15 +951,15 @@ bool nodeList_Get_Closest()
 bool nodeList_Teams_Basics()
 {
     int tests = 0;
-    NodeList list;
-    list.add(1,20,0,0);
-    list.add(3,20,0,0);
-    list.add(6,5,0,0);
-    list.add(7,30,0,0);
-    list.add(10,11,0,0);
-    tests += ("1 3 6 7 10 " == list.debug_print() );
-    //
-    tests += (3 == list.knockout());
+//    NodeList list;
+//    list.add(1,20,0,0);
+//    list.add(3,20,0,0);
+//    list.add(6,5,0,0);
+//    list.add(7,30,0,0);
+//    list.add(10,11,0,0);
+//    tests += ("1 3 6 7 10 " == list.debug_print() );
+//    //
+//    tests += (3 == list.knockout());
 
     return tests == 2;
 }
@@ -967,31 +967,31 @@ bool nodeList_Teams_Basics()
 bool avl_Add_To_List()
 {
     int tests = 0;
-    NodeList list;
-    AVL_tree<Team*> tree1(false); // sort by ID
-    Team team1(1, 20);
-    Team team2(2, 10);
-    Team team3(3, 30);
-    Team team4(4, 60);
-    Team team5(5, 40);
-    Team team6(6, 40);
-    Team team7(7, 40);
-    Team team8(8, 40);
-    tree1.add(&team1);
-    tree1.add(&team2);
-    tree1.add(&team3);
-    tree1.add(&team4);
-    tree1.add(&team5);
-    tree1.add(&team6);
-    tree1.add(&team7);
-    tree1.add(&team8);
-    //
-    std::cout << tree1.debugging_printTree_new();
-    //
-    tree1.add_to_list(list, 2, 6);
-    std::cout << "list: " << list.debug_print() << std::endl;
-    tests +=  ("2 3 4 5 6 " == list.debug_print() );
-    tests += (4 == list.knockout());
+//    NodeList list;
+//    AVL_tree<Team*> tree1(false); // sort by ID
+//    Team team1(1, 20);
+//    Team team2(2, 10);
+//    Team team3(3, 30);
+//    Team team4(4, 60);
+//    Team team5(5, 40);
+//    Team team6(6, 40);
+//    Team team7(7, 40);
+//    Team team8(8, 40);
+//    tree1.add(&team1);
+//    tree1.add(&team2);
+//    tree1.add(&team3);
+//    tree1.add(&team4);
+//    tree1.add(&team5);
+//    tree1.add(&team6);
+//    tree1.add(&team7);
+//    tree1.add(&team8);
+//    //
+//    std::cout << tree1.debugging_printTree_new();
+//    //
+//    tree1.add_to_list(list, 2, 6);
+//    std::cout << "list: " << list.debug_print() << std::endl;
+//    tests +=  ("2 3 4 5 6 " == list.debug_print() );
+//    tests += (4 == list.knockout());
 
     return tests == 2;
 }
@@ -1306,10 +1306,10 @@ bool worldCup_get_closest_player()
     tests += (worldCup.get_closest_player(3,2).ans() == 4);
     tests += (worldCup.get_closest_player(5,1).ans() == 2);
 
-//    world_cup_t *obj = new world_cup_t();
-//    StatusType res = obj->add_team(1, 2);
-//    assert(res == StatusType::SUCCESS);
-//    delete obj;
+    world_cup_t *obj = new world_cup_t();
+    StatusType res = obj->add_team(1, 2);
+    assert(res == StatusType::SUCCESS);
+    delete obj;
 
     return tests == 2;
 
