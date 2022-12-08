@@ -199,12 +199,11 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
             playerTeam->set_top_scorer();
 
             // UPDATE WORLD-CUP
+            all_players_score_AVL.remove(playerId);
+            player->set_global_score_node(all_players_score_AVL.add(player));
             set_top_scorer();
-            NodeList::Node* node_in_list = player->get_playerScoreListNode();
-            sorted_score_List.remove(node_in_list);
+            sorted_score_List.remove(player->get_playerScoreListNode());
             add_player_to_sorted_score_list(player);
-
-
         } else {
             return StatusType::FAILURE;
         }
