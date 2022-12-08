@@ -130,7 +130,7 @@ StatusType world_cup_t::remove_player(int playerId)
                 playerTeam->update_cardsReceived(-(player->get_cards()));
                 playerTeam->update_scoredGoals(-(player->get_score()));
                 playerTeam->update_removeAGoalKeeper(player->get_isGoalKeeper());
-                if (playerTeam->get_isValid() && team_valid_before_action){
+                if (!playerTeam->get_isValid() && team_valid_before_action){ //team not valid anymore
                     valid_teams_AVL.remove(playerTeam->get_id());
                 }
             } else {
