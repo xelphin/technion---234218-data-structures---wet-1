@@ -4,17 +4,17 @@
 
 Team::Team(int id, int points)
 : id(id), total_players(0), total_points(points), total_goals(0), total_cards(0), total_goalKeepers(0),
- gamesPlayed(0), top_scorer(nullptr), team_players(SORT_BY_ID), team_players_scores(SORT_BY_SCORE)
+ gamesPlayed(0), top_scorer_id(0), team_players(SORT_BY_ID), team_players_scores(SORT_BY_SCORE)
 {}
 
 
 // C'tor used for merging two different teams
-Team::Team(int id, int points, int total_players, int total_goals, int total_cards, int total_goalKeepers, std::shared_ptr<Player> top_scorer,
+Team::Team(int id, int points, int total_players, int total_goals, int total_cards, int total_goalKeepers,
      AVL_tree<std::shared_ptr<Player>>* team1_players, AVL_tree<std::shared_ptr<Player>>* team2_players,
      AVL_tree<std::shared_ptr<Player>>* team1_players_scores, AVL_tree<std::shared_ptr<Player>>* team2_players_scores)
      :
      id(id), total_players(total_players), total_points(points), total_goals(total_goals),
-     total_cards(total_cards), total_goalKeepers(total_goalKeepers), gamesPlayed(0), top_scorer(top_scorer),
+     total_cards(total_cards), total_goalKeepers(total_goalKeepers), gamesPlayed(0), top_scorer_id(0),
 
      // Each Calls: c'tor of AVL_tree and creates new tree with all players from team1 and team2
      team_players(*team1_players, *team2_players, SORT_BY_ID, Functor(this)),
@@ -48,7 +48,7 @@ void Team::add_player(const std::shared_ptr<Player>& player) {
     }
     team_players.add(player);
     team_players_scores.add(player);
-    compare_to_top_scorer(player);
+    set_top_scorer();
     total_players++;
 }
 
@@ -63,13 +63,9 @@ bool Team::remove_player(int player_id)
 {
     // needs to be O(players in the system)
 
-    if (top_scorer){
-        if (top_scorer->get_id() == player_id){ // we are removing the top scorer. we now need a new one.
-            top_scorer = team_players_scores.get_biggest_in_tree();
-        }
-    }
     team_players_scores.remove_by_item(find_player(player_id));
     bool success = team_players.remove(player_id);
+    set_top_scorer();
     if (success) {
         total_players--;
     }
@@ -180,17 +176,16 @@ bool Team::get_isValid() const
     return false;
 }
 
-void Team::compare_to_top_scorer(const std::shared_ptr<Player>& player) {
-    if (not top_scorer){
-        top_scorer = player;
-    }
-    else if(top_scorer->get_score() < player->get_score() ||
-            (top_scorer->get_score() == player->get_score() && top_scorer->get_id() == player->get_id()))
-    {
-        top_scorer = player;
-    }
+int Team::get_top_scorer() {
+    return top_scorer_id;
 }
 
-std::shared_ptr<Player> Team::get_top_scorer() {
-    return top_scorer;
+void Team::set_top_scorer() {
+    if(team_players_scores.get_biggest_in_tree())
+    {
+        top_scorer_id = team_players_scores.get_biggest_in_tree()->get_id();
+    }
+    else{
+        top_scorer_id = 0;
+    }
 }

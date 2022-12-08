@@ -10,7 +10,7 @@ class Player;
 class Team{
 public:
     Team(int id, int points);
-    Team(int id, int points, int total_players, int total_goals, int total_cards, int total_goalKeepers, std::shared_ptr<Player> top_scorer,
+    Team(int id, int points, int total_players, int total_goals, int total_cards, int total_goalKeepers,
          AVL_tree<std::shared_ptr<Player>>* team1_players, AVL_tree<std::shared_ptr<Player>>* team2_players,
          AVL_tree<std::shared_ptr<Player>>* team1_players_scores, AVL_tree<std::shared_ptr<Player>>* team2_players_scores);
 
@@ -30,7 +30,7 @@ public:
     bool get_isValid() const;
     int operator ID() const;
     int operator SCORE(const Team& other) const;
-    std::shared_ptr<Player> get_top_scorer();
+    int get_top_scorer();
 
     void update_scoredGoals(int toAdd);
     void update_cardsReceived(int toAdd);
@@ -38,7 +38,7 @@ public:
     void update_removeAGoalKeeper(bool remove);
     void update_totalPoints(int toAdd);
     void update_gamesPlayed();
-    void compare_to_top_scorer(const std::shared_ptr<Player> &sharedPtr);
+    void set_top_scorer();
 
 
     // PRINTING AND DEBUGGING
@@ -54,7 +54,7 @@ private:
     int total_cards;
     int total_goalKeepers;
     int gamesPlayed;
-    std::shared_ptr<Player> top_scorer; //should get updated when a player is added or removed
+    int top_scorer_id; //should get updated when a player is added or removed
     AVL_tree<std::shared_ptr<Player>> team_players;
     AVL_tree<std::shared_ptr<Player>> team_players_scores;
 
