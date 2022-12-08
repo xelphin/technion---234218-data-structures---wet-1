@@ -93,24 +93,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
             player->set_global_score_node(all_players_score_AVL.add(player));
             set_top_scorer();
 
-            // Add player to sorted_score_List
-            AVL_tree<std::shared_ptr<Player>>::Node* close_node = all_players_score_AVL.find_a_closest(player->get_global_score_node()); // find neighbor
-            if (close_node != nullptr && close_node->content != nullptr) {
-                // Get where close_node points to itself in the list
-                NodeList::Node* close_node_in_list = close_node->content->get_playerScoreListNode();
-                if (close_node_in_list == nullptr) {
-                    std::cout << "ERROR: all players should point to where they are in the list" << std::endl;
-                    throw;
-                }
-                // Add to the list our new player (and make our player point to its location in the list)
-                NodeList::Node* newNode = sorted_score_List.add(close_node_in_list, playerId, 0, goals, cards);
-                player->set_playerScoreListNode(newNode);
-
-            } else { // empty list
-                // add player directly with nullptr
-                NodeList::Node* newNode = sorted_score_List.add(nullptr, playerId, 0, goals, cards);
-                player->set_playerScoreListNode(newNode);
-            }
+            add_player_to_sorted_score_list(player);
 
 
         } catch (std::bad_alloc const&) { // EXCEPTION: Bad Alloc
@@ -158,8 +141,8 @@ StatusType world_cup_t::remove_player(int playerId)
                 }
 
                 // Remove player from sorted_score_List
-                NodeList::Node* node_in_list = player->get_playerScoreListNode();
-                sorted_score_List.remove(node_in_list);
+                sorted_score_List.remove(player->get_playerScoreListNode());
+
 
             } else {
                 success1 = false;
@@ -197,18 +180,30 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
         // FIND PLAYER
         std::shared_ptr<Player> player = all_players_AVL.get_content(playerId); // O(log(players))
         if (player != nullptr) {
-            //add_player(int playerId, int teamId, int gamesPlayed,
-            //        int goals, int cards, bool goalKeeper)
-            if (player->get_team() == nullptr)
+//            this->remove_player(playerId);
+//            this->add_player(playerId, teamId, gamesPlayedNew, goals, cards, goalKeeper);
+//            // Notice: automatically updates AVLs and Lists
+            Team* playerTeam = player->get_team();
+            if (playerTeam == nullptr){
                 return StatusType::FAILURE;
-            int teamId = player->get_team()->get_id();
-            int gamesPlayedNew = player->get_gamesPlayed_withoutTeam() + gamesPlayed; // TODO: possible needs to be negative something
-            int goals = player->get_score() + scoredGoals;
-            int cards = player->get_cards() + cardsReceived;
-            bool goalKeeper = player->get_isGoalKeeper();
-            this->remove_player(playerId);
-            this->add_player(playerId, teamId, gamesPlayedNew, goals, cards, goalKeeper);
-            // Notice: automatically updates AVLs and Lists
+            }
+
+            // UPDATE PLAYER
+            player->update_gamesPlayed(gamesPlayed);
+            player->update_scoredGoals(scoredGoals);
+            player->update_cardsReceived(cardsReceived);
+
+            // UPDATE TEAM
+            playerTeam->update_cardsReceived(cardsReceived);
+            playerTeam->update_scoredGoals(scoredGoals);
+            playerTeam->set_top_scorer();
+
+            // UPDATE WORLD-CUP
+            set_top_scorer();
+            NodeList::Node* node_in_list = player->get_playerScoreListNode();
+            sorted_score_List.remove(node_in_list);
+            add_player_to_sorted_score_list(player);
+
 
         } else {
             return StatusType::FAILURE;
@@ -498,5 +493,26 @@ void world_cup_t::set_top_scorer() {
     else
     {
         top_scorer_id = 0;
+    }
+}
+
+void world_cup_t::add_player_to_sorted_score_list(std::shared_ptr<Player> player) {
+    // Add player to sorted_score_List
+    AVL_tree<std::shared_ptr<Player>>::Node* close_node = all_players_score_AVL.find_a_closest(player->get_global_score_node()); // find neighbor
+    if (close_node != nullptr && close_node->content != nullptr) {
+        // Get where close_node points to itself in the list
+        NodeList::Node* close_node_in_list = close_node->content->get_playerScoreListNode();
+        if (close_node_in_list == nullptr) {
+            std::cout << "ERROR: all players should point to where they are in the list" << std::endl;
+            throw;
+        }
+        // Add to the list our new player (and make our player point to its location in the list)
+        NodeList::Node* newNode = sorted_score_List.add(close_node_in_list, player->get_id(), 0, player->get_score(), player->get_cards());
+        player->set_playerScoreListNode(newNode);
+
+    } else { // empty list
+        // add player directly with nullptr
+        NodeList::Node* newNode = sorted_score_List.add(nullptr, player->get_id(), 0, player->get_score(), player->get_cards());
+        player->set_playerScoreListNode(newNode);
     }
 }

@@ -80,6 +80,7 @@ public:
 	output_t<int> knockout_winner(int minTeamId, int maxTeamId);
 	
 	// } </DO-NOT-MODIFY>
+    void add_player_to_sorted_score_list(std::shared_ptr<Player> player);
 };
 
 #endif // WORLDCUP23A1_H_
