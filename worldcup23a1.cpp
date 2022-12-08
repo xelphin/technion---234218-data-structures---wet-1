@@ -226,7 +226,6 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
 
 StatusType world_cup_t::play_match(int teamId1, int teamId2){
     // O(log(k))
-    // TODO: Check team really gets updated where necessary and properly -> Check from play_match test
     if (teamId1 <= 0 || teamId2 <= 0 || teamId1 == teamId2) {
         return StatusType::INVALID_INPUT;
     }
@@ -247,13 +246,10 @@ StatusType world_cup_t::play_match(int teamId1, int teamId2){
     if (score1 == score2) {
         team1->update_totalPoints(1);
         team2->update_totalPoints(1);
-        std::cout << "Tie" << std::endl;
     } else if (score1 < score2) {
         team2->update_totalPoints(3);
-        std::cout << "Team: " << (teamId2) << " won" << std::endl;
     } else {
         team1->update_totalPoints(3);
-        std::cout << "Team: " << (teamId1) << " won" << std::endl;;
     }
 
     // UPDATE GAMES PLAYED O(1)
