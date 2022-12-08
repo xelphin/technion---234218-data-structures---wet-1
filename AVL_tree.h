@@ -966,7 +966,6 @@ void AVL_tree<T>::add_to_list_aux(AVL_tree::Node* node, bool& passedMin, bool& p
         return;
     if (node->content == nullptr)
         return;
-    std::cout << "We are looking at: " << ((*(node->content)).get_id()) << std::endl;
     // CHECK LEFT of tree
     if ((*(node->content)).get_id() > minId) {
         add_to_list_aux(node->left, passedMin, passedMax, list, minId, maxId);

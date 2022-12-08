@@ -12,7 +12,6 @@ NodeList::~NodeList() {
     while (currentNode)
     {
         NodeList::Node* nextNode = currentNode->next;
-        std::cout << "deleting: " << (currentNode->id) << std::endl;
         delete currentNode;
         currentNode = nextNode;
     }
@@ -42,27 +41,21 @@ NodeList::Node* NodeList::add(Node* nodeNextTo, int id, int total_points, int to
     // Empty list
     if (nodeNextTo == nullptr) { // empty list
         if (start != nullptr || end != nullptr) {
-            std::cout << "mistake" << std::endl;
             return nullptr;
         }
-        std::cout << "adding " << (id) << " to empty list" << std::endl;
         start = newNode;
         end = newNode;
         newNode->next = nullptr;
         newNode->prev = nullptr;
-        std::cout << "list: " << (this->debug_print()) << std::endl;
         return newNode;
     }
     // Not empty
     int winnerId = get_winnerId(*nodeNextTo, *newNode);
     if (winnerId == nodeNextTo->get_id()) { // prevNode < newNode < nodeNextTo
-        std::cout << "Entering " << (id) << " before " << (nodeNextTo->get_id()) << std::endl;
         NodeList::Node* prevNode = nodeNextTo->prev;
         if (prevNode != nullptr) {
             prevNode->next = newNode;
         } else {
-            std::cout << "Made " << (id) << " start of list" << std::endl;
-
             start = newNode;
         }
         newNode->prev = prevNode;
@@ -73,14 +66,12 @@ NodeList::Node* NodeList::add(Node* nodeNextTo, int id, int total_points, int to
         if (postNode != nullptr)
             postNode->prev = newNode;
         else {
-            std::cout << "Made " << (id) << " end of list" << std::endl;
             end = newNode;
         }
         newNode->next = postNode;
         newNode->prev = nodeNextTo;
         nodeNextTo->next = newNode;
     }
-    std::cout << "list: " << (this->debug_print()) << std::endl;
     return newNode;
 }
 
@@ -88,52 +79,43 @@ void NodeList::remove(Node* node)
 {
     if (node == nullptr)
         return;
-    std::cout << "Removing: " << (node->id) << std::endl;
     NodeList::Node* prevNode = node->prev;
     NodeList::Node* nextNode = node->next;
     // ONE NODE
     if (prevNode == nullptr && nextNode == nullptr) {
         if (start != end && start != nullptr) {
-            std::cout << "ERROR!" << std::endl;
             return;
         }
         delete node;
         start = nullptr;
         end = nullptr;
-        std::cout << "List after removal: " << this->debug_print() << std::endl;
         return;
     }
     // node == start
     if (prevNode == nullptr) {
         if (start != node) {
-            std::cout << "ERROR!" << std::endl;
             return;
         }
         start = nextNode;
         if (start == nullptr)
-            std::cout << "ERROR!" << std::endl;
         nextNode->prev = nullptr;
         delete node;
-        std::cout << "List after removal: " << this->debug_print() << std::endl;
         return;
     }
     // node == end
     if (nextNode == nullptr) {
         if (end != node) {
-            std::cout << "ERROR2!" << std::endl;
             return;
         }
         end = prevNode;
         prevNode->next = nullptr;
         delete node;
-        std::cout << "List after removal: " << this->debug_print() << std::endl;
         return;
     }
     // node is in middle
     prevNode->next = nextNode;
     nextNode->prev = prevNode;
     delete node;
-    std::cout << "List after removal: " << this->debug_print() << std::endl;
 }
 
 int NodeList::knockout() // O(r)
@@ -167,7 +149,6 @@ void NodeList::call_match() // O(current amount of teams playing)
 
     while (team1 && team2) { // prevNode -> team1 -> team2 -> nextNode
         int winnerId = get_winnerId(*team1, *team2);
-        std::cout << "Match: " << (team1->id) << " :: " << (team2->id) << " winner: " << (winnerId) << std::endl;
         // Create new node
         Node* newNode = new Node(winnerId,
                                  team1->total_points + team2->total_points + 3,
@@ -201,9 +182,7 @@ void NodeList::call_match() // O(current amount of teams playing)
         nextNode = team2->next;
 
         // debug
-        std::cout << "list: " << (this->debug_print()) << std::endl;
     }
-    std::cout << "list end: " << (this->debug_print()) << std::endl;
 }
 
 int NodeList::get_winnerId(Node& team1, Node& team2)

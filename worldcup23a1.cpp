@@ -317,8 +317,8 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
             valid_teams_AVL.add(team0);
         }
 
-        std::cout << (team0->get_AVL_tree_id())->debugging_printTree();
-        std::cout << "amount of players in team0: " << (team0->get_total_players()) << std::endl;
+//        std::cout << (team0->get_AVL_tree_id())->debugging_printTree();
+//        std::cout << "amount of players in team0: " << (team0->get_total_players()) << std::endl;
 
     } catch (std::bad_alloc const&){
         return StatusType::ALLOCATION_ERROR;
