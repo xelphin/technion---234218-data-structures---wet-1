@@ -236,6 +236,10 @@ int NodeList::get_closest(Node* node) const
         return next->get_id();
     if (abs(prev->id - node->id) < abs(next->id - node->id))
         return prev->get_id();
+    if (prev->id > next->id)
+        return prev->get_id();
+    if (prev->id < next->id)
+        return next->get_id();
     return 0;
 }
 
