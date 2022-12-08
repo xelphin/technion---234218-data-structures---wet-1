@@ -180,9 +180,6 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
         // FIND PLAYER
         std::shared_ptr<Player> player = all_players_AVL.get_content(playerId); // O(log(players))
         if (player != nullptr) {
-//            this->remove_player(playerId);
-//            this->add_player(playerId, teamId, gamesPlayedNew, goals, cards, goalKeeper);
-//            // Notice: automatically updates AVLs and Lists
             Team* playerTeam = player->get_team();
             if (playerTeam == nullptr){
                 return StatusType::FAILURE;
@@ -196,7 +193,8 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
             // UPDATE TEAM
             playerTeam->update_cardsReceived(cardsReceived);
             playerTeam->update_scoredGoals(scoredGoals);
-            playerTeam->set_top_scorer();
+            playerTeam->remove_player(playerId);
+            playerTeam->add_player(player);
 
             // UPDATE WORLD-CUP
             all_players_score_AVL.remove(playerId);
@@ -204,6 +202,7 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
             set_top_scorer();
             sorted_score_List.remove(player->get_playerScoreListNode());
             add_player_to_sorted_score_list(player);
+
         } else {
             return StatusType::FAILURE;
         }
