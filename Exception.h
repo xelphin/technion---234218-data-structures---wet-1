@@ -5,7 +5,6 @@
 #ifndef AVL_TREE_H_EXCEPTION_H
 #define AVL_TREE_H_EXCEPTION_H
 
-#include <string>
 #include <exception>
 
 class ID_ALREADY_EXISTS : public std::exception {

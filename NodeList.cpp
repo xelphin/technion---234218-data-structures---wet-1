@@ -200,7 +200,7 @@ int NodeList::get_winnerId(Node& team1, Node& team2)
     int winnerId = 0;
     if (team1.get_match_points() > team2.get_match_points()) {
         winnerId = team1.id;
-    } else if (team1.get_match_points() > team2.get_match_points()) {
+    } else if (team2.get_match_points() > team1.get_match_points()) {
         winnerId = team2.id;
     } else if (team1.id > team2.id){
         winnerId = team1.id;

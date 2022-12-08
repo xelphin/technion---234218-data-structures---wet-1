@@ -1,5 +1,5 @@
 /*
- * template for an AVL_tree, that will use Nodes.
+ * template for an AVL_tree, uses Nodes.
  * the Nodes ALWAYS hold a ---POINTER--- to the item. it may be a unique_ptr or a shared_ptr or a regular one,
  * but it's always a pointer.
  * comparison should be between nodes, not content, since the nodes know which comparison function to call.
@@ -10,6 +10,7 @@
  * all players_id AVL.
  * all players_score AVL.
  * players AVL (for every team).
+ * players score AVL (for every team).
  *
  */
 

@@ -164,8 +164,6 @@ StatusType world_cup_t::remove_player(int playerId)
         amount_players--;
         return StatusType::SUCCESS;
     }
-    // DON'T DELETE TILL FINISHED ALL DEBUGGING
-    std::cout << "OUR ERROR - SHOULD NEVER GET HERE!!!!" << std::endl;
     return StatusType::FAILURE;
 }
 
@@ -193,10 +191,12 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
             // UPDATE TEAM
             playerTeam->update_cardsReceived(cardsReceived);
             playerTeam->update_scoredGoals(scoredGoals);
+            // remove and re-add for correct position in score tree
             playerTeam->remove_player(playerId);
             playerTeam->add_player(player);
 
             // UPDATE WORLD-CUP
+            // remove and re-add for correct position in score tree
             all_players_score_AVL.remove(playerId);
             player->set_global_score_node(all_players_score_AVL.add(player));
             set_top_scorer();
@@ -333,8 +333,8 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
             valid_teams_AVL.add(team0);
         }
 
-//        std::cout << (team0->get_AVL_tree_id())->debugging_printTree();
-//        std::cout << "amount of players in team0: " << (team0->get_total_players()) << std::endl;
+//        //std::cout << (team0->get_AVL_tree_id())->debugging_printTree();
+//        //std::cout << "amount of players in team0: " << (team0->get_total_players()) << std::endl;
 
     } catch (std::bad_alloc const&){
         return StatusType::ALLOCATION_ERROR;
@@ -494,14 +494,14 @@ void world_cup_t::set_top_scorer() {
     }
 }
 
-void world_cup_t::add_player_to_sorted_score_list(std::shared_ptr<Player> player) {
+void world_cup_t::add_player_to_sorted_score_list(const std::shared_ptr<Player>& player) {
     // Add player to sorted_score_List
     AVL_tree<std::shared_ptr<Player>>::Node* close_node = all_players_score_AVL.find_a_closest(player->get_global_score_node()); // find neighbor
     if (close_node != nullptr && close_node->content != nullptr) {
         // Get where close_node points to itself in the list
         NodeList::Node* close_node_in_list = close_node->content->get_playerScoreListNode();
         if (close_node_in_list == nullptr) {
-            std::cout << "ERROR: all players should point to where they are in the list" << std::endl;
+            //std::cout << "ERROR: all players should point to where they are in the list" << std::endl;
             throw;
         }
         // Add to the list our new player (and make our player point to its location in the list)

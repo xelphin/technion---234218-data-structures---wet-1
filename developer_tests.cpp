@@ -1637,6 +1637,72 @@ bool omeramir_tests_line(){
         }
     }
 
+    std::cout <<("long one") << std::endl;
+    {
+        world_cup_t *obj = new world_cup_t();
+        StatusType res = obj->add_team(1, 2);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_team(2, 2);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1001, 1, 10, 15, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1002, 1, 10, 36, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1003, 1, 10, 3, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1004, 1, 10, 33, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1005, 1, 10, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+
+        res = obj->add_player(1006, 2, 10, 15, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1007, 2, 10, 38, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1008, 2, 10, 3, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1009, 2, 10, 33, 3, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1010, 2, 10, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        output_t<int> resn1 = obj->get_top_scorer(1);
+        assert(resn1.status() == StatusType::SUCCESS);
+        assert(resn1.ans() == 1002);
+        output_t<int> resn2 = obj->get_top_scorer(2);
+        assert(resn2.status() == StatusType::SUCCESS);
+        assert(resn2.ans() == 1007);
+
+        output_t<int> resn3 = obj->get_top_scorer(-1);
+        assert(resn3.status() == StatusType::SUCCESS);
+        assert(resn3.ans() == 1007);
+
+        res = obj->remove_player(1007);
+        assert(res == StatusType::SUCCESS);
+        output_t<int> resn4 = obj->get_top_scorer(-1);
+        assert(resn4.status() == StatusType::SUCCESS);
+        assert(resn4.ans() == 1002);
+
+        res = obj->add_player(1007, 2, 10, 38, 0, false);
+        assert(res == StatusType::SUCCESS);
+        output_t<int> resn5 = obj->get_top_scorer(-1);
+        assert(resn5.status() == StatusType::SUCCESS);
+        assert(resn5.ans() == 1007);
+
+        res = obj->update_player_stats(1001, 23, 50, 0);
+        assert(res == StatusType::SUCCESS);
+        output_t<int> resn6 = obj->get_top_scorer(-1);
+        assert(resn6.status() == StatusType::SUCCESS);
+        assert(resn6.ans() == 1001);
+        output_t<int> resn7 = obj->get_top_scorer(1);
+        assert(resn7.status() == StatusType::SUCCESS);
+        assert(resn7.ans() == 1001);
+        output_t<int> resn8 = obj->get_top_scorer(2);
+        assert(resn8.status() == StatusType::SUCCESS);
+        assert(resn8.ans() == 1007);
+
+        delete obj;
+    }
+
 
     return true;
 }

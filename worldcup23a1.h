@@ -20,6 +20,7 @@
 #include <fstream>
 #include <iostream>
 #include <memory>
+
 #include "AVL_tree.h"
 #include "Player.h"
 #include "Team.h"
@@ -80,7 +81,7 @@ public:
 	output_t<int> knockout_winner(int minTeamId, int maxTeamId);
 	
 	// } </DO-NOT-MODIFY>
-    void add_player_to_sorted_score_list(std::shared_ptr<Player> player);
+    void add_player_to_sorted_score_list(const std::shared_ptr<Player>& player);
 };
 
 #endif // WORLDCUP23A1_H_
