@@ -1131,156 +1131,28 @@ bool omeramir_tests_line451(){
         delete obj;
     }
 
-
-    std::cout << ("segel test")<< std::endl;
+    std::cout <<("get_top_scorer from all 5 players")<< std::endl;
     {
         world_cup_t *obj = new world_cup_t();
-        StatusType res = obj->add_team(1, 10000);
+        StatusType res = obj->add_team(1, 2);
         assert(res == StatusType::SUCCESS);
-        res = obj->add_team(2, 20000);
+        res = obj->add_player(1001, 1, 10, 15, 0, false);
         assert(res == StatusType::SUCCESS);
-        res = obj->add_team(3, 30000);
+        res = obj->add_player(1002, 1, 10, 33, 0, false);
         assert(res == StatusType::SUCCESS);
-        res = obj->add_team(4, 40000);
+        res = obj->add_player(1003, 1, 10, 3, 0, false);
         assert(res == StatusType::SUCCESS);
-        res = obj->add_player(1001, 1, 10, 0, 0, false);
-        assert(res == StatusType::SUCCESS);
-        res = obj->add_player(1002, 1, 10, 0, 0, false);
-        assert(res == StatusType::SUCCESS);
-
-        output_t<int> resn1 = obj->get_num_played_games(1002);
-        assert(resn1.status() == StatusType::SUCCESS);
-        assert(resn1.ans() == 10);
-
-        res = obj->add_player(1003, 1, 10, 0, 0, false);
-        assert(res == StatusType::SUCCESS);
-        res = obj->add_player(1004, 1, 10, 0, 2, false);
+        res = obj->add_player(1004, 1, 10, 20, 0, false);
         assert(res == StatusType::SUCCESS);
         res = obj->add_player(1005, 1, 10, 0, 0, false);
         assert(res == StatusType::SUCCESS);
-        res = obj->add_player(1006, 1, 10, 4, 3, false);
-        assert(res == StatusType::SUCCESS);
-        res = obj->add_player(1007, 1, 10, 0, 0, false);
-        assert(res == StatusType::SUCCESS);
-
-        output_t<int> resn2 = obj->get_num_played_games(1006);
-        assert(resn2.status() == StatusType::SUCCESS);
-        assert(resn2.ans() == 10);
-
-        res = obj->add_player(1008, 1, 10, 0, 0, true);
-        assert(res == StatusType::SUCCESS);
-        res = obj->add_player(1009, 1, 10, 0, 0, false);
-        assert(res == StatusType::SUCCESS);
-        res = obj->add_player(1010, 1, 10, 0, 0, false);
-
-        output_t<int> resn3 = obj->get_num_played_games(1010);
-        assert(resn3.status() == StatusType::SUCCESS);
-        assert(resn3.ans() == 10);
-
-        assert(res == StatusType::SUCCESS);
-        res = obj->add_player(1011, 1, 10, 0, 0, false);
-        assert(res == StatusType::SUCCESS);
-        res = obj->add_player(1012, 1, 10, 0, 0, false);
-        assert(res == StatusType::SUCCESS);
-
-        res = obj->add_player(2001, 2, 20, 0, 0, false);
-        assert(res == StatusType::SUCCESS);
-        res = obj->add_player(2002, 2, 20, 0, 0, false);
-        assert(res == StatusType::SUCCESS);
-        res = obj->add_player(2003, 2, 20, 0, 0, false);
-        assert(res == StatusType::SUCCESS);
-        res = obj->add_player(2004, 2, 20, 0, 0, false);
-        assert(res == StatusType::SUCCESS);
-        res = obj->add_player(2005, 2, 20, 0, 0, false);
-        assert(res == StatusType::SUCCESS);
-        res = obj->add_player(2006, 2, 20, 0, 0, false);
-        assert(res == StatusType::SUCCESS);
-        res = obj->add_player(2007, 2, 20, 0, 0, false);
-        assert(res == StatusType::SUCCESS);
-        res = obj->add_player(2008, 2, 20, 6, 4, true);
-        assert(res == StatusType::SUCCESS);
-        res = obj->add_player(2009, 2, 20, 0, 0, false);
-        assert(res == StatusType::SUCCESS);
-        res = obj->add_player(2010, 2, 0, 0, 0, false);
-        assert(res == StatusType::SUCCESS);
-        res = obj->add_player(2011, 2, 20, 0, 0, false);
-        assert(res == StatusType::SUCCESS);
-
-        res = obj->add_player(3001, 3, 30, 0, 0, false);
-        assert(res == StatusType::SUCCESS);
-        res = obj->add_player(3002, 3, 30, 0, 0, false);
-        assert(res == StatusType::SUCCESS);
-        res = obj->add_player(3003, 3, 30, 0, 0, false);
-        assert(res == StatusType::SUCCESS);
-        res = obj->add_player(3004, 3, 30, 0, 0, false);
-        assert(res == StatusType::SUCCESS);
-        res = obj->add_player(3005, 3, 30, 2, 0, false);
-        assert(res == StatusType::SUCCESS);
-        res = obj->add_player(3006, 3, 30, 0, 0, false);
-        assert(res == StatusType::SUCCESS);
-        res = obj->add_player(3007, 3, 30, 0, 0, false);
-        assert(res == StatusType::SUCCESS);
-        res = obj->add_player(3008, 3, 30, 0, 0, false);
-        assert(res == StatusType::SUCCESS);
-        res = obj->add_player(3009, 3, 30, 0, 2, false);
-        assert(res == StatusType::SUCCESS);
-        res = obj->add_player(3010, 3, 30, 0, 0, true);
-        assert(res == StatusType::SUCCESS);
-        res = obj->add_player(3011, 3, 30, 0, 0, true);
-        assert(res == StatusType::SUCCESS);
-
-        res = obj->add_player(4001, 4, 2, 1, 2, false);
-        assert(res == StatusType::SUCCESS);
-        res = obj->add_player(4002, 4, 2, 2, 2, false);
-        assert(res == StatusType::SUCCESS);
-
-        output_t<int> resn4 = obj->get_num_played_games(3001);
-        assert(resn4.status() == StatusType::SUCCESS);
-        assert(resn4.ans() == 30);
-
-        output_t<int> resn5 = obj->get_num_played_games(3011);
-        assert(resn5.status() == StatusType::SUCCESS);
-        assert(resn5.ans() == 30);
-
-        output_t<int> resn6 = obj->get_num_played_games(1001);
-        assert(resn6.status() == StatusType::SUCCESS);
-        assert(resn6.ans() == 10);
-
-        output_t<int> resn7 = obj->get_num_played_games(4001);
-        assert(resn7.status() == StatusType::SUCCESS);
-        assert(resn7.ans() == 2);
-
-        AVL_testing<Player*>::run_tests_on_worldCup(obj);
-
-        res = obj->update_player_stats(3001, 2, 1, 1);
-        assert(res == StatusType::SUCCESS);
-        res = obj->update_player_stats(3011, 2, 1, 1);
-        assert(res == StatusType::SUCCESS);
-        res = obj->update_player_stats(1001, 2, 1, 1);
-        assert(res == StatusType::SUCCESS);
-        res = obj->update_player_stats(4001, 2, 1, 1);
-        assert(res == StatusType::SUCCESS);
-
-
-        AVL_testing<Player*>::run_tests_on_worldCup(obj);
-        output_t<int> resn8 = obj->get_num_played_games(3001);
-        assert(resn8.status() == StatusType::SUCCESS);
-        assert(resn8.ans() == 32);
-
-        output_t<int> resn9 = obj->get_num_played_games(3011);
-        assert(resn9.status() == StatusType::SUCCESS);
-        assert(resn9.ans() == 32);
-
-        output_t<int> resn10 = obj->get_num_played_games(1001);
-        assert(resn10.status() == StatusType::SUCCESS);
-        assert(resn10.ans() == 12);
-
-        output_t<int> resn11 = obj->get_num_played_games(4001);
-        assert(resn11.status() == StatusType::SUCCESS);
-        assert(resn11.ans() == 4);
+        output_t<int> resn1 = obj->get_top_scorer(-10);
+        assert(resn1.status() == StatusType::SUCCESS);
+        assert(resn1.ans() == 1002);
 
         delete obj;
     }
-    
+
+
     return true;
 }
