@@ -52,6 +52,7 @@ bool run_all_tests() {
     run_test(nodeList_Get_Closest, "nodeList_Get_Closest", success_string, success);
     run_test(worldCup_get_closest_player, "worldCup_get_closest_player", success_string, success);
 
+
     std::cout << success_string << std::endl;
     return success;
 }
@@ -828,64 +829,72 @@ bool worldCup_Get_All_Players_Count()
 }
 
 bool closest_player_test() {
-    world_cup_t worldCup;
-    worldCup.add_team(1,1);
-    worldCup.add_team(2,3);
-    worldCup.add_team(4,5);
-
-
-    worldCup.add_player(1, 1, 5, 6, 4, true);
-    worldCup.add_player(2, 1, 5, 6, 4, false);
-    worldCup.add_player(3, 1, 5, 6, 4, false);
-    worldCup.add_player(4, 1, 5, 6, 4, false);
-    worldCup.add_player(5, 1, 5, 6, 4, false);
-    worldCup.add_player(6, 1, 5, 6, 4, false);
-    worldCup.add_player(7, 1, 5, 6, 4, false);
-    worldCup.add_player(8, 1, 5, 6, 4, false);
-    worldCup.add_player(9, 1, 5, 6, 4, false);
-    worldCup.add_player(10, 1, 5, 6, 4, false);
-    worldCup.add_player(11, 1, 5, 6, 4, false);
-    //
-    worldCup.add_player(21, 2, 5, 6, 4, true);
-    worldCup.add_player(22, 2, 5, 6, 4, false);
-    worldCup.add_player(23, 2, 5, 6, 4, false);
-
-    worldCup.add_player(50, 2, 5, 5, 3, false);
-    worldCup.add_player(25, 2, 5, 5, 4, false); //32
-    worldCup.add_player(51, 2, 5, 5, 4, false); //25
-
-    worldCup.add_player(27, 2, 5, 6, 4, false);
-    worldCup.add_player(28, 2, 5, 6, 4, false);
-    worldCup.add_player(29, 2, 5, 6, 4, false);
-    worldCup.add_player(30, 2, 5, 6, 4, false);
-    worldCup.add_player(31, 2, 5, 6, 4, false);
-    worldCup.add_player(32, 2, 0, 0, 0, false);
-
-
-    std::cout << "running tests on closest_player worldcup: \n" << AVL_testing<Player*>::run_tests_on_worldCup(&worldCup);
-    output_t<int> close5 = worldCup.get_closest_player(5,1);
-    output_t<int> close32 = worldCup.get_closest_player(32,2);
-    output_t<int> close25 = worldCup.get_closest_player(25,2);
-    output_t<int> false_id = worldCup.get_closest_player(15,1);
-    output_t<int> false_team = worldCup.get_closest_player(5,2);
-
-    return (close5.ans() == 6 && close32.ans() == 25 && close25.ans() == 51 &&
-
-    close5.status() == StatusType::SUCCESS && close32.status() == StatusType::SUCCESS &&
-    close25.status() == StatusType::SUCCESS && false_id.status() == StatusType::FAILURE &&
-    false_team.status() == StatusType::FAILURE);
+//    world_cup_t worldCup;
+//    worldCup.add_team(1,1);
+//    worldCup.add_team(2,3);
+//    worldCup.add_team(4,5);
+//
+//
+//    worldCup.add_player(1, 1, 5, 6, 4, true);
+//    worldCup.add_player(2, 1, 5, 6, 4, false);
+//    worldCup.add_player(3, 1, 5, 6, 4, false);
+//    worldCup.add_player(4, 1, 5, 6, 4, false);
+//    worldCup.add_player(5, 1, 5, 6, 4, false);
+//    worldCup.add_player(6, 1, 5, 6, 4, false);
+//    worldCup.add_player(7, 1, 5, 6, 4, false);
+//    worldCup.add_player(8, 1, 5, 6, 4, false);
+//    worldCup.add_player(9, 1, 5, 6, 4, false);
+//    worldCup.add_player(10, 1, 5, 6, 4, false);
+//    worldCup.add_player(11, 1, 5, 6, 4, false);
+//    //
+//    worldCup.add_player(21, 2, 5, 6, 4, true);
+//    worldCup.add_player(22, 2, 5, 6, 4, false);
+//    worldCup.add_player(23, 2, 5, 6, 4, false);
+//
+//    worldCup.add_player(50, 2, 5, 5, 3, false);
+//    worldCup.add_player(25, 2, 5, 5, 4, false); //32
+//    worldCup.add_player(51, 2, 5, 5, 4, false); //25
+//
+//    worldCup.add_player(27, 2, 5, 6, 4, false);
+//    worldCup.add_player(28, 2, 5, 6, 4, false);
+//    worldCup.add_player(29, 2, 5, 6, 4, false);
+//    worldCup.add_player(30, 2, 5, 6, 4, false);
+//    worldCup.add_player(31, 2, 5, 6, 4, false);
+//    worldCup.add_player(32, 2, 0, 0, 0, false);
+//
+//
+//    std::cout << "running tests on closest_player worldcup: \n" << AVL_testing<Player*>::run_tests_on_worldCup(&worldCup);
+//    output_t<int> close5 = worldCup.get_closest_player(5,1);
+//    output_t<int> close32 = worldCup.get_closest_player(32,2);
+//    output_t<int> close25 = worldCup.get_closest_player(25,2);
+//    output_t<int> false_id = worldCup.get_closest_player(15,1);
+//    output_t<int> false_team = worldCup.get_closest_player(5,2);
+//
+//    return (close5.ans() == 6 && close32.ans() == 25 && close25.ans() == 51 &&
+//
+//    close5.status() == StatusType::SUCCESS && close32.status() == StatusType::SUCCESS &&
+//    close25.status() == StatusType::SUCCESS && false_id.status() == StatusType::FAILURE &&
+//    false_team.status() == StatusType::FAILURE);
+    return true;
+    // TODO: understand what this is for?
 }
 
 bool nodeList_Add()
 {
     int tests = 0;
     NodeList list;
-    NodeList::Node* p1 = list.add(nullptr, 1, 20, 0, 0);
-    NodeList::Node* p2 =list.add(p1, 2, 25, 0, 0);
-    NodeList::Node* p3 =list.add(p1, 3, 18, 0, 0);
-    NodeList::Node* p4 =list.add(p2, 4, 27, 0, 0);
-    list.add(p3, 5,19,0,0);
-    list.add(p4, 6,30,0,0);
+    NodeList::Node* p1 = list.add(nullptr, 1, 20, 20, 0);
+    std::cout << list.debug_print() << std::endl;
+    NodeList::Node* p2 =list.add(p1, 2, 27, 27, 2);
+    std::cout << list.debug_print() << std::endl;
+    NodeList::Node* p3 =list.add(p1, 3, 18, 18, 0);
+    std::cout << list.debug_print() << std::endl;
+    NodeList::Node* p4 =list.add(p2, 4, 27, 27, 0);
+    std::cout << list.debug_print() << std::endl;
+    list.add(p3, 5,19,19,0);
+    std::cout << list.debug_print() << std::endl;
+    list.add(p4, 6,30,30,0);
+    std::cout << list.debug_print() << std::endl;
     tests += ("3 5 1 2 4 6 " == list.debug_print() );
 
     std::cout << list.debug_print() << std::endl;
@@ -896,12 +905,12 @@ bool nodeList_Remove()
 {
     int tests = 0;
     NodeList list;
-    NodeList::Node* p1 = list.add(nullptr, 1, 20, 0, 0);
-    NodeList::Node* p2 =list.add(p1, 2, 25, 0, 0);
-    NodeList::Node* p3 =list.add(p1, 3, 18, 0, 0);
-    NodeList::Node* p4 =list.add(p2, 4, 27, 0, 0);
-    NodeList::Node* p5 = list.add(p3, 5, 19, 0, 0);
-    NodeList::Node* p6 = list.add(p4, 6, 30, 0, 0);
+    NodeList::Node* p1 = list.add(nullptr, 1, 20, 20, 0);
+    NodeList::Node* p2 =list.add(p1, 2, 25, 25, 0);
+    NodeList::Node* p3 =list.add(p1, 3, 18, 18, 0);
+    NodeList::Node* p4 =list.add(p2, 4, 27, 27, 0);
+    NodeList::Node* p5 = list.add(p3, 5, 19, 19, 0);
+    NodeList::Node* p6 = list.add(p4, 6, 30, 30, 0);
     tests += ("3 5 1 2 4 6 " == list.debug_print() );
     // Start removing
     list.remove(p5);
@@ -911,7 +920,7 @@ bool nodeList_Remove()
     list.remove(p6);
     tests += ("1 2 4 " == list.debug_print() );
 
-    NodeList::Node* p3_new = list.add(p1, 3, 10, 0, 0);
+    NodeList::Node* p3_new = list.add(p1, 3, 10, 10, 0);
 
     tests += ("3 1 2 4 " == list.debug_print() );
     list.remove(p4);
@@ -1311,6 +1320,322 @@ bool omeramir_tests_line(){
         assert(resn1.ans() == 1002);
 
         delete obj;
+    }
+
+    std::cout << ("unite teams stuff") << std::endl;
+    {
+        std::cout << ("unite_teams failure");
+        {
+            world_cup_t *obj = new world_cup_t();
+            StatusType res = obj->unite_teams(1, 2, 1);
+            assert(res == StatusType::FAILURE);
+
+            res = obj->add_team(1, 2);
+            assert(res == StatusType::SUCCESS);
+            res = obj->unite_teams(1, 2, 5);
+            assert(res == StatusType::FAILURE);
+
+            res = obj->add_team(2, 2);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_team(5, 2);
+            assert(res == StatusType::SUCCESS);
+            res = obj->unite_teams(1, 2, 5);
+            assert(res == StatusType::FAILURE);
+
+            delete obj;
+        }
+
+        std::cout << ("unite_teams invalid input");
+        {
+            world_cup_t *obj = new world_cup_t();
+            StatusType res = obj->unite_teams(0, 1, 1);
+            assert(res == StatusType::INVALID_INPUT);
+            res = obj->unite_teams(1, 0, 1);
+            assert(res == StatusType::INVALID_INPUT);
+            res = obj->unite_teams(1, 2, 0);
+            assert(res == StatusType::INVALID_INPUT);
+            res = obj->unite_teams(-1, 1, 1);
+            assert(res == StatusType::INVALID_INPUT);
+            res = obj->unite_teams(1, -1, 1);
+            assert(res == StatusType::INVALID_INPUT);
+            res = obj->unite_teams(1, 3, -1);
+            assert(res == StatusType::INVALID_INPUT);
+            res = obj->unite_teams(1, 1, 1);
+            assert(res == StatusType::INVALID_INPUT);
+
+            delete obj;
+        }
+
+        std::cout << ("unite_teams simple");
+        {
+            world_cup_t *obj = new world_cup_t();
+            StatusType res = obj->add_team(1, 2);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1001, 1, 1, 5, 2, true);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_team(2, 2);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1002, 2, 1, 3, 4, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->unite_teams(1, 2, 3);
+            assert(res == StatusType::SUCCESS);
+            int players[10] = {};
+            res = obj->get_all_players(3, players);
+            assert(res == StatusType::SUCCESS);
+            assert(players[0] == 1002);
+            assert(players[1] == 1001);
+            assert(players[2] == 0);
+            assert(players[3] == 0);
+            assert(players[4] == 0);
+            assert(players[5] == 0);
+            assert(players[6] == 0);
+            assert(players[7] == 0);
+            assert(players[8] == 0);
+            assert(players[9] == 0);
+
+            res = obj->add_team(3, 2);
+            assert(res == StatusType::FAILURE);
+            res = obj->add_team(1, 2);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_team(2, 2);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_team(4, 2);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1001, 3, 1, 5, 2, true);
+            assert(res == StatusType::FAILURE);
+            res = obj->add_player(1002, 3, 1, 3, 4, false);
+            assert(res == StatusType::FAILURE);
+            res = obj->add_player(1003, 3, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1004, 4, 1, 1, 2, true);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1005, 4, 1, 1, 4, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1006, 4, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1007, 4, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->unite_teams(3, 4, 5);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_team(5, 2);
+            assert(res == StatusType::FAILURE);
+            res = obj->add_team(3, 2);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_team(4, 2);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1008, 3, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1004, 3, 1, 1, 1, false);
+            assert(res == StatusType::FAILURE);
+            res = obj->add_player(1009, 4, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1005, 4, 1, 1, 1, false);
+            assert(res == StatusType::FAILURE);
+            res = obj->unite_teams(3, 4, 3);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_team(3, 2);
+            assert(res == StatusType::FAILURE);
+
+            res = obj->add_team(4, 2);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1009, 3, 1, 1, 1, false);
+            assert(res == StatusType::FAILURE);
+
+            delete obj;
+        }
+
+        std::cout << ("unite_teams that makes it legal team");
+        {
+            world_cup_t *obj = new world_cup_t();
+
+            StatusType res = obj->add_team(1, 2);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1001, 1, 1, 5, 2, true);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1002, 1, 1, 3, 4, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1003, 1, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1004, 1, 1, 1, 2, true);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1005, 1, 1, 1, 4, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_team(2, 2);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1006, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1007, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1008, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1009, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1010, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1011, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1012, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1013, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1014, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1015, 2, 1, 1, 1, true);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1016, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1017, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            output_t<int> resn3 = obj->knockout_winner(1, 4);
+            assert(resn3.status() == StatusType::SUCCESS);
+            assert(resn3.ans() == 2);
+
+            res = obj->unite_teams(1, 2, 3);
+            assert(res == StatusType::SUCCESS);
+
+            output_t<int> resn1 = obj->get_all_players_count(3);
+            assert(resn1.status() == StatusType::SUCCESS);
+            assert(resn1.ans() == 17);
+            output_t<int> resn2 = obj->knockout_winner(1, 4);
+            assert(resn2.status() == StatusType::SUCCESS);
+            assert(resn2.ans() == 3);
+
+            delete obj;
+        }
+
+        std::cout << ("unite_teams two legal teams");
+        {
+            world_cup_t *obj = new world_cup_t();
+
+            StatusType res = obj->add_team(1, 2);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1001, 1, 1, 5, 2, true);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1002, 1, 1, 3, 4, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1003, 1, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1004, 1, 1, 1, 2, true);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1005, 1, 1, 1, 4, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1301, 1, 1, 5, 2, true);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1302, 1, 1, 3, 4, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1303, 1, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1304, 1, 1, 1, 2, true);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1305, 1, 1, 1, 4, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(101, 1, 1, 5, 2, true);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(333, 1, 1, 3, 4, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(103, 1, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(6004, 1, 1, 1, 2, true);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(19005, 1, 1, 1, 4, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_team(2, 2);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1006, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1007, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1008, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1009, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1010, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1011, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1012, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1013, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1014, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1015, 2, 1, 1, 1, true);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1016, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1017, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            output_t<int> resn3 = obj->knockout_winner(1, 4);
+            assert(resn3.status() == StatusType::SUCCESS);
+            assert(resn3.ans() == 2);
+
+            res = obj->unite_teams(1, 2, 3);
+            assert(res == StatusType::SUCCESS);
+
+            output_t<int> resn1 = obj->get_all_players_count(3);
+            assert(resn1.status() == StatusType::SUCCESS);
+            assert(resn1.ans() == 27);
+            output_t<int> resn2 = obj->knockout_winner(1, 4);
+            assert(resn2.status() == StatusType::SUCCESS);
+            assert(resn2.ans() == 3);
+
+            delete obj;
+        }
+
+        std::cout << ("unite_teams legal and not legal teams to the not legal");
+        {
+            world_cup_t *obj = new world_cup_t();
+
+            StatusType res = obj->add_team(1, 2);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1001, 1, 1, 5, 2, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1002, 1, 1, 3, 4, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1003, 1, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_team(2, 2);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1006, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1007, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1008, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1009, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1010, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1011, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1012, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1013, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1014, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1015, 2, 1, 1, 1, true);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1016, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            res = obj->add_player(1017, 2, 1, 1, 1, false);
+            assert(res == StatusType::SUCCESS);
+            output_t<int> resn3 = obj->knockout_winner(1, 4);
+            assert(resn3.status() == StatusType::SUCCESS);
+            assert(resn3.ans() == 2);
+
+            res = obj->unite_teams(1, 2, 1);
+            assert(res == StatusType::SUCCESS);
+
+            output_t<int> resn1 = obj->get_all_players_count(1);
+            assert(resn1.status() == StatusType::SUCCESS);
+            assert(resn1.ans() == 15);
+            output_t<int> resn2 = obj->knockout_winner(1, 4);
+            assert(resn2.status() == StatusType::SUCCESS);
+            assert(resn2.ans() == 1);
+
+            delete obj;
+        }
     }
 
 

@@ -1,4 +1,5 @@
 #include "worldcup23a1.h"
+#include "Exception.h"
 
 // TODO: valid teams make sure to add remove
 // TODO: get amount of games played check (especially in update)
@@ -335,7 +336,13 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
         teams_AVL.remove(teamId2);
         valid_teams_AVL.remove(teamId2);
 
-        teams_AVL.add(team0);
+        try
+        {
+            teams_AVL.add(team0);
+        }
+        catch (ID_ALREADY_EXISTS&){
+            return StatusType::FAILURE;
+        }
         if (team0->get_isValid()){
             valid_teams_AVL.add(team0);
         }

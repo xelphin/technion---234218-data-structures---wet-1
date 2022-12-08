@@ -41,6 +41,7 @@ NodeList::Node* NodeList::add(Node* nodeNextTo, int id, int total_points, int to
     // Empty list
     if (nodeNextTo == nullptr) { // empty list
         if (start != nullptr || end != nullptr) {
+            std::cout << "mistake" << std::endl;
             return nullptr;
         }
         start = newNode;
@@ -86,6 +87,7 @@ void NodeList::remove(Node* node)
     // ONE NODE
     if (prevNode == nullptr && nextNode == nullptr) {
         if (start != end && start != nullptr) {
+            std::cout << "ERROR!" << std::endl;
             return;
         }
         delete node;
@@ -96,12 +98,12 @@ void NodeList::remove(Node* node)
     // node == start
     if (prevNode == nullptr) {
         if (start != node) {
+            std::cout << "ERROR!" << std::endl;
             return;
         }
         start = nextNode;
-        if (start == nullptr){
-            throw;
-        }
+        if (start == nullptr)
+            std::cout << "ERROR!" << std::endl;
         nextNode->prev = nullptr;
         delete node;
         return;
@@ -109,7 +111,7 @@ void NodeList::remove(Node* node)
     // node == end
     if (nextNode == nullptr) {
         if (end != node) {
-            //std::cout << "ERROR2!" << std::endl;
+            std::cout << "ERROR2!" << std::endl;
             return;
         }
         end = prevNode;

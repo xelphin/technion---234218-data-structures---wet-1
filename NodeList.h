@@ -28,8 +28,8 @@ public:
     std::string debug_print();
 
 private:
-    Node* start;
-    Node* end;
+    NodeList::Node *start;
+    NodeList::Node *end;
 
     void call_match();
     int get_winnerId(Node& team1, Node& team2);
