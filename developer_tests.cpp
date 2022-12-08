@@ -37,7 +37,7 @@ bool run_all_tests() {
     run_test(worldCup_Get_Num_Played_Games, "worldCup_Get_Num_Played_Games", success_string, success);
     run_test(worldCup_Unite_Teams, "worldCup_Unite_Teams", success_string, success);
     run_test(worldCup_Get_All_Players_Count, "worldCup_Get_All_Players_Count", success_string, success);
-//    run_test(closest_player_test, "closest_player_test", success_string, success);
+    run_test(closest_player_test, "closest_player_test", success_string, success);
     run_test(nodeList_Teams_Basics, "nodeList_Teams_Basics", success_string, success);
     run_test(avl_Add_To_List, "avl_Add_To_List", success_string, success);
     run_test(worldCup_Knockout_Winner, "worldCup_Knockout_Winner", success_string, success);
@@ -827,102 +827,102 @@ bool worldCup_Get_All_Players_Count()
     return tests == 5;
 }
 
-//bool closest_player_test() {
-//    world_cup_t worldCup;
-//    worldCup.add_team(1,1);
-//    worldCup.add_team(2,3);
-//    worldCup.add_team(4,5);
-//
-//
-//    worldCup.add_player(1, 1, 5, 6, 4, true);
-//    worldCup.add_player(2, 1, 5, 6, 4, false);
-//    worldCup.add_player(3, 1, 5, 6, 4, false);
-//    worldCup.add_player(4, 1, 5, 6, 4, false);
-//    worldCup.add_player(5, 1, 5, 6, 4, false);
-//    worldCup.add_player(6, 1, 5, 6, 4, false);
-//    worldCup.add_player(7, 1, 5, 6, 4, false);
-//    worldCup.add_player(8, 1, 5, 6, 4, false);
-//    worldCup.add_player(9, 1, 5, 6, 4, false);
-//    worldCup.add_player(10, 1, 5, 6, 4, false);
-//    worldCup.add_player(11, 1, 5, 6, 4, false);
-//    //
-//    worldCup.add_player(21, 2, 5, 6, 4, true);
-//    worldCup.add_player(22, 2, 5, 6, 4, false);
-//    worldCup.add_player(23, 2, 5, 6, 4, false);
-//
-//    worldCup.add_player(50, 2, 5, 5, 3, false);
-//    worldCup.add_player(25, 2, 5, 5, 4, false); //32
-//    worldCup.add_player(51, 2, 5, 5, 4, false); //25
-//
-//    worldCup.add_player(27, 2, 5, 6, 4, false);
-//    worldCup.add_player(28, 2, 5, 6, 4, false);
-//    worldCup.add_player(29, 2, 5, 6, 4, false);
-//    worldCup.add_player(30, 2, 5, 6, 4, false);
-//    worldCup.add_player(31, 2, 5, 6, 4, false);
-//    worldCup.add_player(32, 2, 0, 0, 0, false);
-//
-//
-//    std::cout << "running tests on closest_player worldcup: \n" << AVL_testing<Player*>::run_tests_on_worldCup(&worldCup);
-//    output_t<int> close5 = worldCup.get_closest_player(5,1);
-//    output_t<int> close32 = worldCup.get_closest_player(32,2);
-//    output_t<int> close25 = worldCup.get_closest_player(25,2);
-//    output_t<int> false_id = worldCup.get_closest_player(15,1);
-//    output_t<int> false_team = worldCup.get_closest_player(5,2);
-//
-//    return (close5.ans() == 6 && close32.ans() == 25 && close25.ans() == 51 &&
-//
-//    close5.status() == StatusType::SUCCESS && close32.status() == StatusType::SUCCESS &&
-//    close25.status() == StatusType::SUCCESS && false_id.status() == StatusType::FAILURE &&
-//    false_team.status() == StatusType::FAILURE);
-//}
+bool closest_player_test() {
+    world_cup_t worldCup;
+    worldCup.add_team(1,1);
+    worldCup.add_team(2,3);
+    worldCup.add_team(4,5);
+
+
+    worldCup.add_player(1, 1, 5, 6, 4, true);
+    worldCup.add_player(2, 1, 5, 6, 4, false);
+    worldCup.add_player(3, 1, 5, 6, 4, false);
+    worldCup.add_player(4, 1, 5, 6, 4, false);
+    worldCup.add_player(5, 1, 5, 6, 4, false);
+    worldCup.add_player(6, 1, 5, 6, 4, false);
+    worldCup.add_player(7, 1, 5, 6, 4, false);
+    worldCup.add_player(8, 1, 5, 6, 4, false);
+    worldCup.add_player(9, 1, 5, 6, 4, false);
+    worldCup.add_player(10, 1, 5, 6, 4, false);
+    worldCup.add_player(11, 1, 5, 6, 4, false);
+    //
+    worldCup.add_player(21, 2, 5, 6, 4, true);
+    worldCup.add_player(22, 2, 5, 6, 4, false);
+    worldCup.add_player(23, 2, 5, 6, 4, false);
+
+    worldCup.add_player(50, 2, 5, 5, 3, false);
+    worldCup.add_player(25, 2, 5, 5, 4, false); //32
+    worldCup.add_player(51, 2, 5, 5, 4, false); //25
+
+    worldCup.add_player(27, 2, 5, 6, 4, false);
+    worldCup.add_player(28, 2, 5, 6, 4, false);
+    worldCup.add_player(29, 2, 5, 6, 4, false);
+    worldCup.add_player(30, 2, 5, 6, 4, false);
+    worldCup.add_player(31, 2, 5, 6, 4, false);
+    worldCup.add_player(32, 2, 0, 0, 0, false);
+
+
+    std::cout << "running tests on closest_player worldcup: \n" << AVL_testing<Player*>::run_tests_on_worldCup(&worldCup);
+    output_t<int> close5 = worldCup.get_closest_player(5,1);
+    output_t<int> close32 = worldCup.get_closest_player(32,2);
+    output_t<int> close25 = worldCup.get_closest_player(25,2);
+    output_t<int> false_id = worldCup.get_closest_player(15,1);
+    output_t<int> false_team = worldCup.get_closest_player(5,2);
+
+    return (close5.ans() == 6 && close32.ans() == 25 && close25.ans() == 51 &&
+
+    close5.status() == StatusType::SUCCESS && close32.status() == StatusType::SUCCESS &&
+    close25.status() == StatusType::SUCCESS && false_id.status() == StatusType::FAILURE &&
+    false_team.status() == StatusType::FAILURE);
+}
 
 bool nodeList_Add()
 {
     int tests = 0;
-//    NodeList list;
-//    NodeList::Node* p1 = list.add(nullptr, 1, 20, 20, 0);
-//    NodeList::Node* p2 =list.add(p1, 2, 27, 27, 2);
-//    NodeList::Node* p3 =list.add(p1, 3, 18, 18, 0);
-//    NodeList::Node* p4 =list.add(p2, 4, 27, 27, 0);
-//    list.add(p3, 5,19,19,0);
-//    list.add(p4, 6,30,30,0);
-//    tests += ("3 5 1 2 4 6 " == list.debug_print() );
-//
-//    std::cout << list.debug_print() << std::endl;
+    NodeList list;
+    NodeList::Node* p1 = list.add(nullptr, 1, 20, 0, 0);
+    NodeList::Node* p2 =list.add(p1, 2, 25, 0, 0);
+    NodeList::Node* p3 =list.add(p1, 3, 18, 0, 0);
+    NodeList::Node* p4 =list.add(p2, 4, 27, 0, 0);
+    list.add(p3, 5,19,0,0);
+    list.add(p4, 6,30,0,0);
+    tests += ("3 5 1 2 4 6 " == list.debug_print() );
+
+    std::cout << list.debug_print() << std::endl;
     return tests == 1;
 }
 
 bool nodeList_Remove()
 {
     int tests = 0;
-//    NodeList list;
-//    NodeList::Node* p1 = list.add(nullptr, 1, 20, 20, 0);
-//    NodeList::Node* p2 =list.add(p1, 2, 25, 25, 0);
-//    NodeList::Node* p3 =list.add(p1, 3, 18, 18, 0);
-//    NodeList::Node* p4 =list.add(p2, 4, 27, 27, 0);
-//    NodeList::Node* p5 = list.add(p3, 5, 19, 19, 0);
-//    NodeList::Node* p6 = list.add(p4, 6, 30, 30, 0);
-//    tests += ("3 5 1 2 4 6 " == list.debug_print() );
-//    // Start removing
-//    list.remove(p5);
-//    tests += ("3 1 2 4 6 " == list.debug_print() );
-//    list.remove(p3);
-//    tests += ("1 2 4 6 " == list.debug_print() );
-//    list.remove(p6);
-//    tests += ("1 2 4 " == list.debug_print() );
-//
-//    NodeList::Node* p3_new = list.add(p1, 3, 10, 10, 0);
-//
-//    tests += ("3 1 2 4 " == list.debug_print() );
-//    list.remove(p4);
-//    tests += ("3 1 2 " == list.debug_print() );
-//    list.remove(p3_new);
-//    tests += ("1 2 " == list.debug_print() );
-//    // std::cout << "Final: " << list.debug_print() << std::endl;
-//    list.remove(p2);
-//    tests += ("1 " == list.debug_print() );
-//    list.remove(p1);
-//    tests += ("" == list.debug_print() );
+    NodeList list;
+    NodeList::Node* p1 = list.add(nullptr, 1, 20, 0, 0);
+    NodeList::Node* p2 =list.add(p1, 2, 25, 0, 0);
+    NodeList::Node* p3 =list.add(p1, 3, 18, 0, 0);
+    NodeList::Node* p4 =list.add(p2, 4, 27, 0, 0);
+    NodeList::Node* p5 = list.add(p3, 5, 19, 0, 0);
+    NodeList::Node* p6 = list.add(p4, 6, 30, 0, 0);
+    tests += ("3 5 1 2 4 6 " == list.debug_print() );
+    // Start removing
+    list.remove(p5);
+    tests += ("3 1 2 4 6 " == list.debug_print() );
+    list.remove(p3);
+    tests += ("1 2 4 6 " == list.debug_print() );
+    list.remove(p6);
+    tests += ("1 2 4 " == list.debug_print() );
+
+    NodeList::Node* p3_new = list.add(p1, 3, 10, 0, 0);
+
+    tests += ("3 1 2 4 " == list.debug_print() );
+    list.remove(p4);
+    tests += ("3 1 2 " == list.debug_print() );
+    list.remove(p3_new);
+    tests += ("1 2 " == list.debug_print() );
+    // std::cout << "Final: " << list.debug_print() << std::endl;
+    list.remove(p2);
+    tests += ("1 " == list.debug_print() );
+    list.remove(p1);
+    tests += ("" == list.debug_print() );
 
     return tests == 9;
 }
@@ -951,15 +951,15 @@ bool nodeList_Get_Closest()
 bool nodeList_Teams_Basics()
 {
     int tests = 0;
-//    NodeList list;
-//    list.add(1,20,0,0);
-//    list.add(3,20,0,0);
-//    list.add(6,5,0,0);
-//    list.add(7,30,0,0);
-//    list.add(10,11,0,0);
-//    tests += ("1 3 6 7 10 " == list.debug_print() );
-//    //
-//    tests += (3 == list.knockout());
+    NodeList list;
+    list.add(1,20,0,0);
+    list.add(3,20,0,0);
+    list.add(6,5,0,0);
+    list.add(7,30,0,0);
+    list.add(10,11,0,0);
+    tests += ("1 3 6 7 10 " == list.debug_print() );
+    //
+    tests += (3 == list.knockout());
 
     return tests == 2;
 }
@@ -967,31 +967,31 @@ bool nodeList_Teams_Basics()
 bool avl_Add_To_List()
 {
     int tests = 0;
-//    NodeList list;
-//    AVL_tree<Team*> tree1(false); // sort by ID
-//    Team team1(1, 20);
-//    Team team2(2, 10);
-//    Team team3(3, 30);
-//    Team team4(4, 60);
-//    Team team5(5, 40);
-//    Team team6(6, 40);
-//    Team team7(7, 40);
-//    Team team8(8, 40);
-//    tree1.add(&team1);
-//    tree1.add(&team2);
-//    tree1.add(&team3);
-//    tree1.add(&team4);
-//    tree1.add(&team5);
-//    tree1.add(&team6);
-//    tree1.add(&team7);
-//    tree1.add(&team8);
-//    //
-//    std::cout << tree1.debugging_printTree_new();
-//    //
-//    tree1.add_to_list(list, 2, 6);
-//    std::cout << "list: " << list.debug_print() << std::endl;
-//    tests +=  ("2 3 4 5 6 " == list.debug_print() );
-//    tests += (4 == list.knockout());
+    NodeList list;
+    AVL_tree<Team*> tree1(false); // sort by ID
+    Team team1(1, 20);
+    Team team2(2, 10);
+    Team team3(3, 30);
+    Team team4(4, 60);
+    Team team5(5, 40);
+    Team team6(6, 40);
+    Team team7(7, 40);
+    Team team8(8, 40);
+    tree1.add(&team1);
+    tree1.add(&team2);
+    tree1.add(&team3);
+    tree1.add(&team4);
+    tree1.add(&team5);
+    tree1.add(&team6);
+    tree1.add(&team7);
+    tree1.add(&team8);
+    //
+    std::cout << tree1.debugging_printTree_new();
+    //
+    tree1.add_to_list(list, 2, 6);
+    std::cout << "list: " << list.debug_print() << std::endl;
+    tests +=  ("2 3 4 5 6 " == list.debug_print() );
+    tests += (4 == list.knockout());
 
     return tests == 2;
 }
@@ -1159,21 +1159,29 @@ bool omeramir_tests_line451(){
         delete obj;
     }
 
-//    std::cout <<("get_all_players failure") << std::endl;
-//    {
-//        world_cup_t *obj = new world_cup_t();
-//        int players[4] = {};
-//
-//        StatusType res = obj->get_all_players(1, players);
-//        assert(res == StatusType::FAILURE);
-//        res = obj->get_all_players(-1, players);
-//        assert(res == StatusType::FAILURE);
-//        res = obj->add_team(1, 3);
-//        assert(res == StatusType::SUCCESS);
-//        res = obj->get_all_players(1, players);
-//        assert(res == StatusType::FAILURE);
-//        delete obj;
-//    }
+    std::cout <<("get_top_scorer from all 5 players")<< std::endl;
+    {
+        world_cup_t *obj = new world_cup_t();
+        StatusType res = obj->add_team(1, 2);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1001, 1, 10, 15, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1002, 1, 10, 33, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1003, 1, 10, 3, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1004, 1, 10, 20, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1005, 1, 10, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        output_t<int> resn1 = obj->get_top_scorer(-10);
+        assert(resn1.status() == StatusType::SUCCESS);
+        assert(resn1.ans() == 1002);
+
+        delete obj;
+    }
+
+
     return true;
 }
 

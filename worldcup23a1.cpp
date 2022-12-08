@@ -4,8 +4,8 @@
 // TODO: get amount of games played check (especially in update)
 
 world_cup_t::world_cup_t()
-: amount_players(0), global_top_scorer_team(0,0), all_players_AVL(SORT_BY_ID), all_players_score_AVL(SORT_BY_SCORE),
-  teams_AVL(SORT_BY_ID), valid_teams_AVL(SORT_BY_ID), sorted_score_List()
+: amount_players(0), top_scorer_id(0), all_players_AVL(SORT_BY_ID), all_players_score_AVL(SORT_BY_SCORE),
+  teams_AVL(SORT_BY_ID), valid_teams_AVL(SORT_BY_ID)
 {}
 
 world_cup_t::~world_cup_t()
@@ -93,6 +93,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
             player->set_team(team);
             all_players_AVL.add(player);
             player->set_global_score_node(all_players_score_AVL.add(player));
+            set_top_scorer();
 
             // Add player to sorted_score_List
 //            AVL_tree<std::shared_ptr<Player>>::Node* close_node = all_players_score_AVL.find_a_closest(player->get_global_score_node()); // find neighbor
@@ -154,7 +155,7 @@ StatusType world_cup_t::remove_player(int playerId)
                 playerTeam->update_cardsReceived(-(player->get_cards()));
                 playerTeam->update_scoredGoals(-(player->get_score()));
                 playerTeam->update_removeAGoalKeeper(player->get_isGoalKeeper());
-                if (playerTeam->get_isValid() && team_valid_before_action){
+                if (!playerTeam->get_isValid() && team_valid_before_action){ //team not valid anymore
                     valid_teams_AVL.remove(playerTeam->get_id());
                 }
 
@@ -168,6 +169,7 @@ StatusType world_cup_t::remove_player(int playerId)
             // REMOVE from WORLD_CUP AVLs (even if player does not have a team)
             success2 = all_players_AVL.remove(playerId);
             all_players_score_AVL.remove_by_item(player);
+            set_top_scorer();
         } else {
             // PLAYER NOT FOUND
             return StatusType::FAILURE;
@@ -201,7 +203,7 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
             //        int goals, int cards, bool goalKeeper)
             if (player->get_team() == nullptr)
                 return StatusType::FAILURE;
-            int teamId = player->get_id();
+            int teamId = player->get_team()->get_id();
             int gamesPlayedNew = player->get_gamesPlayed_withoutTeam() + gamesPlayed; // TODO: possible needs to be negative something
             int goals = player->get_score() + scoredGoals;
             int cards = player->get_cards() + cardsReceived;
@@ -313,13 +315,7 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
     int total_cards = team1->get_cards() + team2->get_cards();
     int total_goalKeepers = team1->get_totalGoalKeepers() + team2->get_totalGoalKeepers();
 
-    std::shared_ptr<Player> top_scorer;
-    if (team1->get_top_scorer() == nullptr){ top_scorer = team2->get_top_scorer();}
-    else if (team2->get_top_scorer() == nullptr){ top_scorer = team1->get_top_scorer();}
-    else{top_scorer =
-            (*(team1->get_top_scorer()) SCORE *(team2->get_top_scorer())) > 0 ?
-                  team1->get_top_scorer() : team2->get_top_scorer();
-    }
+
 
     // CREATE TEAM - O(log(n[team1] + n[team2]))
     try {
@@ -328,7 +324,6 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
         //basic data:
         newTeamId, total_points
         ,total_players, total_goals, total_cards, total_goalKeepers,
-        top_scorer,
 
         //new AVL trees:
          team1_players, team2_players,
@@ -345,8 +340,8 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
             valid_teams_AVL.add(team0);
         }
 
-        std::cout << (team0->get_AVL_tree_id())->debugging_printTree();
-        std::cout << "amount of players in team0: " << (team0->get_total_players()) << std::endl;
+//        std::cout << (team0->get_AVL_tree_id())->debugging_printTree();
+//        std::cout << "amount of players in team0: " << (team0->get_total_players()) << std::endl;
 
     } catch (std::bad_alloc const&){
         return StatusType::ALLOCATION_ERROR;
@@ -365,9 +360,9 @@ output_t<int> world_cup_t::get_top_scorer(int teamId)
     }
     if (teamId < 0) // get from global tree
     {
-        if (global_top_scorer_team.get_top_scorer())
+        if (top_scorer_id != 0)
         {
-            return global_top_scorer_team.get_top_scorer()->get_id();
+            return top_scorer_id;
         }
         else{ //no players
             return StatusType::FAILURE;
@@ -378,7 +373,7 @@ output_t<int> world_cup_t::get_top_scorer(int teamId)
         if (teams_AVL.get_content(teamId) && //team exists
             (teams_AVL.get_content(teamId)->get_top_scorer())) //players in the team
         {
-                return teams_AVL.get_content(teamId)->get_top_scorer()->get_id();
+                return teams_AVL.get_content(teamId)->get_top_scorer();
         }
         else{
             return StatusType::FAILURE; // no team or no players in team
@@ -446,52 +441,61 @@ StatusType world_cup_t::get_all_players(int teamId, int *const output)
 output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
 {
     return 0;
-//    if (playerId <= 0 || teamId <= 0 || all_players_AVL.get_amount() <= 1){
-//        return StatusType::INVALID_INPUT;
-//    }
-//    std::cout << all_players_score_AVL.debugging_printTree_new() << std::endl;
-////    std::cout << sorted_score_List.debug_print() << std::endl;
-//
-//    try {
-//        // FIND PLAYER
-//        std::shared_ptr<Player> player = all_players_AVL.get_content(playerId); // O(log(n))
-//        if (player != nullptr) {
-//            // PLAYER FOUND
-//            NodeList::Node* node_in_list = player->get_playerScoreListNode();
-//            return sorted_score_List.get_closest(node_in_list);
-//
-//        } else {
-//            // PLAYER NOT FOUND
-//            return StatusType::FAILURE;
-//        }
-//
-//    } catch (std::bad_alloc const& ) {
-//        return StatusType::ALLOCATION_ERROR;
-//    }
-//
-//
-//
-//    return StatusType::FAILURE;
+    if (playerId <= 0 || teamId <= 0 || all_players_AVL.get_amount() <= 1){
+        return StatusType::INVALID_INPUT;
+    }
+    std::cout << all_players_score_AVL.debugging_printTree_new() << std::endl;
+//    std::cout << sorted_score_List.debug_print() << std::endl;
+
+    try {
+        // FIND PLAYER
+        std::shared_ptr<Player> player = all_players_AVL.get_content(playerId); // O(log(n))
+        if (player != nullptr) {
+            // PLAYER FOUND
+            NodeList::Node* node_in_list = player->get_playerScoreListNode();
+            return sorted_score_List.get_closest(node_in_list);
+
+        } else {
+            // PLAYER NOT FOUND
+            return StatusType::FAILURE;
+        }
+
+    } catch (std::bad_alloc const& ) {
+        return StatusType::ALLOCATION_ERROR;
+    }
+
+
+
+    return StatusType::FAILURE;
 }
 
 output_t<int> world_cup_t::knockout_winner(int minTeamId, int maxTeamId)
 {
-    return minTeamId+maxTeamId;
-//	if (minTeamId<0 || maxTeamId<0 || maxTeamId<minTeamId)
-//            return StatusType::INVALID_INPUT;
-//    if (valid_teams_AVL.get_amount() < 1) {
-//        return StatusType::FAILURE;
-//    }
-//    try {
-//        NodeList list;
-//        valid_teams_AVL.add_to_list(list, minTeamId, maxTeamId);
-//        int winnerId = 0;
-////        list.knockout();
-//        if (winnerId < 1)
-//            return StatusType::FAILURE;
-//        return winnerId;
-//    } catch (std::bad_alloc const&){
-//        return StatusType::ALLOCATION_ERROR;
-//    }
+	if (minTeamId<0 || maxTeamId<0 || maxTeamId<minTeamId)
+            return StatusType::INVALID_INPUT;
+    if (valid_teams_AVL.get_amount() < 1) {
+        return StatusType::FAILURE;
+    }
+    try {
+        NodeList list;
+        valid_teams_AVL.add_to_list(list, minTeamId, maxTeamId);
+        int winnerId = list.knockout();
+        if (winnerId < 1)
+            return StatusType::FAILURE;
+        return winnerId;
+    } catch (std::bad_alloc const&){
+        return StatusType::ALLOCATION_ERROR;
+    }
     return StatusType::FAILURE;
+}
+
+void world_cup_t::set_top_scorer() {
+    if (all_players_score_AVL.get_biggest_in_tree() != nullptr)
+    {
+        top_scorer_id = all_players_score_AVL.get_biggest_in_tree()->get_id();
+    }
+    else
+    {
+        top_scorer_id = 0;
+    }
 }
