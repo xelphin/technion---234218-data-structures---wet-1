@@ -1,9 +1,6 @@
 #include "worldcup23a1.h"
 #include "Exception.h"
 
-// TODO: valid teams make sure to add remove
-// TODO: get amount of games played check (especially in update)
-
 world_cup_t::world_cup_t()
 : amount_players(0), top_scorer_id(0), all_players_AVL(SORT_BY_ID), all_players_score_AVL(SORT_BY_SCORE),
   teams_AVL(SORT_BY_ID), valid_teams_AVL(SORT_BY_ID)
@@ -96,7 +93,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
             player->set_global_score_node(all_players_score_AVL.add(player));
             set_top_scorer();
 
-//             Add player to sorted_score_List
+            // Add player to sorted_score_List
             AVL_tree<std::shared_ptr<Player>>::Node* close_node = all_players_score_AVL.find_a_closest(player->get_global_score_node()); // find neighbor
             if (close_node != nullptr && close_node->content != nullptr) {
                 // Get where close_node points to itself in the list
