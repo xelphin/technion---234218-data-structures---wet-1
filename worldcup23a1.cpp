@@ -168,22 +168,28 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
         // FIND PLAYER
         std::shared_ptr<Player> player = all_players_AVL.get_content(playerId); // O(log(players))
         if (player != nullptr) {
-            //add_player(int playerId, int teamId, int gamesPlayed,
-            //        int goals, int cards, bool goalKeeper)
-            if (player->get_team() == nullptr)
+            // PLAYER FOUND
+            Team* playerTeam = (*player).get_team();
+            if (playerTeam == nullptr){
                 return StatusType::FAILURE;
-            int teamId = player->get_team()->get_id();
-            int gamesPlayedNew = player->get_gamesPlayed_withoutTeam() + gamesPlayed; // TODO: possible needs to be negative something
-            int goals = player->get_score() + scoredGoals;
-            int cards = player->get_cards() + cardsReceived;
-            bool goalKeeper = player->get_isGoalKeeper();
-            this->remove_player(playerId);
-            this->add_player(playerId, teamId, gamesPlayedNew, goals, cards, goalKeeper);
+            }
+            bool team_valid_before_action = playerTeam->get_isValid();
+            // UPDATE PLAYER
+            player->update_gamesPlayed(gamesPlayed);
+            player->update_scoredGoals(scoredGoals);
+            player->update_cardsReceived(cardsReceived);
+            // UPDATE TEAM
+            playerTeam->update_cardsReceived(cardsReceived);
+            playerTeam->update_scoredGoals(scoredGoals);
+            playerTeam->compare_to_top_scorer(player);
+            if (playerTeam->get_isValid() && !team_valid_before_action){
+                valid_teams_AVL.add(teams_AVL.get_content(playerTeam->get_id()));
+            }
 
+            global_top_scorer_team.compare_to_top_scorer(player);
         } else {
             return StatusType::FAILURE;
         }
-
     } catch (std::bad_alloc const& ) {
         return StatusType::ALLOCATION_ERROR;
     }
