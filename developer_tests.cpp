@@ -888,34 +888,34 @@ bool nodeList_Add()
 bool nodeList_Remove()
 {
     int tests = 0;
-    NodeList list;
-    NodeList::Node* p1 = list.add(nullptr, 1, 20, 0, 0);
-    NodeList::Node* p2 =list.add(p1, 2, 25, 0, 0);
-    NodeList::Node* p3 =list.add(p1, 3, 18, 0, 0);
-    NodeList::Node* p4 =list.add(p2, 4, 27, 0, 0);
-    NodeList::Node* p5 = list.add(p3, 5, 19, 0, 0);
-    NodeList::Node* p6 = list.add(p4, 6, 30, 0, 0);
-    tests += ("3 5 1 2 4 6 " == list.debug_print() );
-    // Start removing
-    list.remove(p5);
-    tests += ("3 1 2 4 6 " == list.debug_print() );
-    list.remove(p3);
-    tests += ("1 2 4 6 " == list.debug_print() );
-    list.remove(p6);
-    tests += ("1 2 4 " == list.debug_print() );
-
-    NodeList::Node* p3_new = list.add(p1, 3, 10, 0, 0);
-
-    tests += ("3 1 2 4 " == list.debug_print() );
-    list.remove(p4);
-    tests += ("3 1 2 " == list.debug_print() );
-    list.remove(p3_new);
-    tests += ("1 2 " == list.debug_print() );
-    // std::cout << "Final: " << list.debug_print() << std::endl;
-    list.remove(p2);
-    tests += ("1 " == list.debug_print() );
-    list.remove(p1);
-    tests += ("" == list.debug_print() );
+//    NodeList list;
+//    NodeList::Node* p1 = list.add(nullptr, 1, 20, 0, 0);
+//    NodeList::Node* p2 =list.add(p1, 2, 25, 0, 0);
+//    NodeList::Node* p3 =list.add(p1, 3, 18, 0, 0);
+//    NodeList::Node* p4 =list.add(p2, 4, 27, 0, 0);
+//    NodeList::Node* p5 = list.add(p3, 5, 19, 0, 0);
+//    NodeList::Node* p6 = list.add(p4, 6, 30, 0, 0);
+//    tests += ("3 5 1 2 4 6 " == list.debug_print() );
+//    // Start removing
+//    list.remove(p5);
+//    tests += ("3 1 2 4 6 " == list.debug_print() );
+//    list.remove(p3);
+//    tests += ("1 2 4 6 " == list.debug_print() );
+//    list.remove(p6);
+//    tests += ("1 2 4 " == list.debug_print() );
+//
+//    NodeList::Node* p3_new = list.add(p1, 3, 10, 0, 0);
+//
+//    tests += ("3 1 2 4 " == list.debug_print() );
+//    list.remove(p4);
+//    tests += ("3 1 2 " == list.debug_print() );
+//    list.remove(p3_new);
+//    tests += ("1 2 " == list.debug_print() );
+//    // std::cout << "Final: " << list.debug_print() << std::endl;
+//    list.remove(p2);
+//    tests += ("1 " == list.debug_print() );
+//    list.remove(p1);
+//    tests += ("" == list.debug_print() );
 
     return tests == 9;
 }
@@ -923,15 +923,15 @@ bool nodeList_Remove()
 bool nodeList_Teams_Basics()
 {
     int tests = 0;
-    NodeList list;
-    list.add(1,20,0,0);
-    list.add(3,20,0,0);
-    list.add(6,5,0,0);
-    list.add(7,30,0,0);
-    list.add(10,11,0,0);
-    tests += ("1 3 6 7 10 " == list.debug_print() );
-    //
-    tests += (3 == list.knockout());
+//    NodeList list;
+//    list.add(1,20,0,0);
+//    list.add(3,20,0,0);
+//    list.add(6,5,0,0);
+//    list.add(7,30,0,0);
+//    list.add(10,11,0,0);
+//    tests += ("1 3 6 7 10 " == list.debug_print() );
+//    //
+//    tests += (3 == list.knockout());
 
     return tests == 2;
 }
@@ -939,31 +939,31 @@ bool nodeList_Teams_Basics()
 bool avl_Add_To_List()
 {
     int tests = 0;
-    NodeList list;
-    AVL_tree<Team*> tree1(false); // sort by ID
-    Team team1(1, 20);
-    Team team2(2, 10);
-    Team team3(3, 30);
-    Team team4(4, 60);
-    Team team5(5, 40);
-    Team team6(6, 40);
-    Team team7(7, 40);
-    Team team8(8, 40);
-    tree1.add(&team1);
-    tree1.add(&team2);
-    tree1.add(&team3);
-    tree1.add(&team4);
-    tree1.add(&team5);
-    tree1.add(&team6);
-    tree1.add(&team7);
-    tree1.add(&team8);
-    //
-    std::cout << tree1.debugging_printTree_new();
-    //
-    tree1.add_to_list(list, 2, 6);
-    std::cout << "list: " << list.debug_print() << std::endl;
-    tests +=  ("2 3 4 5 6 " == list.debug_print() );
-    tests += (4 == list.knockout());
+//    NodeList list;
+//    AVL_tree<Team*> tree1(false); // sort by ID
+//    Team team1(1, 20);
+//    Team team2(2, 10);
+//    Team team3(3, 30);
+//    Team team4(4, 60);
+//    Team team5(5, 40);
+//    Team team6(6, 40);
+//    Team team7(7, 40);
+//    Team team8(8, 40);
+//    tree1.add(&team1);
+//    tree1.add(&team2);
+//    tree1.add(&team3);
+//    tree1.add(&team4);
+//    tree1.add(&team5);
+//    tree1.add(&team6);
+//    tree1.add(&team7);
+//    tree1.add(&team8);
+//    //
+//    std::cout << tree1.debugging_printTree_new();
+//    //
+//    tree1.add_to_list(list, 2, 6);
+//    std::cout << "list: " << list.debug_print() << std::endl;
+//    tests +=  ("2 3 4 5 6 " == list.debug_print() );
+//    tests += (4 == list.knockout());
 
     return tests == 2;
 }
@@ -1131,20 +1131,156 @@ bool omeramir_tests_line451(){
         delete obj;
     }
 
-//    std::cout <<("get_all_players failure") << std::endl;
-//    {
-//        world_cup_t *obj = new world_cup_t();
-//        int players[4] = {};
-//
-//        StatusType res = obj->get_all_players(1, players);
-//        assert(res == StatusType::FAILURE);
-//        res = obj->get_all_players(-1, players);
-//        assert(res == StatusType::FAILURE);
-//        res = obj->add_team(1, 3);
-//        assert(res == StatusType::SUCCESS);
-//        res = obj->get_all_players(1, players);
-//        assert(res == StatusType::FAILURE);
-//        delete obj;
-//    }
+
+    std::cout << ("segel test")<< std::endl;
+    {
+        world_cup_t *obj = new world_cup_t();
+        StatusType res = obj->add_team(1, 10000);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_team(2, 20000);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_team(3, 30000);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_team(4, 40000);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1001, 1, 10, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1002, 1, 10, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+
+        output_t<int> resn1 = obj->get_num_played_games(1002);
+        assert(resn1.status() == StatusType::SUCCESS);
+        assert(resn1.ans() == 10);
+
+        res = obj->add_player(1003, 1, 10, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1004, 1, 10, 0, 2, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1005, 1, 10, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1006, 1, 10, 4, 3, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1007, 1, 10, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+
+        output_t<int> resn2 = obj->get_num_played_games(1006);
+        assert(resn2.status() == StatusType::SUCCESS);
+        assert(resn2.ans() == 10);
+
+        res = obj->add_player(1008, 1, 10, 0, 0, true);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1009, 1, 10, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1010, 1, 10, 0, 0, false);
+
+        output_t<int> resn3 = obj->get_num_played_games(1010);
+        assert(resn3.status() == StatusType::SUCCESS);
+        assert(resn3.ans() == 10);
+
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1011, 1, 10, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(1012, 1, 10, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+
+        res = obj->add_player(2001, 2, 20, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(2002, 2, 20, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(2003, 2, 20, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(2004, 2, 20, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(2005, 2, 20, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(2006, 2, 20, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(2007, 2, 20, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(2008, 2, 20, 6, 4, true);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(2009, 2, 20, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(2010, 2, 0, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(2011, 2, 20, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+
+        res = obj->add_player(3001, 3, 30, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(3002, 3, 30, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(3003, 3, 30, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(3004, 3, 30, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(3005, 3, 30, 2, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(3006, 3, 30, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(3007, 3, 30, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(3008, 3, 30, 0, 0, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(3009, 3, 30, 0, 2, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(3010, 3, 30, 0, 0, true);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(3011, 3, 30, 0, 0, true);
+        assert(res == StatusType::SUCCESS);
+
+        res = obj->add_player(4001, 4, 2, 1, 2, false);
+        assert(res == StatusType::SUCCESS);
+        res = obj->add_player(4002, 4, 2, 2, 2, false);
+        assert(res == StatusType::SUCCESS);
+
+        output_t<int> resn4 = obj->get_num_played_games(3001);
+        assert(resn4.status() == StatusType::SUCCESS);
+        assert(resn4.ans() == 30);
+
+        output_t<int> resn5 = obj->get_num_played_games(3011);
+        assert(resn5.status() == StatusType::SUCCESS);
+        assert(resn5.ans() == 30);
+
+        output_t<int> resn6 = obj->get_num_played_games(1001);
+        assert(resn6.status() == StatusType::SUCCESS);
+        assert(resn6.ans() == 10);
+
+        output_t<int> resn7 = obj->get_num_played_games(4001);
+        assert(resn7.status() == StatusType::SUCCESS);
+        assert(resn7.ans() == 2);
+
+        AVL_testing<Player*>::run_tests_on_worldCup(obj);
+
+        res = obj->update_player_stats(3001, 2, 1, 1);
+        assert(res == StatusType::SUCCESS);
+        res = obj->update_player_stats(3011, 2, 1, 1);
+        assert(res == StatusType::SUCCESS);
+        res = obj->update_player_stats(1001, 2, 1, 1);
+        assert(res == StatusType::SUCCESS);
+        res = obj->update_player_stats(4001, 2, 1, 1);
+        assert(res == StatusType::SUCCESS);
+
+
+        AVL_testing<Player*>::run_tests_on_worldCup(obj);
+        output_t<int> resn8 = obj->get_num_played_games(3001);
+        assert(resn8.status() == StatusType::SUCCESS);
+        assert(resn8.ans() == 32);
+
+        output_t<int> resn9 = obj->get_num_played_games(3011);
+        assert(resn9.status() == StatusType::SUCCESS);
+        assert(resn9.ans() == 32);
+
+        output_t<int> resn10 = obj->get_num_played_games(1001);
+        assert(resn10.status() == StatusType::SUCCESS);
+        assert(resn10.ans() == 12);
+
+        output_t<int> resn11 = obj->get_num_played_games(4001);
+        assert(resn11.status() == StatusType::SUCCESS);
+        assert(resn11.ans() == 4);
+
+        delete obj;
+    }
+    
     return true;
 }

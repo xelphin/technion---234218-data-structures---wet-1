@@ -87,8 +87,6 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
             if (team->get_isValid() && !team_valid_before_action){
                 valid_teams_AVL.add(teams_AVL.get_content(teamId));
             }
-
-
             player->set_team(team);
             all_players_AVL.add(player);
             player->set_global_score_node(all_players_score_AVL.add(player));
@@ -174,7 +172,7 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
             //        int goals, int cards, bool goalKeeper)
             if (player->get_team() == nullptr)
                 return StatusType::FAILURE;
-            int teamId = player->get_id();
+            int teamId = player->get_team()->get_id();
             int gamesPlayedNew = player->get_gamesPlayed_withoutTeam() + gamesPlayed; // TODO: possible needs to be negative something
             int goals = player->get_score() + scoredGoals;
             int cards = player->get_cards() + cardsReceived;

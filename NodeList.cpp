@@ -109,7 +109,7 @@ void NodeList::remove(Node* node)
         }
         end = prevNode;
         prevNode->next = nullptr;
-        delete node;
+        delete node; //TODO: causes SIGTRAP error
         return;
     }
     // node is in middle
