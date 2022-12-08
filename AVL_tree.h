@@ -187,7 +187,6 @@ typename AVL_tree<T>::Node* AVL_tree<T>::add(T item) {
     // the object is deleted.
     //
 
-//TODO: debug segfault at this line.
     AVL_tree<T>::Node* leaf(new Node(item));
     try {
         leaf->tree = this;
@@ -292,26 +291,6 @@ typename AVL_tree<T>::Node *AVL_tree<T>::find_rightmost(AVL_tree<T>::Node* node)
         }
         else{
             return current; //returns when there is no right child
-        }
-    }
-}
-
-template<class T>
-typename AVL_tree<T>::Node *AVL_tree<T>::find_leftmost(AVL_tree<T>::Node* node) {
-    if (node == nullptr){
-        return nullptr;
-    }
-    Node* current = node->left;
-    if (current == nullptr){ //no nodes to the left of this node
-        return nullptr;
-    }
-
-    while(true){ //while true loop ok because in every case we either return or go down tree.
-        if (current->left != nullptr){
-            current = current->left;
-        }
-        else{
-            return current; //returns when there is no left child
         }
     }
 }
@@ -1143,7 +1122,7 @@ template<class T>
 void AVL_tree<T>::print_node(AVL_tree<T>::Node* node){
     //the format is: self, parent, left, right
     if (node == nullptr){
-        std::cout << "NULL\n";
+//        std::cout << "NULL\n";
         return;
     }
     //std::cout << (*(node->content)).get_id() << " " <<

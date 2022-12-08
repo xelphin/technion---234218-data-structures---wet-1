@@ -388,7 +388,6 @@ output_t<int> world_cup_t::get_all_players_count(int teamId)
         return StatusType::INVALID_INPUT;
     // RETURN AMOUNT ALL PLAYERS - O(1)
     if (teamId < 0) {
-        std::cout << teams_AVL.debugging_printTree();
         return all_players_AVL.get_amount();
     }
     // FIND TEAM - O(log(k))
@@ -440,11 +439,10 @@ StatusType world_cup_t::get_all_players(int teamId, int *const output)
 
 output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
 {
-    return 0;
     if (playerId <= 0 || teamId <= 0 || all_players_AVL.get_amount() <= 1){
         return StatusType::INVALID_INPUT;
     }
-    std::cout << all_players_score_AVL.debugging_printTree_new() << std::endl;
+//    std::cout << all_players_score_AVL.debugging_printTree_new() << std::endl;
 //    std::cout << sorted_score_List.debug_print() << std::endl;
 
     try {
@@ -463,9 +461,6 @@ output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
     } catch (std::bad_alloc const& ) {
         return StatusType::ALLOCATION_ERROR;
     }
-
-
-
     return StatusType::FAILURE;
 }
 

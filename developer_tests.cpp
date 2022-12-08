@@ -43,7 +43,7 @@ bool run_all_tests() {
     run_test(worldCup_Knockout_Winner, "worldCup_Knockout_Winner", success_string, success);
     run_test(nodeList_Add, "nodeList_Add", success_string, success);
     run_test(nodeList_Remove, "nodeList_Remove", success_string, success);
-    run_test(omeramir_tests_line451, "omeramir_tests_line451", success_string, success);
+    run_test(omeramir_tests_line, "omeramir_tests_line", success_string, success);
 
     run_test(avl_getClosestLeft, "avl_getClosestLeft", success_string, success);
     run_test(avl_getClosestRight, "avl_getClosestRight", success_string, success);
@@ -1005,7 +1005,139 @@ bool worldCup_Knockout_Winner()
     return (StatusType::FAILURE == (worldCup.knockout_winner(2,3)).status());;
 }
 
-bool omeramir_tests_line451(){
+bool avl_getClosestLeft()
+{
+    int tests = 0;
+    AVL_tree<std::shared_ptr<Player>> tree1(true); // sort by SCORE
+    std::shared_ptr<Player> player4(new Player(4, 2, 1, 4, 0, false));
+    std::shared_ptr<Player> player5(new Player(5, 2, 1, 5, 0, false));
+    std::shared_ptr<Player> player8(new Player(8, 2, 1, 8, 0, false));
+    std::shared_ptr<Player> player6(new Player(6, 2, 1, 6, 0, false));
+    std::shared_ptr<Player> player9(new Player(9, 2, 1, 9, 0, false));
+    std::shared_ptr<Player> player3(new Player(3, 2, 1, 3, 0, false));
+    //
+
+    player4->set_global_score_node(tree1.add(player4));
+    player5->set_global_score_node(tree1.add(player5));
+    player8->set_global_score_node(tree1.add(player8));
+    tests += (*(tree1.find_closest_left(player8->get_global_score_node()))->content).get_id() == 5;
+    player6->set_global_score_node(tree1.add(player6));
+    player9->set_global_score_node(tree1.add(player9));
+    tests += (*(tree1.find_closest_left(player9->get_global_score_node()))->content).get_id() == 8;
+    player3->set_global_score_node(tree1.add(player3));
+    //
+    std::string finalTree = tree1.debugging_printTree();
+    std::cout << finalTree;
+    //
+    tests += (*(tree1.find_closest_left(player6->get_global_score_node()))->content).get_id() == 5;
+    tests += (*(tree1.find_closest_left(player5->get_global_score_node()))->content).get_id() == 4;
+    tests += (*(tree1.find_closest_left(player9->get_global_score_node()))->content).get_id() == 8;
+    tests += (*(tree1.find_closest_left(player4->get_global_score_node()))->content).get_id() == 3;
+    tests += (tree1.find_closest_left(player3->get_global_score_node()) == nullptr);
+    //
+
+    std::shared_ptr<Player> player10(new Player(10, 2, 1, 10, 0, false));
+    std::shared_ptr<Player> player11(new Player(11, 2, 1, 11, 0, false));
+    std::shared_ptr<Player> player12(new Player(12, 2, 1, 12, 0, false));
+    std::shared_ptr<Player> player13(new Player(13, 2, 1, 13, 0, false));
+    player10->set_global_score_node(tree1.add(player10));
+    player11->set_global_score_node(tree1.add(player11));
+    player12->set_global_score_node(tree1.add(player12));
+    player13->set_global_score_node(tree1.add(player13));
+    finalTree = tree1.debugging_printTree();
+    std::cout << finalTree;
+    //
+    tests += (*(tree1.find_closest_left(player12->get_global_score_node()))->content).get_id() == 11;
+    tests += (*(tree1.find_closest_left(player11->get_global_score_node()))->content).get_id() == 10;
+    tests += (*(tree1.find_closest_left(player6->get_global_score_node()))->content).get_id() == 5;
+
+    return tests == 10;
+}
+
+bool avl_getClosestRight()
+{
+    int tests = 0;
+    AVL_tree<std::shared_ptr<Player>> tree1(true); // sort by SCORE
+    std::shared_ptr<Player> player4(new Player(4, 2, 1, 4, 0, false));
+    std::shared_ptr<Player> player5(new Player(5, 2, 1, 5, 0, false));
+    std::shared_ptr<Player> player8(new Player(8, 2, 1, 8, 0, false));
+    std::shared_ptr<Player> player6(new Player(6, 2, 1, 6, 0, false));
+    std::shared_ptr<Player> player9(new Player(9, 2, 1, 9, 0, false));
+    std::shared_ptr<Player> player3(new Player(3, 2, 1, 3, 0, false));
+    //
+
+    player4->set_global_score_node(tree1.add(player4));
+    player5->set_global_score_node(tree1.add(player5));
+    player8->set_global_score_node(tree1.add(player8));
+    tests += (*(tree1.find_closest_right(player4->get_global_score_node()))->content).get_id() == 5;
+    player6->set_global_score_node(tree1.add(player6));
+    player9->set_global_score_node(tree1.add(player9));
+    tests += (*(tree1.find_closest_right(player8->get_global_score_node()))->content).get_id() == 9;
+    player3->set_global_score_node(tree1.add(player3));
+    //
+    std::string finalTree = tree1.debugging_printTree();
+    std::cout << finalTree;
+    //
+    tests += (*(tree1.find_closest_right(player5->get_global_score_node()))->content).get_id() == 6;
+    tests += (*(tree1.find_closest_right(player4->get_global_score_node()))->content).get_id() == 5;
+    tests += (*(tree1.find_closest_right(player8->get_global_score_node()))->content).get_id() == 9;
+    tests += (*(tree1.find_closest_right(player3->get_global_score_node()))->content).get_id() == 4;
+    tests += (tree1.find_closest_right(player9->get_global_score_node()) == nullptr);
+    //
+
+    std::shared_ptr<Player> player10(new Player(10, 2, 1, 10, 0, false));
+    std::shared_ptr<Player> player11(new Player(11, 2, 1, 11, 0, false));
+    std::shared_ptr<Player> player12(new Player(12, 2, 1, 12, 0, false));
+    std::shared_ptr<Player> player13(new Player(13, 2, 1, 13, 0, false));
+    player10->set_global_score_node(tree1.add(player10));
+    player11->set_global_score_node(tree1.add(player11));
+    player12->set_global_score_node(tree1.add(player12));
+    player13->set_global_score_node(tree1.add(player13));
+    finalTree = tree1.debugging_printTree();
+    std::cout << finalTree;
+    //
+    tests += (*(tree1.find_closest_right(player11->get_global_score_node()))->content).get_id() == 12;
+    tests += (*(tree1.find_closest_right(player10->get_global_score_node()))->content).get_id() == 11;
+    tests += (*(tree1.find_closest_right(player5->get_global_score_node()))->content).get_id() == 6;
+    //
+    // Find a closest()
+    tests += (*(tree1.find_a_closest(player10->get_global_score_node()))->content).get_id() == 11;
+    tests += (*(tree1.find_a_closest(player13->get_global_score_node()))->content).get_id() == 12;
+    tests += (*(tree1.find_a_closest(player3->get_global_score_node()))->content).get_id() == 4;
+    AVL_tree<std::shared_ptr<Player>> tree2(true); // sort by SCORE
+    std::shared_ptr<Player> player20(new Player(20, 2, 1, 10, 0, false));
+    player20->set_global_score_node(tree2.add(player20));
+    if (player20->get_global_score_node() != nullptr)
+        tests += (tree2.find_a_closest(player20->get_global_score_node()) == nullptr);
+    std::shared_ptr<Player> player21(new Player(21, 2, 1, 10, 0, false));
+    player21->set_global_score_node(tree2.add(player21));
+    tests += (*(tree2.find_a_closest(player21->get_global_score_node()))->content).get_id() == 20;
+
+    return tests == 15;
+}
+
+bool worldCup_get_closest_player()
+{
+    int tests = 0;
+    world_cup_t worldCup;
+
+    worldCup.add_team(1,0);
+    worldCup.add_team(2,0);
+    worldCup.add_player(1, 2, 5, 5, 0, false);
+    worldCup.add_player(2, 2, 5, 2, 0, false);
+    worldCup.add_player(3, 2, 5, 7, 0, false);
+    worldCup.add_player(4, 1, 5, 8, 0, false);
+    worldCup.add_player(5, 1, 5, 1, 0, false);
+    worldCup.add_player(6, 1, 5, 5, 0, false);
+    //
+    tests += (worldCup.get_closest_player(3,2).ans() == 4);
+    tests += (worldCup.get_closest_player(5,1).ans() == 2);
+
+    return tests == 2;
+
+}
+
+bool omeramir_tests_line(){
     std::cout << ("add teams and players - segel test - remove at random stages") << std::endl;
     {
         world_cup_t *obj = new world_cup_t();
@@ -1183,142 +1315,4 @@ bool omeramir_tests_line451(){
 
 
     return true;
-}
-
-
-bool avl_getClosestLeft()
-{
-    int tests = 0;
-    AVL_tree<std::shared_ptr<Player>> tree1(true); // sort by SCORE
-    std::shared_ptr<Player> player4(new Player(4, 2, 1, 4, 0, false));
-    std::shared_ptr<Player> player5(new Player(5, 2, 1, 5, 0, false));
-    std::shared_ptr<Player> player8(new Player(8, 2, 1, 8, 0, false));
-    std::shared_ptr<Player> player6(new Player(6, 2, 1, 6, 0, false));
-    std::shared_ptr<Player> player9(new Player(9, 2, 1, 9, 0, false));
-    std::shared_ptr<Player> player3(new Player(3, 2, 1, 3, 0, false));
-    //
-
-    player4->set_global_score_node(tree1.add(player4));
-    player5->set_global_score_node(tree1.add(player5));
-    player8->set_global_score_node(tree1.add(player8));
-    tests += (*(tree1.find_closest_left(player8->get_global_score_node()))->content).get_id() == 5;
-    player6->set_global_score_node(tree1.add(player6));
-    player9->set_global_score_node(tree1.add(player9));
-    tests += (*(tree1.find_closest_left(player9->get_global_score_node()))->content).get_id() == 8;
-    player3->set_global_score_node(tree1.add(player3));
-    //
-    std::string finalTree = tree1.debugging_printTree();
-    std::cout << finalTree;
-    //
-    tests += (*(tree1.find_closest_left(player6->get_global_score_node()))->content).get_id() == 5;
-    tests += (*(tree1.find_closest_left(player5->get_global_score_node()))->content).get_id() == 4;
-    tests += (*(tree1.find_closest_left(player9->get_global_score_node()))->content).get_id() == 8;
-    tests += (*(tree1.find_closest_left(player4->get_global_score_node()))->content).get_id() == 3;
-    tests += (tree1.find_closest_left(player3->get_global_score_node()) == nullptr);
-    //
-
-    std::shared_ptr<Player> player10(new Player(10, 2, 1, 10, 0, false));
-    std::shared_ptr<Player> player11(new Player(11, 2, 1, 11, 0, false));
-    std::shared_ptr<Player> player12(new Player(12, 2, 1, 12, 0, false));
-    std::shared_ptr<Player> player13(new Player(13, 2, 1, 13, 0, false));
-    player10->set_global_score_node(tree1.add(player10));
-    player11->set_global_score_node(tree1.add(player11));
-    player12->set_global_score_node(tree1.add(player12));
-    player13->set_global_score_node(tree1.add(player13));
-    finalTree = tree1.debugging_printTree();
-    std::cout << finalTree;
-    //
-    tests += (*(tree1.find_closest_left(player12->get_global_score_node()))->content).get_id() == 11;
-    tests += (*(tree1.find_closest_left(player11->get_global_score_node()))->content).get_id() == 10;
-    tests += (*(tree1.find_closest_left(player6->get_global_score_node()))->content).get_id() == 5;
-
-    return tests == 10;
-}
-
-bool avl_getClosestRight()
-{
-    int tests = 0;
-    AVL_tree<std::shared_ptr<Player>> tree1(true); // sort by SCORE
-    std::shared_ptr<Player> player4(new Player(4, 2, 1, 4, 0, false));
-    std::shared_ptr<Player> player5(new Player(5, 2, 1, 5, 0, false));
-    std::shared_ptr<Player> player8(new Player(8, 2, 1, 8, 0, false));
-    std::shared_ptr<Player> player6(new Player(6, 2, 1, 6, 0, false));
-    std::shared_ptr<Player> player9(new Player(9, 2, 1, 9, 0, false));
-    std::shared_ptr<Player> player3(new Player(3, 2, 1, 3, 0, false));
-    //
-
-    player4->set_global_score_node(tree1.add(player4));
-    player5->set_global_score_node(tree1.add(player5));
-    player8->set_global_score_node(tree1.add(player8));
-    tests += (*(tree1.find_closest_right(player4->get_global_score_node()))->content).get_id() == 5;
-    player6->set_global_score_node(tree1.add(player6));
-    player9->set_global_score_node(tree1.add(player9));
-    tests += (*(tree1.find_closest_right(player8->get_global_score_node()))->content).get_id() == 9;
-    player3->set_global_score_node(tree1.add(player3));
-    //
-    std::string finalTree = tree1.debugging_printTree();
-    std::cout << finalTree;
-    //
-    tests += (*(tree1.find_closest_right(player5->get_global_score_node()))->content).get_id() == 6;
-    tests += (*(tree1.find_closest_right(player4->get_global_score_node()))->content).get_id() == 5;
-    tests += (*(tree1.find_closest_right(player8->get_global_score_node()))->content).get_id() == 9;
-    tests += (*(tree1.find_closest_right(player3->get_global_score_node()))->content).get_id() == 4;
-    tests += (tree1.find_closest_right(player9->get_global_score_node()) == nullptr);
-    //
-
-    std::shared_ptr<Player> player10(new Player(10, 2, 1, 10, 0, false));
-    std::shared_ptr<Player> player11(new Player(11, 2, 1, 11, 0, false));
-    std::shared_ptr<Player> player12(new Player(12, 2, 1, 12, 0, false));
-    std::shared_ptr<Player> player13(new Player(13, 2, 1, 13, 0, false));
-    player10->set_global_score_node(tree1.add(player10));
-    player11->set_global_score_node(tree1.add(player11));
-    player12->set_global_score_node(tree1.add(player12));
-    player13->set_global_score_node(tree1.add(player13));
-    finalTree = tree1.debugging_printTree();
-    std::cout << finalTree;
-    //
-    tests += (*(tree1.find_closest_right(player11->get_global_score_node()))->content).get_id() == 12;
-    tests += (*(tree1.find_closest_right(player10->get_global_score_node()))->content).get_id() == 11;
-    tests += (*(tree1.find_closest_right(player5->get_global_score_node()))->content).get_id() == 6;
-    //
-    // Find a closest()
-    tests += (*(tree1.find_a_closest(player10->get_global_score_node()))->content).get_id() == 11;
-    tests += (*(tree1.find_a_closest(player13->get_global_score_node()))->content).get_id() == 12;
-    tests += (*(tree1.find_a_closest(player3->get_global_score_node()))->content).get_id() == 4;
-    AVL_tree<std::shared_ptr<Player>> tree2(true); // sort by SCORE
-    std::shared_ptr<Player> player20(new Player(20, 2, 1, 10, 0, false));
-    player20->set_global_score_node(tree2.add(player20));
-    if (player20->get_global_score_node() != nullptr)
-        tests += (tree2.find_a_closest(player20->get_global_score_node()) == nullptr);
-    std::shared_ptr<Player> player21(new Player(21, 2, 1, 10, 0, false));
-    player21->set_global_score_node(tree2.add(player21));
-    tests += (*(tree2.find_a_closest(player21->get_global_score_node()))->content).get_id() == 20;
-
-    return tests == 15;
-}
-
-bool worldCup_get_closest_player()
-{
-    int tests = 0;
-    world_cup_t worldCup;
-
-    worldCup.add_team(1,0);
-    worldCup.add_team(2,0);
-    worldCup.add_player(1, 2, 5, 5, 0, false);
-    worldCup.add_player(2, 2, 5, 2, 0, false);
-    worldCup.add_player(3, 2, 5, 7, 0, false);
-    worldCup.add_player(4, 1, 5, 8, 0, false);
-    worldCup.add_player(5, 1, 5, 1, 0, false);
-    worldCup.add_player(6, 1, 5, 5, 0, false);
-    //
-    tests += (worldCup.get_closest_player(3,2).ans() == 4);
-    tests += (worldCup.get_closest_player(5,1).ans() == 2);
-
-    world_cup_t *obj = new world_cup_t();
-    StatusType res = obj->add_team(1, 2);
-    assert(res == StatusType::SUCCESS);
-    delete obj;
-
-    return tests == 2;
-
 }
