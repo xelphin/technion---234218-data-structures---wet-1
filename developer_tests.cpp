@@ -51,7 +51,7 @@ bool run_all_tests() {
 
     run_test(nodeList_Get_Closest, "nodeList_Get_Closest", success_string, success);
     run_test(worldCup_get_closest_player, "worldCup_get_closest_player", success_string, success);
-
+    run_test(worldCup_get_closest_player_extended, "worldCup_get_closest_player_extended", success_string, success);
 
     std::cout << success_string << std::endl;
     return success;
@@ -1639,5 +1639,12 @@ bool omeramir_tests_line(){
     }
 
 
+    return true;
+}
+
+
+bool worldCup_get_closest_player_extended()
+{
+    // TODO: Erase after finish debugging
     return true;
 }

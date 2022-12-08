@@ -149,7 +149,7 @@ bool omeramir_tests_line();
 bool avl_getClosestLeft();
 bool avl_getClosestRight();
 bool worldCup_get_closest_player();
-
+bool worldCup_get_closest_player_extended();
 
 
 

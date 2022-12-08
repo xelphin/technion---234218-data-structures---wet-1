@@ -446,15 +446,21 @@ StatusType world_cup_t::get_all_players(int teamId, int *const output)
 
 output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)
 {
-    if (playerId <= 0 || teamId <= 0 || all_players_AVL.get_amount() <= 1){
+    if (playerId <= 0 || teamId <= 0){
         return StatusType::INVALID_INPUT;
     }
-//    std::cout << all_players_score_AVL.debugging_printTree_new() << std::endl;
-//    std::cout << sorted_score_List.debug_print() << std::endl;
+    if (all_players_AVL.get_amount() <= 1) {
+        return StatusType::FAILURE;
+    }
 
     try {
         // FIND PLAYER
-        std::shared_ptr<Player> player = all_players_AVL.get_content(playerId); // O(log(n))
+        Team* team = &(*(teams_AVL.get_content(teamId)));
+        if (team == nullptr) {
+            return StatusType::FAILURE;
+        }
+        std::shared_ptr<Player> player = team->find_player(playerId); // O(log(n))
+
         if (player != nullptr) {
             // PLAYER FOUND
             NodeList::Node* node_in_list = player->get_playerScoreListNode();
