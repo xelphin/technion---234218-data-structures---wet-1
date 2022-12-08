@@ -38,11 +38,6 @@ private:
     AVL_tree<std::shared_ptr<Team>> teams_AVL;
     AVL_tree<std::shared_ptr<Team>> valid_teams_AVL;
     NodeList sorted_score_List;
-
-#ifndef NDEBUG
-    template <typename T> friend class AVL_testing;
-#endif
-
 	
 public:
 	// <DO-NOT-MODIFY> {

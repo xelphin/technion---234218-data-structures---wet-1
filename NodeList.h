@@ -5,7 +5,6 @@
 #ifndef NODELIST_TEAMS_H
 #define NODELIST_TEAMS_H
 
-#include <string>
 #include <iostream>
 
 // USED ONLY FOR KNOCKOUT
@@ -25,7 +24,6 @@ public:
     int get_closest(Node* node) const;
     void remove(Node* node);
     int knockout();
-    std::string debug_print();
 
 private:
     NodeList::Node *start;

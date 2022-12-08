@@ -258,19 +258,6 @@ bool NodeList::player1_biggerScorer(Node& player1, Node& player2)
     return false;
 }
 
-std::string NodeList::debug_print()
-{
-    std::string str = "";
-    NodeList::Node* currentNode = this->start; // initialize current node to start
-    while (currentNode)
-    {
-        NodeList::Node* nextNode = currentNode->next;
-        str += std::to_string(currentNode->id) + " ";
-        currentNode = nextNode;
-    }
-    return str;
-}
-
 NodeList::Node::Node(int id, int total_points, int total_goals, int total_cards)
         : prev(nullptr), next(nullptr), id(id), total_points(total_points), total_goals(total_goals), total_cards(total_cards)
         {}
