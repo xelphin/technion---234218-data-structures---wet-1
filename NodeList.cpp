@@ -20,7 +20,7 @@ NodeList::~NodeList() {
 void NodeList::add(int id, int total_points, int total_goals, int total_cards)
 {
     // O(1)
-    Node* newNode = new Node(id, total_points, total_goals, total_cards);
+    NodeList::Node* newNode = new NodeList::Node(id, total_points, total_goals, total_cards);
     // List is empty:
     if (start == nullptr) {
         start = newNode;
@@ -37,7 +37,7 @@ void NodeList::add(int id, int total_points, int total_goals, int total_cards)
 
 NodeList::Node* NodeList::add(Node* nodeNextTo, int id, int total_points, int total_goals, int total_cards)
 {
-    Node* newNode = new Node(id, total_points, total_goals, total_cards);
+    NodeList::Node* newNode = new NodeList::Node(id, total_points, total_goals, total_cards);
     // Empty list
     if (nodeNextTo == nullptr) { // empty list
         if (start != nullptr || end != nullptr) {
@@ -50,12 +50,14 @@ NodeList::Node* NodeList::add(Node* nodeNextTo, int id, int total_points, int to
         return newNode;
     }
     // Not empty
-    int winnerId = get_winnerId(*nodeNextTo, *newNode);
-    if (winnerId == nodeNextTo->get_id()) { // prevNode < newNode < nodeNextTo
+    bool nodeNextTo_BiggerScorer = player1_biggerScorer(*nodeNextTo, *newNode);
+
+    if (nodeNextTo_BiggerScorer) { // prevNode < newNode < nodeNextTo
         NodeList::Node* prevNode = nodeNextTo->prev;
         if (prevNode != nullptr) {
             prevNode->next = newNode;
         } else {
+
             start = newNode;
         }
         newNode->prev = prevNode;
@@ -97,7 +99,9 @@ void NodeList::remove(Node* node)
             return;
         }
         start = nextNode;
-        if (start == nullptr)
+        if (start == nullptr){
+            throw;
+        }
         nextNode->prev = nullptr;
         delete node;
         return;
@@ -105,11 +109,12 @@ void NodeList::remove(Node* node)
     // node == end
     if (nextNode == nullptr) {
         if (end != node) {
+            //std::cout << "ERROR2!" << std::endl;
             return;
         }
         end = prevNode;
         prevNode->next = nullptr;
-        delete node; //TODO: causes SIGTRAP error
+        delete node;
         return;
     }
     // node is in middle
@@ -149,8 +154,9 @@ void NodeList::call_match() // O(current amount of teams playing)
 
     while (team1 && team2) { // prevNode -> team1 -> team2 -> nextNode
         int winnerId = get_winnerId(*team1, *team2);
+        //std::cout << "Match: " << (team1->id) << " :: " << (team2->id) << " winner: " << (winnerId) << std::endl;
         // Create new node
-        Node* newNode = new Node(winnerId,
+        NodeList::Node* newNode = new NodeList::Node(winnerId,
                                  team1->total_points + team2->total_points + 3,
                                  team1->total_goals + team2->total_goals,
                                  team1->total_cards + team2->total_cards);
@@ -182,7 +188,9 @@ void NodeList::call_match() // O(current amount of teams playing)
         nextNode = team2->next;
 
         // debug
+        //std::cout << "list: " << (this->debug_print()) << std::endl;
     }
+    //std::cout << "list end: " << (this->debug_print()) << std::endl;
 }
 
 int NodeList::get_winnerId(Node& team1, Node& team2)
@@ -200,6 +208,50 @@ int NodeList::get_winnerId(Node& team1, Node& team2)
     return winnerId;
 }
 
+int NodeList::get_closest(Node* node) const
+{
+    if (node == nullptr)
+        return 0;
+    NodeList::Node* prev = node->prev;
+    NodeList::Node* next = node->next;
+    if (prev == nullptr && next == nullptr)
+        return 0;
+    if (prev == nullptr)
+        return next->get_id();
+    if (next == nullptr)
+        return prev->get_id();
+
+    // Both nodes exist
+    if (abs(prev->total_goals - node->total_goals) > abs(next->total_goals - node->total_goals))
+        return next->get_id();
+    if (abs(prev->total_goals - node->total_goals) < abs(next->total_goals - node->total_goals))
+        return prev->get_id();
+    if (abs(prev->total_cards - node->total_cards) > abs(next->total_cards - node->total_cards))
+        return next->get_id();
+    if (abs(prev->total_cards - node->total_cards) < abs(next->total_cards - node->total_cards))
+        return prev->get_id();
+    if (abs(prev->id - node->id) > abs(next->id - node->id))
+        return next->get_id();
+    if (abs(prev->id - node->id) < abs(next->id - node->id))
+        return prev->get_id();
+    return 0;
+}
+
+bool NodeList::player1_biggerScorer(Node& player1, Node& player2)
+{
+    if (player1.total_goals > player2.total_goals)
+        return true;
+    if (player1.total_goals < player2.total_goals)
+        return false;
+    if (player1.total_cards > player2.total_cards)
+        return false;
+    if (player1.total_cards < player2.total_cards)
+        return true;
+    if ((player1.id > player2.id))
+        return true;
+    return false;
+}
+
 std::string NodeList::debug_print()
 {
     std::string str = "";
@@ -214,7 +266,7 @@ std::string NodeList::debug_print()
 }
 
 NodeList::Node::Node(int id, int total_points, int total_goals, int total_cards)
-        : next(nullptr), id(id), total_points(total_points), total_goals(total_goals), total_cards(total_cards)
+        : prev(nullptr), next(nullptr), id(id), total_points(total_points), total_goals(total_goals), total_cards(total_cards)
         {}
 
 int NodeList::Node::get_match_points() const

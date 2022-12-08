@@ -158,13 +158,13 @@ void Player::set_global_score_node(AVL_tree<std::shared_ptr<Player>>::Node* node
 AVL_tree<std::shared_ptr<Player>>::Node *Player::get_global_score_node() {
     return global_scorers_tree_node;
 }
-//
-//void Player::set_playerScoreListNode(NodeList::Node* node)
-//{
-//    playerScoreListNode = node;
-//}
-//
-//NodeList::Node* Player::get_playerScoreListNode()
-//{
-//    return playerScoreListNode;
-//}
+
+void Player::set_playerScoreListNode(NodeList::Node* node)
+{
+    playerScoreListNode = node;
+}
+
+NodeList::Node* Player::get_playerScoreListNode()
+{
+    return playerScoreListNode;
+}

@@ -95,24 +95,24 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
             player->set_global_score_node(all_players_score_AVL.add(player));
             set_top_scorer();
 
-            // Add player to sorted_score_List
-//            AVL_tree<std::shared_ptr<Player>>::Node* close_node = all_players_score_AVL.find_a_closest(player->get_global_score_node()); // find neighbor
-//            if (close_node != nullptr && close_node->content != nullptr) {
-//                // Get where close_node points to itself in the list
-//                NodeList::Node* close_node_in_list = close_node->content->get_playerScoreListNode();
-//                if (close_node_in_list == nullptr) {
-//                    std::cout << "ERROR: all players should point to where they are in the list" << std::endl;
-//                    throw;
-//                }
-//                // Add to the list our new player (and make our player point to its location in the list)
-//                NodeList::Node* newNode = sorted_score_List.add(close_node_in_list, playerId, 0, goals, cards);
-//                player->set_playerScoreListNode(newNode);
-//
-//            } else { // empty list
-//                // add player directly with nullptr
-//                NodeList::Node* newNode = sorted_score_List.add(nullptr, playerId, 0, goals, cards);
-//                player->set_playerScoreListNode(newNode);
-//            }
+//             Add player to sorted_score_List
+            AVL_tree<std::shared_ptr<Player>>::Node* close_node = all_players_score_AVL.find_a_closest(player->get_global_score_node()); // find neighbor
+            if (close_node != nullptr && close_node->content != nullptr) {
+                // Get where close_node points to itself in the list
+                NodeList::Node* close_node_in_list = close_node->content->get_playerScoreListNode();
+                if (close_node_in_list == nullptr) {
+                    std::cout << "ERROR: all players should point to where they are in the list" << std::endl;
+                    throw;
+                }
+                // Add to the list our new player (and make our player point to its location in the list)
+                NodeList::Node* newNode = sorted_score_List.add(close_node_in_list, playerId, 0, goals, cards);
+                player->set_playerScoreListNode(newNode);
+
+            } else { // empty list
+                // add player directly with nullptr
+                NodeList::Node* newNode = sorted_score_List.add(nullptr, playerId, 0, goals, cards);
+                player->set_playerScoreListNode(newNode);
+            }
 
 
         } catch (std::bad_alloc const&) { // EXCEPTION: Bad Alloc
@@ -159,9 +159,9 @@ StatusType world_cup_t::remove_player(int playerId)
                     valid_teams_AVL.remove(playerTeam->get_id());
                 }
 
-//                // Remove player from sorted_score_List
-//                NodeList::Node* node_in_list = player->get_playerScoreListNode();
-//                sorted_score_List.remove(node_in_list);
+                // Remove player from sorted_score_List
+                NodeList::Node* node_in_list = player->get_playerScoreListNode();
+                sorted_score_List.remove(node_in_list);
 
             } else {
                 success1 = false;
