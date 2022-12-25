@@ -869,7 +869,7 @@ int AVL_tree<T>::Node::get_height(AVL_tree<T>::Node *node) {
         return -1; //leaf child is 0, non-existent child is -1
     }
     else{
-        return node->height;
+        return node->set_height();
     }
 }
 
