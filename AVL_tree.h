@@ -196,7 +196,6 @@ typename AVL_tree<T>::Node* AVL_tree<T>::add(T item) {
             this->amount++;
             return leaf;
         } 
-
         if ((*leaf).get_comparison(*parent) > 0) {
             parent->right = leaf;
         } else if ((*leaf).get_comparison(*parent) < 0) {

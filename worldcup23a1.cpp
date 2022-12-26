@@ -274,6 +274,7 @@ output_t<int> world_cup_t::get_team_points(int teamId)
 
 StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
 {
+
     // CHECK INVALID - O(1)
     if (newTeamId <= 0 || teamId1 <= 0 || teamId2 <= 0 || teamId1 == teamId2)
         return StatusType::INVALID_INPUT;
@@ -281,7 +282,7 @@ StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
     // FIND TEAMS - O(log(k))
     Team* team1 = &(*(teams_AVL.get_content(teamId1)));
     Team* team2 = &(*(teams_AVL.get_content(teamId2)));
-    if (team1 == nullptr || team2 == nullptr)
+    if (team1 == nullptr || team2 == nullptr || (newTeamId != teamId1 && newTeamId != teamId2 && this->teams_AVL.find_id(newTeamId)))
         return StatusType::FAILURE;
     AVL_tree<std::shared_ptr<Player>>* team1_players = team1->get_AVL_tree_id();
     AVL_tree<std::shared_ptr<Player>>* team2_players = team2->get_AVL_tree_id();

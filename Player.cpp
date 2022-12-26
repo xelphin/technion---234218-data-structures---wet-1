@@ -76,7 +76,8 @@ int Player::compare(const Player& player2, bool sort_by_score) const
 
 void Player::set_team(Team* playerTeam)
 {
-   this->team = playerTeam;
+   team = playerTeam;
+   teamId = playerTeam->get_id();
 }
 
 Team* Player::get_team() const
