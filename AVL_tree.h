@@ -205,7 +205,7 @@ typename AVL_tree<T>::Node* AVL_tree<T>::add(T item) {
             throw ID_ALREADY_EXISTS();
         }
         leaf->parent = parent;
-        leaf->tree=this;
+        leaf->tree = this;
         climb_up_and_rebalance_tree(leaf);
         this->amount++;
     }
@@ -213,8 +213,10 @@ typename AVL_tree<T>::Node* AVL_tree<T>::add(T item) {
         delete leaf;
         throw std::bad_alloc();
     }
+//
+//    std::cout << "added " << leaf->content->get_id() << ". sort by score: " << sort_by_score << " \n";
+//    std::cout << debugging_printTree_new();
     return leaf;
-
 }
 
 
@@ -458,11 +460,10 @@ bool AVL_tree<T>::remove_internal(AVL_tree<T>::Node* node) {
     }
 
     // found next unbalanced, replaced if necessary.
-    if (next_unbalanced_node != nullptr) //if not removed root and now empty tree
-    {
-        climb_up_and_rebalance_tree(next_unbalanced_node);
-    }
+    climb_up_and_rebalance_tree(next_unbalanced_node);
 
+//    std::cout << "removed " << node->content->get_id() << " sort by score: " << sort_by_score << "\n";
+//    std::cout << debugging_printTree_new();
     delete node;
     this->amount--;
     return true;
@@ -645,6 +646,7 @@ typename AVL_tree<T>::Node *AVL_tree<T>::make_AVL_tree_from_array(T arr[], int s
         node->tree = this;
         node->left = this->AVL_tree<T>::make_AVL_tree_from_array(arr, start, midIndex - 1);
         node->right = this->AVL_tree<T>::make_AVL_tree_from_array(arr, midIndex + 1, end);
+        node->set_height();
     }
     catch (...){
         delete node;
@@ -804,6 +806,9 @@ typename AVL_tree<T>::Node* AVL_tree<T>::find_designated_parent(AVL_tree::Node* 
     
     while(true){ //while true loop ok because in every case we either return or go down tree.
 
+        if (new_leaf->content->get_id() == current->content->get_id()){
+            return current;}
+
         if (new_leaf->get_comparison(*current)>0)  { //proceed to right branch.
             if (current->right != nullptr){
                 current = current->right;
@@ -870,7 +875,7 @@ int AVL_tree<T>::Node::get_height(AVL_tree<T>::Node *node) {
         return -1; //leaf child is 0, non-existent child is -1
     }
     else{
-        return node->height;
+        return node->set_height();
     }
 }
 
@@ -893,8 +898,6 @@ void AVL_tree<T>::climb_up_and_rebalance_tree(AVL_tree<T>::Node *leaf) {
     AVL_tree<T>::Node* current = leaf; //not node.parent, so it also updates the height of the node to 0 if it's a leaf.
 
     while (current != nullptr){ //climbs up tree. stops after iterating on root.
-        current->set_height();
-
         current->set_balance_factor();
         if (abs(current->balance_factor) == UNBALANCED){
             current->choose_roll(); //because roll switches parent and child, we will still get to the new parent.
@@ -902,7 +905,6 @@ void AVL_tree<T>::climb_up_and_rebalance_tree(AVL_tree<T>::Node *leaf) {
         current->set_height();
         current = current->parent;
     }
-    
 }
 
 template<class T>

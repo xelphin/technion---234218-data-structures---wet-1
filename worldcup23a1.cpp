@@ -16,13 +16,13 @@ StatusType world_cup_t::add_team(int teamId, int points)
         return StatusType::INVALID_INPUT;
     try {
         std::shared_ptr<Team> team(new Team(teamId, points));
-        if(team->get_isValid()){
-            valid_teams_AVL.add(team);
-        }
         if (team == nullptr){
             throw;
         }
         teams_AVL.add(team); // CHECK:
+        if(team->get_isValid()){
+            valid_teams_AVL.add(team);
+        }
     } catch (std::bad_alloc const&){
         return StatusType::ALLOCATION_ERROR;
     } catch (const ID_ALREADY_EXISTS& e) {

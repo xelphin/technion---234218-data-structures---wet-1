@@ -93,7 +93,7 @@ void Player::update_gamesPlayed(int toAdd)
 void Player::set_gamesPlayed()
 {
     if (team != nullptr)
-        this->gamesPlayed += gamesPlayed + team->get_gamesPlayed();
+        this->gamesPlayed += team->get_gamesPlayed();
 }
 
 void Player::update_scoredGoals(int toAdd)
