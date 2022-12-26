@@ -12,7 +12,6 @@ world_cup_t::~world_cup_t()
 
 StatusType world_cup_t::add_team(int teamId, int points)
 {
-
 	if (teamId <= 0 || points < 0)
         return StatusType::INVALID_INPUT;
     try {
@@ -54,7 +53,6 @@ StatusType world_cup_t::remove_team(int teamId)
     } catch (std::bad_alloc const& ) {
         return StatusType::ALLOCATION_ERROR;
     }
-
     return success ? StatusType::SUCCESS : StatusType::FAILURE;
 }
 
@@ -197,7 +195,7 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
 
             // UPDATE WORLD-CUP
             // remove and re-add for correct position in score tree
-            all_players_score_AVL.remove(playerId);
+            all_players_score_AVL.remove_by_item(player);
             player->set_global_score_node(all_players_score_AVL.add(player));
             set_top_scorer();
             sorted_score_List.remove(player->get_playerScoreListNode());

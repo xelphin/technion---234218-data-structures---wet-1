@@ -100,6 +100,7 @@ private:
 
 
     // TESTS AND DEBUGGING FUNCTIONS
+    //TODO: comment out
     void debugging_printTree(const std::string& prefix, const AVL_tree::Node* node, bool isLeft, std::string& str);
     void debugging_printTree(const AVL_tree::Node* node, std::string& str);
     void debugging_printTree_new(const std::string& prefix, const AVL_tree::Node* node, bool isLeft, std::string& str);
@@ -403,6 +404,7 @@ bool AVL_tree<T>::remove(int id) {
         return false;
     }
     else{
+        std::cout << this->debugging_printTree_new();
         return remove_internal(node);
     }
 
@@ -416,8 +418,8 @@ bool AVL_tree<T>::remove_internal(AVL_tree<T>::Node* node) {
     // updates parent and children before deletion
     if (node->left == nullptr && node->right == nullptr) //if leaf
     {
-        node->update_parent(nullptr);
         next_unbalanced_node = node->parent;
+        node->update_parent(nullptr);
     }
     else if (node->left != nullptr && node->right == nullptr){ // only left child
         next_unbalanced_node = node->left;
@@ -465,6 +467,7 @@ bool AVL_tree<T>::remove_internal(AVL_tree<T>::Node* node) {
 
     delete node;
     this->amount--;
+    std::cout << debugging_printTree_new();
     return true;
 }
 
@@ -857,6 +860,7 @@ int AVL_tree<T>::get_amount() {
 
 template<class T>
 int AVL_tree<T>::Node::set_height() {
+
     int left_height = get_height(left);
     int right_height = get_height(right);
     height = left_height > right_height ? left_height + 1 : right_height + 1; //max
@@ -869,12 +873,19 @@ int AVL_tree<T>::Node::get_height(AVL_tree<T>::Node *node) {
         return -1; //leaf child is 0, non-existent child is -1
     }
     else{
-        return node->set_height();
+        return node->height; //TODO: change it so no recursion on the full tree
     }
 }
 
 template<class T>
 int AVL_tree<T>::Node::set_balance_factor() {
+    if(left != nullptr){
+        left->set_height();
+    }
+    if(right != nullptr){
+        right->set_height();
+    }
+    set_height();
     int height_difference = get_height(left) - get_height(right);
     balance_factor = height_difference;
     return height_difference;
@@ -931,7 +942,10 @@ void AVL_tree<T>::Node::choose_roll() {
             //std::cout << "roll: LR" << std::endl;
             this->LR_roll();
         }
-        else throw std::invalid_argument("bad balance factor");
+        else {
+            std::cout << this->tree->debugging_printTree_new();
+            throw std::invalid_argument("bad balance factor");
+        }
     }
     else if (balance_factor == -2){
         if (right->set_balance_factor() <= 0){
@@ -942,9 +956,15 @@ void AVL_tree<T>::Node::choose_roll() {
             //std::cout << "roll: RL" << std::endl;
             this->RL_roll();
         }
-        else throw std::invalid_argument("bad balance factor");
+        else {
+            std::cout << this->tree->debugging_printTree_new();
+            throw std::invalid_argument("bad balance factor");
+        }
     }
-    else throw std::invalid_argument("bad balance factor");
+    else {
+        std::cout << this->tree->debugging_printTree_new();
+//        throw std::invalid_argument("bad balance factor");
+    }
 }
 
 template<class T>
@@ -1039,97 +1059,97 @@ void AVL_tree<T>::add_to_list_aux(AVL_tree::Node* node, bool& passedMin, bool& p
 }
 
 //------------------------------------------OLD DEBUG FUNCTIONS FOR TESTS TO WORK-----------------//
-////-------------------------------------------DEBUGGING-------------------------------------------//
-//// ONLY FOR DEBUGGING - ERASE LATER
-//template<class T>
-//void AVL_tree<T>::debugging_printTree_new(const std::string& prefix, const AVL_tree::Node* node, bool isLeft, std::string& str)
-//{
-//    if( node != nullptr )
-//    {
-//        str += prefix;
-//
-//        str += (isLeft ? "└──" : "├──" );
-//
-//        // print the value of the node
-//        str += std::to_string((*(node->content)).get_id());
-//        str += "\n";
-//
-//        // enter the next tree level - left and right branch
-//        AVL_tree<T>::debugging_printTree_new( prefix + (isLeft ? "    " : "│   "), node->right, false, str);
-//        AVL_tree<T>::debugging_printTree_new( prefix + (isLeft ? "    " : "│   "), node->left, true, str);
-//    }
-//}
-//
-//template<class T>
-//void AVL_tree<T>::debugging_printTree_new(const AVL_tree::Node* node, std::string& str)
-//{
-//    debugging_printTree_new("", node, true, str);
-//}
-//
-//template<class T>
-//std::string AVL_tree<T>::debugging_printTree_new()
-//{
-//    std::string tree = "";
-//    debugging_printTree_new(root, tree);
-//    return tree;
-//}
-//template<class T>
-//void AVL_tree<T>::debugging_printTree(const std::string& prefix, const AVL_tree::Node* node, bool isLeft, std::string& str)
-//{
-//    if( node != nullptr )
-//    {
-//        str += prefix;
-//
-//        str += (isLeft ? "├──" : "└──" );
-//
-//        // print the value of the node
-//        str += std::to_string((*(node->content)).get_id());
-//        str += "\n";
-//
-//        // enter the next tree level - left and right branch
-//        AVL_tree<T>::debugging_printTree( prefix + (isLeft ? "│   " : "    "), node->left, true, str);
-//        AVL_tree<T>::debugging_printTree( prefix + (isLeft ? "│   " : "    "), node->right, false, str);
-//    }
-//}
-//
-//template<class T>
-//void AVL_tree<T>::debugging_printTree(const AVL_tree::Node* node, std::string& str)
-//{
-//    debugging_printTree("", node, false, str);
-//}
-//
-//template<class T>
-//std::string AVL_tree<T>::debugging_printTree()
-//{
-//    std::string tree = "";
-//    debugging_printTree(root, tree);
-//    return tree;
-//}
-//
-//
-//
-//template<class T>
-//void AVL_tree<T>::find_test_wrapper(int id) {
-//    print_node(find_id(id));
-//}
-//
-//template<class T>
-//void AVL_tree<T>::print_node(AVL_tree<T>::Node* node){
-//    //the format is: self, parent, left, right
-//    if (node == nullptr){
-////        std::cout << "NULL\n";
-//        return;
-//    }
-//    //std::cout << (*(node->content)).get_id() << " " <<
-//    //        ((node->parent) ? (*(node->parent->content)).get_id() : 0 ) << " " <<
-//    //        ((node->left) ? (*(node->left->content)).get_id() : 0 ) << " " <<
-//    //        ((node->right) ? (*(node->right->content)).get_id() : 0 ) <<std::endl;
-//    if (node->left){
-//        if ((node->left && node->left->parent != node) || (node->right && node->right->parent != node)){
-//            throw std::invalid_argument("parent and child dont point at each other");
-//        }
-//    }
-//}
+//-------------------------------------------DEBUGGING-------------------------------------------//
+// ONLY FOR DEBUGGING - ERASE LATER
+template<class T>
+void AVL_tree<T>::debugging_printTree_new(const std::string& prefix, const AVL_tree::Node* node, bool isLeft, std::string& str)
+{
+    if( node != nullptr )
+    {
+        str += prefix;
+
+        str += (isLeft ? "└──" : "├──" );
+
+        // print the value of the node
+        str += std::to_string((*(node->content)).get_id());
+        str += "\n";
+
+        // enter the next tree level - left and right branch
+        AVL_tree<T>::debugging_printTree_new( prefix + (isLeft ? "    " : "│   "), node->right, false, str);
+        AVL_tree<T>::debugging_printTree_new( prefix + (isLeft ? "    " : "│   "), node->left, true, str);
+    }
+}
+
+template<class T>
+void AVL_tree<T>::debugging_printTree_new(const AVL_tree::Node* node, std::string& str)
+{
+    debugging_printTree_new("", node, true, str);
+}
+
+template<class T>
+std::string AVL_tree<T>::debugging_printTree_new()
+{
+    std::string tree = "";
+    debugging_printTree_new(root, tree);
+    return tree;
+}
+template<class T>
+void AVL_tree<T>::debugging_printTree(const std::string& prefix, const AVL_tree::Node* node, bool isLeft, std::string& str)
+{
+    if( node != nullptr )
+    {
+        str += prefix;
+
+        str += (isLeft ? "├──" : "└──" );
+
+        // print the value of the node
+        str += std::to_string((*(node->content)).get_id());
+        str += "\n";
+
+        // enter the next tree level - left and right branch
+        AVL_tree<T>::debugging_printTree( prefix + (isLeft ? "│   " : "    "), node->left, true, str);
+        AVL_tree<T>::debugging_printTree( prefix + (isLeft ? "│   " : "    "), node->right, false, str);
+    }
+}
+
+template<class T>
+void AVL_tree<T>::debugging_printTree(const AVL_tree::Node* node, std::string& str)
+{
+    debugging_printTree("", node, false, str);
+}
+
+template<class T>
+std::string AVL_tree<T>::debugging_printTree()
+{
+    std::string tree = "";
+    debugging_printTree(root, tree);
+    return tree;
+}
+
+
+
+template<class T>
+void AVL_tree<T>::find_test_wrapper(int id) {
+    print_node(find_id(id));
+}
+
+template<class T>
+void AVL_tree<T>::print_node(AVL_tree<T>::Node* node){
+    //the format is: self, parent, left, right
+    if (node == nullptr){
+//        std::cout << "NULL\n";
+        return;
+    }
+    //std::cout << (*(node->content)).get_id() << " " <<
+    //        ((node->parent) ? (*(node->parent->content)).get_id() : 0 ) << " " <<
+    //        ((node->left) ? (*(node->left->content)).get_id() : 0 ) << " " <<
+    //        ((node->right) ? (*(node->right->content)).get_id() : 0 ) <<std::endl;
+    if (node->left){
+        if ((node->left && node->left->parent != node) || (node->right && node->right->parent != node)){
+            throw std::invalid_argument("parent and child dont point at each other");
+        }
+    }
+}
 
 // ----------------------------------
 
