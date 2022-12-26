@@ -404,7 +404,6 @@ bool AVL_tree<T>::remove(int id) {
         return false;
     }
     else{
-        std::cout << this->debugging_printTree_new();
         return remove_internal(node);
     }
 
@@ -467,14 +466,13 @@ bool AVL_tree<T>::remove_internal(AVL_tree<T>::Node* node) {
 
     delete node;
     this->amount--;
-    std::cout << debugging_printTree_new();
     return true;
 }
 
 template<class T>
 typename AVL_tree<T>::Node *AVL_tree<T>::find_id(int id) {
     AVL_tree<T>::Node* current = root;
-    if (!current){
+    if (current == nullptr){
         return nullptr;
     }
 
@@ -873,7 +871,7 @@ int AVL_tree<T>::Node::get_height(AVL_tree<T>::Node *node) {
         return -1; //leaf child is 0, non-existent child is -1
     }
     else{
-        return node->height; //TODO: change it so no recursion on the full tree
+        return node->height;
     }
 }
 

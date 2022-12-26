@@ -90,7 +90,6 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
             all_players_AVL.add(player);
             player->set_global_score_node(all_players_score_AVL.add(player));
             set_top_scorer();
-
             add_player_to_sorted_score_list(player);
 
 
@@ -146,8 +145,8 @@ StatusType world_cup_t::remove_player(int playerId)
                 success1 = false;
             }
             // REMOVE from WORLD_CUP AVLs (even if player does not have a team)
-            success2 = all_players_AVL.remove(playerId);
             all_players_score_AVL.remove_by_item(player);
+            success2 = all_players_AVL.remove(playerId);
             set_top_scorer();
         } else {
             // PLAYER NOT FOUND
@@ -180,7 +179,8 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
             if (playerTeam == nullptr){
                 return StatusType::FAILURE;
             }
-
+            all_players_score_AVL.remove_by_item(player); // remove and re-add for correct position in score tree. removing before changes to find node.
+            playerTeam->remove_player(playerId);             // remove and re-add for correct position in score tree
             // UPDATE PLAYER
             player->update_gamesPlayed(gamesPlayed);
             player->update_scoredGoals(scoredGoals);
@@ -190,12 +190,9 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
             playerTeam->update_cardsReceived(cardsReceived);
             playerTeam->update_scoredGoals(scoredGoals);
             // remove and re-add for correct position in score tree
-            playerTeam->remove_player(playerId);
             playerTeam->add_player(player);
-
             // UPDATE WORLD-CUP
             // remove and re-add for correct position in score tree
-            all_players_score_AVL.remove_by_item(player);
             player->set_global_score_node(all_players_score_AVL.add(player));
             set_top_scorer();
             sorted_score_List.remove(player->get_playerScoreListNode());
