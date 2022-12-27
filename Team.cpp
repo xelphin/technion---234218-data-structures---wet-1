@@ -20,7 +20,7 @@ Team::Team(int id, int points, int total_players, int total_goals, int total_car
      team_players(*team1_players, *team2_players, SORT_BY_ID, Functor(this)),
      team_players_scores(*team1_players_scores, *team2_players_scores, SORT_BY_SCORE, Functor(this))
 {
-
+    set_top_scorer();
 }
 
 
