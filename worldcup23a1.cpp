@@ -87,6 +87,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
             }
             // Add player to AVLs
             player->set_team(team);
+            player->update_gamesPlayed(-team->get_gamesPlayed());
             all_players_AVL.add(player);
             player->set_global_score_node(all_players_score_AVL.add(player));
             set_top_scorer();
