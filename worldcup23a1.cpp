@@ -182,6 +182,7 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
             }
             all_players_score_AVL.remove_by_item(player); // remove and re-add for correct position in score tree. removing before changes to find node.
             playerTeam->remove_player(playerId);             // remove and re-add for correct position in score tree
+            sorted_score_List.remove(player->get_playerScoreListNode());
             // UPDATE PLAYER
             player->update_gamesPlayed(gamesPlayed);
             player->update_scoredGoals(scoredGoals);
@@ -196,7 +197,6 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
             // remove and re-add for correct position in score tree
             player->set_global_score_node(all_players_score_AVL.add(player));
             set_top_scorer();
-            sorted_score_List.remove(player->get_playerScoreListNode());
             add_player_to_sorted_score_list(player);
 
         } else {
