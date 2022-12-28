@@ -24,6 +24,7 @@ public:
     int get_closest(Node* node) const;
     void remove(Node* node);
     int knockout();
+    void test();
 
 private:
     NodeList::Node *start;

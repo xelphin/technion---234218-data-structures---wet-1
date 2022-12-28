@@ -20,6 +20,7 @@ NodeList::~NodeList() {
 void NodeList::add(int id, int total_points, int total_goals, int total_cards)
 {
     // O(1)
+    //used in knockout only
     NodeList::Node* newNode = new NodeList::Node(id, total_points, total_goals, total_cards);
     // List is empty:
     if (start == nullptr) {
@@ -256,6 +257,16 @@ bool NodeList::player1_biggerScorer(Node& player1, Node& player2)
     if ((player1.id > player2.id))
         return true;
     return false;
+}
+
+void NodeList::test() {
+    Node* current = start;
+    while (current != nullptr){
+        if (current->next!= nullptr && current->total_goals > current->next->total_goals){
+            throw; //std::logic_error("not sorted.");
+        }
+        current = current->next;
+    }
 }
 
 NodeList::Node::Node(int id, int total_points, int total_goals, int total_cards)

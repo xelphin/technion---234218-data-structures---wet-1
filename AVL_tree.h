@@ -307,17 +307,19 @@ typename AVL_tree<T>::Node *AVL_tree<T>::find_closest_left(AVL_tree<T>::Node* no
         return nullptr;
     Node* node_immediate_left = node->left;
 
+
     // Has no left child -> search through ancestors
     if (node_immediate_left == nullptr) {
+
         Node* top = root;
         while (top != nullptr && top != node) {
-            if (top->get_comparison(*node) < 0) { // top > node
+            if (top->get_comparison(*node) < 0) { // top < node
                 if (top->right == nullptr)
                     return nullptr;
                 if (top->right->get_comparison(*node) >= 0) // top->right >= node
                     return top;
                 top = top->right;
-            } else {
+            } else { // top > node
                 top = top->left;
                 if (top == node) // smallest
                     return nullptr;
@@ -353,12 +355,23 @@ typename AVL_tree<T>::Node *AVL_tree<T>::find_closest_right(AVL_tree<T>::Node* n
 
     // Has no right child -> search through ancestors
     if (node_immediate_right == nullptr) {
+        Node* current = node;
+        while (current->parent)
+        {
+            {
+                if (current->parent->left == current) {
+                    return (current->parent);
+                }
+                    current = current->parent;
+            }
+        }
+
         Node* top = root;
         while (top != nullptr && top != node) {
-            if (top->get_comparison(*node) > 0) { // top < node
+            if (top->get_comparison(*node) > 0) { // top > node
                 if (top->left == nullptr)
                     return nullptr;
-                if (top->left->get_comparison(*node) <= 0) // top->right >= node
+                if (top->left->get_comparison(*node) <= 0) // top->left <= node
                     return top;
                 top = top->left;
             } else {
@@ -392,7 +405,20 @@ typename AVL_tree<T>::Node *AVL_tree<T>::find_a_closest(AVL_tree<T>::Node* node)
     }
     Node* closest_right = this->find_closest_right(node);
     if (closest_right != nullptr)
+    {
+        if (node->content->get_score() > closest_right->content->get_score()){
+            throw;
+        }
         return closest_right;
+    }
+    Node* closest_left = find_closest_left(node);
+    if (closest_left != nullptr)
+        {
+            if (node->content->get_score() < closest_left->content->get_score()){
+                throw;
+            }
+            return closest_left;
+        }
     return this->find_closest_left(node);
 }
 

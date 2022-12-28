@@ -510,4 +510,5 @@ void world_cup_t::add_player_to_sorted_score_list(const std::shared_ptr<Player>&
         NodeList::Node* newNode = sorted_score_List.add(nullptr, player->get_id(), 0, player->get_score(), player->get_cards());
         player->set_playerScoreListNode(newNode);
     }
+    sorted_score_List.test();
 }
