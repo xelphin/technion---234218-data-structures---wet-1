@@ -12,17 +12,18 @@ world_cup_t::~world_cup_t()
 
 StatusType world_cup_t::add_team(int teamId, int points)
 {
+
 	if (teamId <= 0 || points < 0)
         return StatusType::INVALID_INPUT;
     try {
         std::shared_ptr<Team> team(new Team(teamId, points));
+        if(team->get_isValid()){
+            valid_teams_AVL.add(team);
+        }
         if (team == nullptr){
             throw;
         }
         teams_AVL.add(team); // CHECK:
-        if(team->get_isValid()){
-            valid_teams_AVL.add(team);
-        }
     } catch (std::bad_alloc const&){
         return StatusType::ALLOCATION_ERROR;
     } catch (const ID_ALREADY_EXISTS& e) {
@@ -53,6 +54,7 @@ StatusType world_cup_t::remove_team(int teamId)
     } catch (std::bad_alloc const& ) {
         return StatusType::ALLOCATION_ERROR;
     }
+
     return success ? StatusType::SUCCESS : StatusType::FAILURE;
 }
 
@@ -91,6 +93,7 @@ StatusType world_cup_t::add_player(int playerId, int teamId, int gamesPlayed,
             all_players_AVL.add(player);
             player->set_global_score_node(all_players_score_AVL.add(player));
             set_top_scorer();
+
             add_player_to_sorted_score_list(player);
 
 
@@ -146,8 +149,8 @@ StatusType world_cup_t::remove_player(int playerId)
                 success1 = false;
             }
             // REMOVE from WORLD_CUP AVLs (even if player does not have a team)
-            all_players_score_AVL.remove_by_item(player);
             success2 = all_players_AVL.remove(playerId);
+            all_players_score_AVL.remove_by_item(player);
             set_top_scorer();
         } else {
             // PLAYER NOT FOUND
@@ -182,7 +185,6 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
             }
             all_players_score_AVL.remove_by_item(player); // remove and re-add for correct position in score tree. removing before changes to find node.
             playerTeam->remove_player(playerId);             // remove and re-add for correct position in score tree
-            sorted_score_List.remove(player->get_playerScoreListNode());
             // UPDATE PLAYER
             player->update_gamesPlayed(gamesPlayed);
             player->update_scoredGoals(scoredGoals);
@@ -193,10 +195,12 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
             playerTeam->update_scoredGoals(scoredGoals);
             // remove and re-add for correct position in score tree
             playerTeam->add_player(player);
+
             // UPDATE WORLD-CUP
             // remove and re-add for correct position in score tree
             player->set_global_score_node(all_players_score_AVL.add(player));
             set_top_scorer();
+            sorted_score_List.remove(player->get_playerScoreListNode());
             add_player_to_sorted_score_list(player);
 
         } else {
@@ -275,7 +279,6 @@ output_t<int> world_cup_t::get_team_points(int teamId)
 
 StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
 {
-
     // CHECK INVALID - O(1)
     if (newTeamId <= 0 || teamId1 <= 0 || teamId2 <= 0 || teamId1 == teamId2)
         return StatusType::INVALID_INPUT;
@@ -510,5 +513,4 @@ void world_cup_t::add_player_to_sorted_score_list(const std::shared_ptr<Player>&
         NodeList::Node* newNode = sorted_score_List.add(nullptr, player->get_id(), 0, player->get_score(), player->get_cards());
         player->set_playerScoreListNode(newNode);
     }
-    sorted_score_List.test();
 }
