@@ -39,7 +39,8 @@ public:
 
 
     friend std::ostream& operator<<(std::ostream& os, const Player& player);
-private: //
+
+private:
     int playerId;
     int teamId;
 
