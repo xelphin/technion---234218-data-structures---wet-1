@@ -100,7 +100,6 @@ private:
 
 
     // TESTS AND DEBUGGING FUNCTIONS
-    //TODO: comment out
     void debugging_printTree(const std::string& prefix, const AVL_tree::Node* node, bool isLeft, std::string& str);
     void debugging_printTree(const AVL_tree::Node* node, std::string& str);
     void debugging_printTree_new(const std::string& prefix, const AVL_tree::Node* node, bool isLeft, std::string& str);
@@ -308,11 +307,11 @@ typename AVL_tree<T>::Node *AVL_tree<T>::find_closest_left(AVL_tree<T>::Node* no
 
     // Has no left child -> search through ancestors
     if (node_immediate_left == nullptr) {
-        for (Node* current = node; current->parent != nullptr ; current = current->parent){
-            if (current->parent->right == current) {
-                return (current->parent);
-            }
-        } //MAYBE NEEDED
+    for (Node* current = node; current->parent != nullptr ; current = current->parent){
+        if (current->parent->right == current) {
+            return (current->parent);
+        }
+    }
         Node* top = root;
         while (top != nullptr && top != node) {
             if (top->get_comparison(*node) < 0) { // top > node
@@ -357,11 +356,11 @@ typename AVL_tree<T>::Node *AVL_tree<T>::find_closest_right(AVL_tree<T>::Node* n
 
     // Has no right child -> search through ancestors
     if (node_immediate_right == nullptr) {
-        for (Node* current = node; current->parent != nullptr ; current = current->parent){
-            if (current->parent->left == current) {
-                return (current->parent);
-            }
-        } //NEEDED
+for (Node* current = node; current->parent != nullptr ; current = current->parent){
+    if (current->parent->left == current) {
+        return (current->parent);
+    }
+}
         Node* top = root;
         while (top != nullptr && top != node) {
             if (top->get_comparison(*node) > 0) { // top < node
@@ -428,7 +427,7 @@ bool AVL_tree<T>::remove_internal(AVL_tree<T>::Node* node) {
     if (node->left == nullptr && node->right == nullptr) //if leaf
     {
         next_unbalanced_node = node->parent;
-        node->update_parent(nullptr); //NEEDED
+        node->update_parent(nullptr);
     }
     else if (node->left != nullptr && node->right == nullptr){ // only left child
         next_unbalanced_node = node->left;
@@ -656,7 +655,7 @@ typename AVL_tree<T>::Node *AVL_tree<T>::make_AVL_tree_from_array(T arr[], int s
         node->tree = this;
         node->left = this->AVL_tree<T>::make_AVL_tree_from_array(arr, start, midIndex - 1);
         node->right = this->AVL_tree<T>::make_AVL_tree_from_array(arr, midIndex + 1, end);
-        node->set_height(); //NEEDED
+        node->set_height();
     }
     catch (...){
         delete node;
@@ -825,7 +824,7 @@ typename AVL_tree<T>::Node* AVL_tree<T>::find_designated_parent(AVL_tree::Node* 
             }
         }
         else{ //proceed to left branch
-            if (current->left != nullptr && new_leaf->content->get_id() != current->content->get_id()){ //NEEDED
+if (current->left != nullptr && new_leaf->content->get_id() != current->content->get_id()){
                 current = current->left;
             }
             else{

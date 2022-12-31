@@ -183,8 +183,8 @@ StatusType world_cup_t::update_player_stats(int playerId, int gamesPlayed,
             if (playerTeam == nullptr){
                 return StatusType::FAILURE;
             }
-            all_players_score_AVL.remove_by_item(player); // remove and re-add for correct position in score tree. removing before changes to find node.
-            playerTeam->remove_player(playerId);             // remove and re-add for correct position in score tree
+            all_players_score_AVL.remove_by_item(player);
+            playerTeam->remove_player(playerId);
             // UPDATE PLAYER
             player->update_gamesPlayed(gamesPlayed);
             player->update_scoredGoals(scoredGoals);
